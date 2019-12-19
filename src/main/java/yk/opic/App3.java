@@ -7,24 +7,30 @@ public class App3 {
   public static void main(String[] args) {
     java.io.InputStream inputStream = System.in;
     Scanner scanner = new Scanner(inputStream);
-
+    
     final int SIZE = 100;
-    int[] no = new int [SIZE];
-    String[] title = new String [SIZE];
-    Date[] today = new Date[SIZE];
-    int[] pageOpened = new int[SIZE];
+    class Lesson {
+      int no;
+      String title;
+      Date today;
+      int pageOpened;
+    }
+    
+    Lesson[] lessons = new Lesson[SIZE];
     int count = 0;
 
     for(int i=0 ; ;i++) {
+      Lesson ls = new Lesson();
+      lessons[i] = ls;
       count++;
-      today[i] = new Date(System.currentTimeMillis());
-      pageOpened[i]++;
+      ls.today = new Date(System.currentTimeMillis());
+      ls.pageOpened++;
       System.out.print("번호? ");
-      no[i] = scanner.nextInt();
+      ls.no = scanner.nextInt();
       scanner.nextLine(); // 줄바꿈 기호 제거용
 
       System.out.print("내용? ");
-      title[i] = scanner.nextLine();
+      ls.title = scanner.nextLine();
       System.out.println();
       System.out.print("계속 입력하시겠습니까?(Y/n) ");
       String repeat = scanner.nextLine();
@@ -36,8 +42,10 @@ public class App3 {
 
     System.out.println();
     for(int i=0 ; i<count ; i++) {
+      Lesson ls = new Lesson();
+      ls = lessons[i];
       System.out.printf("%d, %s              , %tF, %d\n",
-          no[i], title[i], today[i], pageOpened[i]);
+          ls.no, ls.title, ls.today, ls.pageOpened);
     }
   }
 }
