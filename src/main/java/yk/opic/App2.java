@@ -8,39 +8,45 @@ public class App2 {
     Scanner keyboard = new Scanner(System.in);
     
     final int SIZE = 100;
-    Date[] registeredDate = new Date[SIZE];
-    int[] no = new int[SIZE];
-    String[] name = new String[SIZE];
-    String[] email = new String[SIZE];
-    String[] password = new String[SIZE];
-    String[] photo = new String[SIZE];
-    String[] tel = new String[SIZE];
+    class Lesson {
+      Date registeredDate;
+      int no;
+      String name;
+      String email;
+      String password;
+      String photo;
+      String tel;
+    }
+    Lesson[] lesson = new Lesson[SIZE];
     int count = 0;
 
     for(int i=0 ; ; i++) {
+      Lesson ls = new Lesson();
       count++;
-      registeredDate[i] = new Date(System.currentTimeMillis());
+      ls.registeredDate = new Date(System.currentTimeMillis());
       System.out.print("번호? ");
-      no[i] = keyboard.nextInt();
+      ls.no = keyboard.nextInt();
 
       keyboard.nextLine(); // nextInt() 후에 남아 있는 줄바꿈 기호를 제거한다.
 
       System.out.print("이름? ");
-      name[i] = keyboard.nextLine();
+      ls.name = keyboard.nextLine();
 
       System.out.print("이메일? ");
-      email[i] = keyboard.nextLine();
+      ls.email = keyboard.nextLine();
 
       System.out.print("암호? ");
-      password[i] = keyboard.nextLine();
+      ls.password = keyboard.nextLine();
 
       System.out.print("사진? ");
-      photo[i] = keyboard.nextLine();
+      ls.photo = keyboard.nextLine();
 
       System.out.print("전화? ");
-      tel[i] = keyboard.nextLine();
+      ls.tel = keyboard.nextLine();
 
       System.out.println();
+      lesson[i] = ls;
+
       System.out.print("계속 입력하시겠습니까?(Y/n) ");
       String repeat = keyboard.nextLine();
       System.out.println();
@@ -49,8 +55,10 @@ public class App2 {
     } keyboard.close();
 
     for(int i=0 ; i<count ; i++){
+      Lesson ls = new Lesson();
+      ls = lesson[i];
       System.out.printf("%d, %s , %s       , %s      , %tF\n",
-          no[i], name[i], email[i], tel[i], registeredDate[i]);
+          ls.no, ls.name, ls.email, ls.tel, ls.registeredDate);
     }
   }
 }
