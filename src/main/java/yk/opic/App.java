@@ -1,113 +1,183 @@
 package yk.opic;
 
+import java.util.Calendar;
 import java.sql.Date;
-import java.util.Scanner;
+import java.util.Scanner;   
 
 public class App {
-
   public static void main(String[] args) {
-
-    // 키보드에서 사용자가 입력한 값을 읽어 
-    // 문자열이나 정수, 부동소수점 등으로 리턴하는 역할
-    Scanner keyboard = new Scanner(System.in);
-    
-    final int SIZE = 100;
 
     class Lesson {
       int no;
       String title;
-      String description;
+      Date date;
+      int viewCount;
+      String context;
       Date startDate;
       Date endDate;
-      int totalHours;
-      int dayHours;
+      int totalHour;
+      int dailyHour;
     }
-    
+
+    class Board {
+      int no;
+      String title;
+      Date date;
+      int viewCount;
+    }
+
+    class Member {
+      int no;
+      String name;
+      String email;
+      String password;
+      String photo;
+      String tel;
+      Date registeredDate;
+    }
+
+    final int SIZE = 100;
+
     Lesson[] lessons = new Lesson[SIZE];
-    int count = 0;
+    int lessonsCount = 0;
+    Member[] members = new Member[SIZE];
+    int membersCount = 0;
+    Board[] boards = new Board[SIZE];
+    int boardsCount = 0;
 
-    for(int i=0 ; ; i++) {
-      Lesson ls = new Lesson();
-      count++;
-      System.out.print("번호? ");
-      ls.no = keyboard.nextInt();
+    java.io.InputStream inputStream = System.in;
+    java.util.Scanner scanner = new java.util.Scanner(inputStream);
+    String command;
 
-      keyboard.nextLine(); // nextInt() 후에 남아 있는 줄바꿈 기호를 제거한다.
+    System.out.println("===============================================");
+    System.out.println("명령어 모음 : /board/add, /board/list\n"
+        + "\t/lesson/add, /lesson/list\n\t/member/add, /member/list");
+    System.out.println("===============================================");
+    do {    
+      System.out.print("명령> ");
+      command = scanner.nextLine();
 
-      System.out.print("수업명? ");
-      ls.title = keyboard.nextLine();
+      switch(command) {
+        case "/board/add" :
+          Board board = new Board();
+          System.out.print("번호? ");
+          board.no = scanner.nextInt();
+          scanner.nextLine(); // 줄바꿈 기호 제거용
 
-      System.out.print("수업내용? ");
-      ls.description = keyboard.nextLine();
+          System.out.print("내용? ");
+          board.title = scanner.nextLine();
 
-      System.out.print("시작일? ");
-      ls.startDate = Date.valueOf(keyboard.next());
+          board.date = new Date(System.currentTimeMillis());
+          board.viewCount    = 0;
 
-      System.out.print("종료일? ");
-      ls.endDate = Date.valueOf(keyboard.next());
+          boards[boardsCount++] = board;
+          System.out.println("저장하였습니다.");
+          break;
 
-      System.out.print("총수업시간? ");
-      ls.totalHours = keyboard.nextInt();
+        case "/board/list" :
+          for (int i = 0; i < boardsCount; i++) {
+            Board b = boards[i];
+            System.out.printf("%d, %s, %s, %d\n", 
+                b.no, b.title, b.date, b.viewCount);
+          } break;
 
-      System.out.print("일수업시간? ");
-      ls.dayHours = keyboard.nextInt();
-      keyboard.nextLine(); // 빈칸제거 (커서이동)
-      System.out.println();
-      lessons[i] = ls;
-      System.out.print("계속 입력하시겠습니까?(Y/n) ");
-      String repeat = keyboard.nextLine();
-      System.out.println();
-      if(repeat.equals("N") || repeat.equals("n")) break;
-      else continue;
-    } keyboard.close();
+        case "/lesson/add" :
+          Lesson les = new Lesson();
+          System.out.print("번호? ");
+          les.no = scanner.nextInt();
+          scanner.nextLine();
+          System.out.print("수업명? ");
+          les.title = scanner.nextLine();
+          System.out.print("수업내용? ");
+          les.context = scanner.nextLine();
+          System.out.print("시작일? (형식 : 2019-01-01) ");
+          les.startDate = Date.valueOf(scanner.nextLine());
+          System.out.print("종료일? (형식 : 2019-01-01) ");
+          les.endDate = Date.valueOf(scanner.nextLine());
+          System.out.print("총수업시간? (형식: 1000) ");
+          les.totalHour = scanner.nextInt();
+          System.out.print("일수업시간? (형식: 8) ");
+          les.dailyHour = scanner.nextInt();
+          scanner.nextLine();
+          lessons[lessonsCount++] = les;
+          System.out.println("저장하였습니다.");
+          break;
 
-    for(int i=0 ; i<count ; i++){
-      Lesson ls = new Lesson();
-      ls = lessons[i];
-      System.out.printf("%d, %s    , %tF ~ %tF, %d\n",
-         ls.no, ls.title, ls.startDate, ls.endDate, ls.totalHours);
-    }
+        case "/lesson/list" :
+          for(int i=0 ; i<lessonsCount ; i++){
+            Lesson l = lessons[i];
+            System.out.printf("%d, %s     , %tF ~ %tF, %d\n", l.no, l.title, l.startDate, l.endDate, l.totalHour);
+          } break;
+
+        case "/member/add":
+          Member mem = new Member();
+          System.out.print("번호? ");
+          mem.no = scanner.nextInt();
+          scanner.nextLine(); // 빈칸제거
+          System.out.print("이름? ");
+          mem.name = scanner.nextLine();
+          System.out.print("이메일? ");
+          mem.email = scanner.nextLine();
+          System.out.print("비밀번호? ");
+          mem.password = scanner.nextLine();
+          System.out.print("사진? ");
+          mem.photo = scanner.nextLine();
+          System.out.print("전화? ");
+          mem.tel = scanner.nextLine();
+          mem.registeredDate = new Date(System.currentTimeMillis());
+          members[membersCount++] = mem;
+          System.out.println("저장하였습니다.");
+          break;
+
+        case "/member/list":
+          for(int i=0 ; i<membersCount ; i++) {
+            Member m = members[i];
+            System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
+                m.no, m.name,  m.email,  m.tel , m.registeredDate);
+          }
+          break;
+
+        default :
+          if(!command.equalsIgnoreCase("quit")) {
+            System.out.println("실행할 수 없는 명령입니다.");
+            break;
+          }
+
+      }
+    } while (!command.equalsIgnoreCase("quit"));
+    scanner.close();
+    System.out.println("...안녕!");
   }
 }
 /*
-
 번호? 1
-수업명? 자바 프로젝트 실습
-수업내용? 자바 프로젝트를 통한 자바 언어 활용법 익히기
-시작일? 2019-01-02
-종료일? 2019-05-28
-총수업시간? 1000
-일수업시간? 8
+이름? 홍길동
+이메일? hong@test.com
+암호? 1111
+사진? hong.png
+전화? 1111-2222
 
 계속 입력하시겠습니까?(Y/n) y
 
 번호? 2
-수업명? 자바 프로그래밍 기초
-수업내용? 자바 언어 기초 문법을 학습하기
-시작일? 2019-02-01
-종료일? 2019-02-28
-총수업시간? 160
-일수업시간? 8
+이름? 임꺽정
+이메일? lim@test.com
+암호? 1111
+사진? lim.png
+전화? 1111-2223
 
 계속 입력하시겠습니까?(Y/n) y
 
 번호? 3
-수업명? 자바 프로그래밍 고급
-수업내용? 디자인 패턴과 리랙토링 기법 학습하기
-시작일? 2019-03-02
-종료일? 2019-03-30
-총수업시간? 160
-일수업시간? 8
+이름? 전봉준
+이메일? jeon@test.com
+암호? 1111
+사진? jeon.png
+전화? 1111-2224
 
 계속 입력하시겠습니까?(Y/n) n
 
-1, 자바 프로젝트 실습     , 2019-01-02 ~ 2019-05-28, 1000
-2, 자바 프로그래밍 기초    , 2019-02-01 ~ 2019-02-28,  160
-3, 자바 프로그래밍 고급    , 2019-03-02 ~ 2019-03-30,  160
- 
+1, 홍길동 , hong@test.com       , 1111-2222      , 2019-01-01
+2, 임꺽정 , lim@test.com        , 1111-2223      , 2019-01-01
+3, 전봉준 , jeon@test.com       , 1111-2224      , 2019-01-01
  */
-
-
-
-
-
