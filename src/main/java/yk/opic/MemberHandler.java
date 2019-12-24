@@ -2,17 +2,9 @@ package yk.opic;
 
 import java.sql.Date;
 import java.util.Scanner;
+import yk.opic.domain.Member;
 
 public class MemberHandler {
-  static class Member {
-    int no;
-    String name;
-    String email;
-    String password;
-    String photo;
-    String tel;
-    Date registeredDate;
-  }
   
   static final int SIZE = 100;
   static int memberCount = 0;

@@ -2,19 +2,9 @@ package yk.opic;
 
 import java.sql.Date;
 import java.util.Scanner;
+import yk.opic.domain.Lesson;
 
 public class LessonHandler {
-  static class Lesson {
-    int no;
-    String title;
-    Date date;
-    int viewCount;
-    String context;
-    Date startDate;
-    Date endDate;
-    int totalHour;
-    int dailyHour;
-  }
   static final int SIZE = 100;
   static int lessonsCount = 0;
   static Lesson[] lessons = new Lesson[SIZE];
