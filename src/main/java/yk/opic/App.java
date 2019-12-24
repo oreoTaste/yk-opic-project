@@ -1,9 +1,6 @@
 package yk.opic;
 
-import java.util.Scanner;
-
 public class App {
-
 
   static java.io.InputStream inputStream = System.in;
   static java.util.Scanner scanner = new java.util.Scanner(inputStream);
@@ -12,12 +9,14 @@ public class App {
 
   public static void main(String[] args) {
     BoardHandler.scanner = scanner;
+    BoardHandler2.scanner = scanner;
     LessonHandler.scanner = scanner;
     MemberHandler.scanner = scanner;
     String command;
 
     System.out.println("===============================================");
     System.out.println("명령어 모음 : /board/add, /board/list\n"
+        + "\t/board2/add, /board2/list\n"
         + "\t/lesson/add, /lesson/list\n\t/member/add, /member/list");
     System.out.println("===============================================");
     
@@ -49,6 +48,14 @@ public class App {
 
         case "/board/list" :
           BoardHandler.listBoard();
+          break;
+          
+        case "/board2/add" :
+          BoardHandler2.addBoard();
+          break;
+
+        case "/board2/list" :
+          BoardHandler2.listBoard();
           break;
 
         default : 
