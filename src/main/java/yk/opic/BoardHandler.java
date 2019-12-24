@@ -2,15 +2,10 @@ package yk.opic;
 
 import java.sql.Date;
 import java.util.Scanner;
+import yk.opic.domain.Board;
 
 public class BoardHandler {
-
-  static class Board {
-    int no;
-    String title;
-    Date date;
-    int viewCount;
-  }
+  
   static final int SIZE = 100;
   static int boardsCount = 0;
   static Board[] boards = new Board[SIZE];
