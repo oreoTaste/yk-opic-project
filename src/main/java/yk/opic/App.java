@@ -9,9 +9,14 @@ public class App {
 
   public static void main(String[] args) {
     BoardHandler.scanner = scanner;
-    BoardHandler2.scanner = scanner;
     LessonHandler.scanner = scanner;
     MemberHandler.scanner = scanner;
+    
+    BoardHandler boardHandler = new BoardHandler();
+    BoardHandler boardHandler2 = new BoardHandler();
+    LessonHandler lessonHandler = new LessonHandler();
+    MemberHandler memberHandler = new MemberHandler();
+    
     String command;
 
     System.out.println("===============================================");
@@ -27,35 +32,35 @@ public class App {
 
       switch (command) {
         case "/lesson/add" :
-          LessonHandler.addLesson();
+          LessonHandler.addLesson(lessonHandler);
           break;
 
         case "/lesson/list" :
-          LessonHandler.listLesson();
+          LessonHandler.listLesson(lessonHandler);
           break;
 
         case "/member/add" :
-          MemberHandler.addMember();
+          MemberHandler.addMember(memberHandler);
           break;
 
         case "/member/list" :
-          MemberHandler.listMember();
+          MemberHandler.listMember(memberHandler);
           break;
 
         case "/board/add" :
-          BoardHandler.addBoard();
+          BoardHandler.addBoard(boardHandler);
           break;
 
         case "/board/list" :
-          BoardHandler.listBoard();
+          BoardHandler.listBoard(boardHandler);
           break;
           
         case "/board2/add" :
-          BoardHandler2.addBoard();
+          BoardHandler.addBoard(boardHandler2);
           break;
 
         case "/board2/list" :
-          BoardHandler2.listBoard();
+          BoardHandler.listBoard(boardHandler2);
           break;
 
         default : 

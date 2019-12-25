@@ -5,22 +5,24 @@ import java.util.Scanner;
 import yk.opic.domain.Member;
 
 public class MemberHandler {
+  // 인스턴스 필드로 관리 (개별관리)
+  int memberCount = 0;
+  Member[] member = new Member[SIZE];
   
+  // static 필드로 관리(공통관리)
   static final int SIZE = 100;
-  static int memberCount = 0;
-  static Member[] member = new Member[SIZE];
   static Scanner scanner;
   
-  static void listMember() {
-    for(int i=0 ; i<memberCount ; i++) {
-      Member m = member[i];
+  static void listMember(MemberHandler mh) {
+    for(int i=0 ; i<mh.memberCount ; i++) {
+      Member m = mh.member[i];
       System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
           m.no, m.name,  m.email,  m.tel , m.registeredDate );
     }
   }
   
 
-  static void addMember() {
+  static void addMember(MemberHandler mh) {
     Member mem = new Member();
     System.out.print("번호?");
     mem.no = scanner.nextInt();
@@ -37,7 +39,7 @@ public class MemberHandler {
     mem.tel = scanner.nextLine();
     mem.registeredDate = new Date(System.currentTimeMillis());
     
-    member[memberCount++] = mem;
+    mh.member[mh.memberCount++] = mem;
     System.out.println("저장하였습니다.");
   }
 }

@@ -5,12 +5,15 @@ import java.util.Scanner;
 import yk.opic.domain.Lesson;
 
 public class LessonHandler {
+  // 인스턴스 변수로 관리 (개별관리)
+  Lesson[] lessons = new Lesson[SIZE];
+  int lessonsCount = 0;
+  
+  // 스태틱 필드로 관리 (공통관리)
   static final int SIZE = 100;
-  static int lessonsCount = 0;
-  static Lesson[] lessons = new Lesson[SIZE];
   static Scanner scanner;
   
-  static void addLesson() {
+  static void addLesson(LessonHandler lh) {
     Lesson les = new Lesson();
     System.out.print("번호? ");
     les.no = scanner.nextInt();
@@ -30,12 +33,12 @@ public class LessonHandler {
     System.out.println();
     scanner.nextLine();
     
-    lessons[lessonsCount++] = les;
+    lh.lessons[lh.lessonsCount++] = les;
     System.out.println("저장하였습니다.");
   }
-  static void listLesson() {
-    for(int i=0 ; i<lessonsCount ; i++){
-      Lesson ls = lessons[i];
+  static void listLesson(LessonHandler lh) {
+    for(int i=0 ; i<lh.lessonsCount ; i++){
+      Lesson ls = lh.lessons[i];
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n", ls.no, ls.title, ls.startDate, ls.endDate, ls.totalHour);
     }
   }
