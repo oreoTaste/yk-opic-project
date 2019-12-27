@@ -11,35 +11,39 @@ public class MemberHandler {
   
   // static 필드로 관리(공통관리)
   static final int SIZE = 100;
-  static Scanner scanner;
+  public Scanner input;
   
-  static void listMember(MemberHandler mh) {
-    for(int i=0 ; i<mh.memberCount ; i++) {
-      Member m = mh.member[i];
+  public MemberHandler(Scanner input) {
+    this.input = input;
+  }
+  
+  public void listMember() {
+    for(int i=0 ; i<this.memberCount ; i++) {
+      Member m = this.member[i];
       System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
           m.no, m.name,  m.email,  m.tel , m.registeredDate );
     }
   }
   
 
-  static void addMember(MemberHandler mh) {
+  public void addMember() {
     Member mem = new Member();
     System.out.print("번호?");
-    mem.no = scanner.nextInt();
-    scanner.nextLine(); // 빈칸제거
+    mem.no = input.nextInt();
+    input.nextLine(); // 빈칸제거
     System.out.print("이름? ");
-    mem.name = scanner.nextLine();
+    mem.name = input.nextLine();
     System.out.print("이메일? ");
-    mem.email = scanner.nextLine();
+    mem.email = input.nextLine();
     System.out.print("비밀번호? ");
-    mem.password = scanner.nextLine();
+    mem.password = input.nextLine();
     System.out.print("사진? ");
-    mem.photo = scanner.nextLine();
+    mem.photo = input.nextLine();
     System.out.print("전화? ");
-    mem.tel = scanner.nextLine();
+    mem.tel = input.nextLine();
     mem.registeredDate = new Date(System.currentTimeMillis());
     
-    mh.member[mh.memberCount++] = mem;
+    this.member[this.memberCount++] = mem;
     System.out.println("저장하였습니다.");
   }
 }

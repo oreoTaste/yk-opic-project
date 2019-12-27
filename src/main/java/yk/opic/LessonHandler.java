@@ -11,34 +11,38 @@ public class LessonHandler {
   
   // 스태틱 필드로 관리 (공통관리)
   static final int SIZE = 100;
-  static Scanner scanner;
+  Scanner input;
   
-  static void addLesson(LessonHandler lh) {
+  LessonHandler(Scanner input) {
+    this.input = input;
+  }
+  
+  public void addLesson() {
     Lesson les = new Lesson();
     System.out.print("번호? ");
-    les.no = scanner.nextInt();
-    scanner.nextLine();
+    les.no = input.nextInt();
+    input.nextLine();
     System.out.print("수업명? ");
-    les.title = scanner.nextLine();
+    les.title = input.nextLine();
     System.out.print("수업내용? ");
-    les.context = scanner.nextLine();
+    les.context = input.nextLine();
     System.out.print("시작일? (형식 : 2019-01-01) ");
-    les.startDate = Date.valueOf(scanner.nextLine());
+    les.startDate = Date.valueOf(input.nextLine());
     System.out.print("종료일? (형식 : 2019-01-01) ");
-    les.endDate = Date.valueOf(scanner.nextLine());
+    les.endDate = Date.valueOf(input.nextLine());
     System.out.print("총수업시간? (형식: 1000) ");
-    les.totalHour = scanner.nextInt();
+    les.totalHour = input.nextInt();
     System.out.print("일수업시간? (형식: 8) ");
-    les.dailyHour = scanner.nextInt();
+    les.dailyHour = input.nextInt();
     System.out.println();
-    scanner.nextLine();
+    input.nextLine();
     
-    lh.lessons[lh.lessonsCount++] = les;
+    this.lessons[this.lessonsCount++] = les;
     System.out.println("저장하였습니다.");
   }
-  static void listLesson(LessonHandler lh) {
-    for(int i=0 ; i<lh.lessonsCount ; i++){
-      Lesson ls = lh.lessons[i];
+  void listLesson() {
+    for(int i=0 ; i<this.lessonsCount ; i++){
+      Lesson ls = this.lessons[i];
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n", ls.no, ls.title, ls.startDate, ls.endDate, ls.totalHour);
     }
   }

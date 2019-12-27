@@ -8,14 +8,10 @@ public class App {
   static final int SIZE = 100;
 
   public static void main(String[] args) {
-    BoardHandler.scanner = scanner;
-    LessonHandler.scanner = scanner;
-    MemberHandler.scanner = scanner;
-    
-    BoardHandler boardHandler = new BoardHandler();
-    BoardHandler boardHandler2 = new BoardHandler();
-    LessonHandler lessonHandler = new LessonHandler();
-    MemberHandler memberHandler = new MemberHandler();
+    BoardHandler boardHandler = new BoardHandler(scanner);
+    BoardHandler boardHandler2 = new BoardHandler(scanner);
+    LessonHandler lessonHandler = new LessonHandler(scanner);
+    MemberHandler memberHandler = new MemberHandler(scanner);
     
     String command;
 
@@ -32,35 +28,35 @@ public class App {
 
       switch (command) {
         case "/lesson/add" :
-          LessonHandler.addLesson(lessonHandler);
+          lessonHandler.addLesson();
           break;
 
         case "/lesson/list" :
-          LessonHandler.listLesson(lessonHandler);
+          lessonHandler.listLesson();
           break;
 
         case "/member/add" :
-          MemberHandler.addMember(memberHandler);
+          memberHandler.addMember();
           break;
 
         case "/member/list" :
-          MemberHandler.listMember(memberHandler);
+          memberHandler.listMember();
           break;
 
         case "/board/add" :
-          BoardHandler.addBoard(boardHandler);
+          boardHandler.addBoard();
           break;
 
         case "/board/list" :
-          BoardHandler.listBoard(boardHandler);
+          boardHandler.listBoard();
           break;
           
         case "/board2/add" :
-          BoardHandler.addBoard(boardHandler2);
+          boardHandler2.addBoard();
           break;
 
         case "/board2/list" :
-          BoardHandler.listBoard(boardHandler2);
+          boardHandler2.listBoard();
           break;
 
         default : 
