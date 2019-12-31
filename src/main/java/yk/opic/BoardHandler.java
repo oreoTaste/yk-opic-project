@@ -20,12 +20,12 @@ public class BoardHandler {
   public void addBoard() {
     Board board = new Board();
     System.out.print("번호? ");
-    board.no = input.nextInt();
+    board.setNo(input.nextInt());
     input.nextLine(); // 줄바꿈 기호 제거용
     System.out.print("내용? ");
-    board.title = input.nextLine();
-    board.date = new Date(System.currentTimeMillis());
-    board.viewCount = 0;
+    board.setTitle(input.nextLine());
+    board.setDate(new Date(System.currentTimeMillis()));
+    board.setViewCount(0);
     
     this.boards[this.boardsCount++] = board;
     System.out.println("저장하였습니다.");
@@ -35,7 +35,7 @@ public class BoardHandler {
     for (int i = 0; i < this.boardsCount; i++) {
       Board board = this.boards[i];
       System.out.printf("%d, %s, %s, %d\n", 
-          board.no, board.title, board.date, board.viewCount);
+          board.getNo(), board.getTitle(), board.getDate(), board.getViewCount());
     }
   }
 }

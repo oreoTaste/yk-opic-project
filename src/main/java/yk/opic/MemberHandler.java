@@ -21,7 +21,7 @@ public class MemberHandler {
     for(int i=0 ; i<this.memberCount ; i++) {
       Member m = this.member[i];
       System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
-          m.no, m.name,  m.email,  m.tel , m.registeredDate );
+          m.getNo(), m.getName(),  m.getEmail(),  m.getTel() , m.getRegisteredDate() );
     }
   }
   
@@ -29,19 +29,19 @@ public class MemberHandler {
   public void addMember() {
     Member mem = new Member();
     System.out.print("번호?");
-    mem.no = input.nextInt();
+    mem.setNo(input.nextInt());
     input.nextLine(); // 빈칸제거
     System.out.print("이름? ");
-    mem.name = input.nextLine();
+    mem.setName(input.nextLine());
     System.out.print("이메일? ");
-    mem.email = input.nextLine();
+    mem.setEmail(input.nextLine());
     System.out.print("비밀번호? ");
-    mem.password = input.nextLine();
+    mem.setPassword(input.nextLine());
     System.out.print("사진? ");
-    mem.photo = input.nextLine();
+    mem.setPhoto(input.nextLine());
     System.out.print("전화? ");
-    mem.tel = input.nextLine();
-    mem.registeredDate = new Date(System.currentTimeMillis());
+    mem.setTel(input.nextLine());
+    mem.setRegisteredDate(new Date(System.currentTimeMillis()));
     
     this.member[this.memberCount++] = mem;
     System.out.println("저장하였습니다.");

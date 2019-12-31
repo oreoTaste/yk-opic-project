@@ -20,20 +20,20 @@ public class LessonHandler {
   public void addLesson() {
     Lesson les = new Lesson();
     System.out.print("번호? ");
-    les.no = input.nextInt();
+    les.setNo(input.nextInt());
     input.nextLine();
     System.out.print("수업명? ");
-    les.title = input.nextLine();
+    les.setTitle(input.nextLine());
     System.out.print("수업내용? ");
-    les.context = input.nextLine();
+    les.setContext(input.nextLine());
     System.out.print("시작일? (형식 : 2019-01-01) ");
-    les.startDate = Date.valueOf(input.nextLine());
+    les.setStartDate(Date.valueOf(input.nextLine()));
     System.out.print("종료일? (형식 : 2019-01-01) ");
-    les.endDate = Date.valueOf(input.nextLine());
+    les.setEndDate(Date.valueOf(input.nextLine()));
     System.out.print("총수업시간? (형식: 1000) ");
-    les.totalHour = input.nextInt();
+    les.setTotalHour(input.nextInt());
     System.out.print("일수업시간? (형식: 8) ");
-    les.dailyHour = input.nextInt();
+    les.setDailyHour(input.nextInt());
     System.out.println();
     input.nextLine();
     
@@ -43,7 +43,9 @@ public class LessonHandler {
   void listLesson() {
     for(int i=0 ; i<this.lessonsCount ; i++){
       Lesson ls = this.lessons[i];
-      System.out.printf("%d, %s     , %tF ~ %tF, %d\n", ls.no, ls.title, ls.startDate, ls.endDate, ls.totalHour);
+      System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
+          ls.getNo(), ls.getTitle(), ls.getStartDate(),
+          ls.getEndDate(), ls.getTotalHour());
     }
   }
   
