@@ -1,4 +1,4 @@
-package yk.opic;
+package yk.opic.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -13,7 +13,7 @@ public class LessonHandler {
   static final int SIZE = 100;
   Scanner input;
   
-  LessonHandler(Scanner input) {
+  public LessonHandler(Scanner input) {
     this.input = input;
   }
   
@@ -40,7 +40,7 @@ public class LessonHandler {
     this.lessons[this.lessonsCount++] = les;
     System.out.println("저장하였습니다.");
   }
-  void listLesson() {
+  public void listLesson() {
     for(int i=0 ; i<this.lessonsCount ; i++){
       Lesson ls = this.lessons[i];
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n",

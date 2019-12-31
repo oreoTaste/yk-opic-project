@@ -1,5 +1,9 @@
 package yk.opic;
 
+import yk.opic.handler.BoardHandler;
+import yk.opic.handler.LessonHandler;
+import yk.opic.handler.MemberHandler;
+
 public class App {
 
   static java.io.InputStream inputStream = System.in;
