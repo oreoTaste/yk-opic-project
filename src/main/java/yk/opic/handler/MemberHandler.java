@@ -5,26 +5,30 @@ import java.util.Scanner;
 import yk.opic.domain.Member;
 
 public class MemberHandler {
-  // 인스턴스 필드로 관리 (개별관리)
-  int memberCount = 0;
-  Member[] member = new Member[SIZE];
-  
-  // static 필드로 관리(공통관리)
-  static final int SIZE = 100;
+  MemberList memberList;
   public Scanner input;
   
   public MemberHandler(Scanner input) {
     this.input = input;
+    memberList = new MemberList();
+  }
+
+  public MemberHandler(Scanner input, int capacity) {
+    this.input = input;
+    memberList = new MemberList(capacity);
   }
   
+////////////////////////////////////////////////////////////////
+  
   public void listMember() {
-    for(int i=0 ; i<this.memberCount ; i++) {
-      Member m = this.member[i];
-      System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
-          m.getNo(), m.getName(),  m.getEmail(),  m.getTel() , m.getRegisteredDate() );
+    Member[] mbr = memberList.toArray();
+    for(Member m : mbr) {
+    System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
+        m.getNo(), m.getName(),  m.getEmail(),  m.getTel() , m.getRegisteredDate() );
     }
   }
   
+////////////////////////////////////////////////////////////////
 
   public void addMember() {
     Member mem = new Member();
@@ -43,7 +47,7 @@ public class MemberHandler {
     mem.setTel(input.nextLine());
     mem.setRegisteredDate(new Date(System.currentTimeMillis()));
     
-    this.member[this.memberCount++] = mem;
+    memberList.add(mem);
     System.out.println("저장하였습니다.");
   }
 }

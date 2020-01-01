@@ -7,7 +7,7 @@ public class Board {
   private String title;
   private Date date;
   private int viewCount;
-  
+
   public int getNo() {
     return no;
   }
@@ -32,6 +32,6 @@ public class Board {
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }
-  
-  
+
+
 }

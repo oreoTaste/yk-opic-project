@@ -5,18 +5,19 @@ import java.util.Scanner;
 import yk.opic.domain.Lesson;
 
 public class LessonHandler {
-  // 인스턴스 변수로 관리 (개별관리)
-  Lesson[] lessons = new Lesson[SIZE];
-  int lessonsCount = 0;
-  
-  // 스태틱 필드로 관리 (공통관리)
-  static final int SIZE = 100;
+  LessonList lessonList;
   Scanner input;
-  
+
   public LessonHandler(Scanner input) {
     this.input = input;
+    lessonList = new LessonList();
   }
-  
+
+  public LessonHandler(Scanner input, int capacity) {
+    this.input = input;
+    lessonList = new LessonList(capacity);
+  }
+
   public void addLesson() {
     Lesson les = new Lesson();
     System.out.print("번호? ");
@@ -36,17 +37,19 @@ public class LessonHandler {
     les.setDailyHour(input.nextInt());
     System.out.println();
     input.nextLine();
-    
-    this.lessons[this.lessonsCount++] = les;
+
+    lessonList.add(les);
     System.out.println("저장하였습니다.");
   }
+
   public void listLesson() {
-    for(int i=0 ; i<this.lessonsCount ; i++){
-      Lesson ls = this.lessons[i];
+
+    Lesson[] lsn = lessonList.toArray();
+    for(Lesson ls : lsn) {
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
           ls.getNo(), ls.getTitle(), ls.getStartDate(),
           ls.getEndDate(), ls.getTotalHour());
     }
   }
-  
+
 }

@@ -16,7 +16,7 @@ public class App {
     BoardHandler boardHandler2 = new BoardHandler(scanner);
     LessonHandler lessonHandler = new LessonHandler(scanner);
     MemberHandler memberHandler = new MemberHandler(scanner);
-    
+
     String command;
 
     System.out.println("===============================================");
@@ -24,7 +24,7 @@ public class App {
         + "\t/board2/add, /board2/list\n"
         + "\t/lesson/add, /lesson/list\n\t/member/add, /member/list");
     System.out.println("===============================================");
-    
+
     do {
       System.out.println();
       System.out.print("명령> ");
@@ -54,7 +54,12 @@ public class App {
         case "/board/list" :
           boardHandler.listBoard();
           break;
-          
+
+          // 새로운 구문 추가 (detail) : 추가연습
+        case "/board/detail" :
+          boardHandler.detailBoard();
+          break;
+
         case "/board2/add" :
           boardHandler2.addBoard();
           break;
@@ -62,6 +67,12 @@ public class App {
         case "/board2/list" :
           boardHandler2.listBoard();
           break;
+
+          // 새로운 구문 추가 (detail) : 추가연습
+        case "/board2/detail" :
+          boardHandler2.detailBoard();
+          break;
+
 
         default : 
           if(!command.equalsIgnoreCase("quit"))
