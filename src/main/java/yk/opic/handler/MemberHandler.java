@@ -5,24 +5,25 @@ import java.util.Scanner;
 import yk.opic.domain.Member;
 
 public class MemberHandler {
-  MemberList memberList;
+  ArrayList memberList;
   public Scanner input;
   
   public MemberHandler(Scanner input) {
     this.input = input;
-    memberList = new MemberList();
+    memberList = new ArrayList();
   }
 
   public MemberHandler(Scanner input, int capacity) {
     this.input = input;
-    memberList = new MemberList(capacity);
+    memberList = new ArrayList(capacity);
   }
   
 ////////////////////////////////////////////////////////////////
   
   public void listMember() {
-    Member[] mbr = memberList.toArray();
-    for(Member m : mbr) {
+    Object[] object = memberList.toArray();
+    for(Object obj : object) {
+      Member m = (Member)obj;
     System.out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tH:%5$tM:%5$tS\n",
         m.getNo(), m.getName(),  m.getEmail(),  m.getTel() , m.getRegisteredDate() );
     }
@@ -31,7 +32,8 @@ public class MemberHandler {
 ////////////////////////////////////////////////////////////////
 
   public void addMember() {
-    Member mem = new Member();
+    Object object = new Member();
+    Member mem = (Member)object;
     System.out.print("번호?");
     mem.setNo(input.nextInt());
     input.nextLine(); // 빈칸제거
@@ -48,6 +50,5 @@ public class MemberHandler {
     mem.setRegisteredDate(new Date(System.currentTimeMillis()));
     
     memberList.add(mem);
-    System.out.println("저장하였습니다.");
   }
 }

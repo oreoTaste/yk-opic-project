@@ -5,21 +5,22 @@ import java.util.Scanner;
 import yk.opic.domain.Board;
 
 public class BoardHandler {
-  BoardList boardList;
+  ArrayList boardList;
   public Scanner input;
 
   public BoardHandler(Scanner input) {
     this.input = input;
-    boardList = new BoardList();
+    boardList = new ArrayList();
   }
 
   public BoardHandler(Scanner input, int capacity) {
     this.input = input;
-    boardList = new BoardList(capacity);
+    boardList = new ArrayList(capacity);
   }
 
   public void addBoard() {
-    Board board = new Board();
+    Object object = new Board();
+    Board board = (Board)object;
     System.out.print("번호? ");
     board.setNo(input.nextInt());
     input.nextLine(); // 줄바꿈 기호 제거용
@@ -32,22 +33,25 @@ public class BoardHandler {
   }
 
   public void listBoard() {
-    Board[] brd = boardList.toArray();
-    for(Board b : brd) {
+    Object[] object = boardList.toArray();
+    for(Object obj : object) {
+      Board b = (Board)obj;
       System.out.printf("%d, %s, %s, %d\n", 
           b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }
   }
 
   public void detailBoard() {
-    System.out.print("게시물 번호? ");
-    int detailNum = input.nextInt();
+    System.out.print("게시물 인덱스? ");
+    int idx = input.nextInt();
     input.nextLine();
-    Board board = new Board();
-    board = boardList.detail(detailNum);
-    if (board == null)
+    
+    Board board= (Board)this.boardList.detail(idx);
+    
+    if (board == null) {
       System.out.println("게시물 번호가 유효하지 않습니다.");
-    else {
+      return;
+    } else {
       System.out.printf("번호 : %d\n", board.getNo());
       System.out.printf("제목 : %s\n", board.getTitle());
       System.out.printf("등록일 : %tF\n", board.getDate());

@@ -5,21 +5,22 @@ import java.util.Scanner;
 import yk.opic.domain.Lesson;
 
 public class LessonHandler {
-  LessonList lessonList;
+  ArrayList lessonList;
   Scanner input;
 
   public LessonHandler(Scanner input) {
     this.input = input;
-    lessonList = new LessonList();
+    lessonList = new ArrayList();
   }
 
   public LessonHandler(Scanner input, int capacity) {
     this.input = input;
-    lessonList = new LessonList(capacity);
+    lessonList = new ArrayList(capacity);
   }
 
   public void addLesson() {
-    Lesson les = new Lesson();
+    Object object = new Lesson();
+    Lesson les = (Lesson)object;
     System.out.print("번호? ");
     les.setNo(input.nextInt());
     input.nextLine();
@@ -39,13 +40,12 @@ public class LessonHandler {
     input.nextLine();
 
     lessonList.add(les);
-    System.out.println("저장하였습니다.");
   }
 
   public void listLesson() {
-
-    Lesson[] lsn = lessonList.toArray();
-    for(Lesson ls : lsn) {
+    Object[] object = lessonList.toArray();
+    for(Object lsn : object) {
+      Lesson ls = (Lesson)lsn;
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
           ls.getNo(), ls.getTitle(), ls.getStartDate(),
           ls.getEndDate(), ls.getTotalHour());
