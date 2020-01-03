@@ -2,8 +2,8 @@ package yk.learn;
 import java.sql.Date;
 import java.util.Calendar;
 
-public class AbtDateNCalendar {
-  public static void main(String[] args) {
+public class DateNCalendar {
+  public static void main(StringClass[] args) {
 
     System.out.println("Regarding \"Date\"");
     Date date;

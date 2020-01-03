@@ -1,6 +1,6 @@
 package yk.learn;
 
-public class AbtString {
+public class StringClass {
   public static void main(String[] args) throws Exception {
     // String 값을 넣는 방법
     String str1 = "Hello1 ";

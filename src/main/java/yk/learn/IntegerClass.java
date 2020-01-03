@@ -1,7 +1,7 @@
 package yk.learn;
 
-public class AbtInteger {
-  public static void main(String[] args) {
+public class IntegerClass {
+  public static void main(StringClass[] args) {
     
     // String -> Integer로 만들기
     Integer i1 = Integer.valueOf("10");

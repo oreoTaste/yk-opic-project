@@ -1,7 +1,7 @@
 package yk.learn;
 
-public class AbtMath {
-  public static void main(String[] args) {
+public class MathClass {
+  public static void main(StringClass[] args) {
     // Most methods in Math Class is static.
     final float PI = (float) Math.PI;
     System.out.println("Value Of PI : " + PI);
