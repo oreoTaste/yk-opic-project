@@ -5,7 +5,7 @@ class A2 {
   void print() {
     System.out.println("A : " + a);
   }
-  //@Identifier (print)
+
   void print(int overloading) {
     this.a = overloading;
     System.out.println("A : " + overloading);
