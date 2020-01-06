@@ -24,6 +24,19 @@ public class StringClass {
 
     // string 문자열 합치기
     System.out.println("* concat : " + str1.concat(str2));
+    
+    // replace 함수
+    System.out.println("* replace : " + str1.replaceAll("ll", "z"));
+    System.out.println("* replace : " + str1.replace('l', 'p'));
+    System.out.println("* replace : " + str1.replace("ll", "o"));
+    
+    // substring 함수
+    System.out.println("* substring : " + str1.substring(3));
+    System.out.println("* substring : " + str1.substring(1,3));
+    
+    // toLowerd/UpperCase()함수
+    System.out.println("* toLowerCase()" + str1.toLowerCase());
+    System.out.println("* toLowerCase()" + str1.toUpperCase());
 
     System.out.println();
     // string 값을 바이트 단위로 뽑아내기(UTF-8)
@@ -50,5 +63,10 @@ public class StringClass {
     System.out.println("* boolean to string : " + tmp2);
     System.out.println("* concat : " + tmp1.concat(tmp2));
 
+    // StringBuffer 등장
+    StringBuffer sb = new StringBuffer("StringBuffer");
+    System.out.println(sb);
+    System.out.println(sb.replace(6, sb.length(), ""));
+    System.out.println(sb);
   }
 }
