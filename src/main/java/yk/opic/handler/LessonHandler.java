@@ -3,24 +3,24 @@ package yk.opic.handler;
 import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.domain.Lesson;
+import yk.opic.util.ArrayList;
 
 public class LessonHandler {
-  ArrayList lessonList;
+  ArrayList<Lesson> lessonList;
   Scanner input;
 
   public LessonHandler(Scanner input) {
     this.input = input;
-    lessonList = new ArrayList();
+    lessonList = new ArrayList<>();
   }
 
   public LessonHandler(Scanner input, int capacity) {
     this.input = input;
-    lessonList = new ArrayList(capacity);
+    lessonList = new ArrayList<>(capacity);
   }
 
   public void addLesson() {
-    Object object = new Lesson();
-    Lesson les = (Lesson)object;
+    Lesson les = new Lesson();
     System.out.print("번호? ");
     les.setNo(input.nextInt());
     input.nextLine();
@@ -43,9 +43,9 @@ public class LessonHandler {
   }
 
   public void listLesson() {
-    Object[] object = lessonList.toArray();
-    for(Object lsn : object) {
-      Lesson ls = (Lesson)lsn;
+    Lesson[] lesson = new Lesson[this.lessonList.size()];
+    lessonList.toArray(lesson);
+    for(Lesson ls : lesson) {
       System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
           ls.getNo(), ls.getTitle(), ls.getStartDate(),
           ls.getEndDate(), ls.getTotalHour());
