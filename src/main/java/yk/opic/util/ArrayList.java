@@ -6,28 +6,28 @@ import yk.opic.domain.Board;
 public class ArrayList<E> {
   static final int DEFAULT_CAPACITY = 2;  
   int size = 0;
-  Object[] list;
+  Object[] elementData;
 
   public ArrayList() {
-    list = new Object[DEFAULT_CAPACITY];
+    elementData = new Object[DEFAULT_CAPACITY];
   }
 
   public ArrayList(int capacity) {
     if(capacity < 0 || capacity > 100_000)
-      list = new Object[DEFAULT_CAPACITY];
+      elementData = new Object[DEFAULT_CAPACITY];
     else
-      list = new Object[capacity];
+      elementData = new Object[capacity];
   }
 
   ////////////////////////////////////////////////////////////////
 
   public void add(E arr) {
-    int oldCapacity = this.list.length;
+    int oldCapacity = this.elementData.length;
     int newCapacity = oldCapacity + (oldCapacity >> 1);
     if(oldCapacity == size) {
-      list = Arrays.copyOf(list, newCapacity);
+      elementData = Arrays.copyOf(elementData, newCapacity);
     }
-    this.list[this.size++] = arr;
+    this.elementData[this.size++] = arr;
     System.out.println("저장하였습니다.");
   }
 
@@ -35,23 +35,52 @@ public class ArrayList<E> {
 
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
-    if(this.list.length < this.size) {
-      return (E[])Arrays.copyOf(this.list, this.size, arr.getClass());
+    if(this.elementData.length < this.size) {
+      return (E[])Arrays.copyOf(this.elementData, this.size, arr.getClass());
     }
-    System.arraycopy(this.list, 0, arr, 0, this.size);
+    System.arraycopy(this.elementData, 0, arr, 0, this.size);
     return arr;
   }
 
   ////////////////////////////////////////////////////////////////
   
   @SuppressWarnings("unchecked")
-  public E detail(int idx) {
+  public E get(int idx) {
     if(idx >= 0 && idx < this.size) {
-      return (E) this.list[idx];
+      return (E) this.elementData[idx];
     } else return null;
   }
 
   public int size() {
     return this.size;
   }
+
+  
+  @SuppressWarnings("unchecked")
+  public E set(int idx, E arr) {
+    E oldValue = (E)this.elementData[idx];
+    if(idx < 0 && idx >= this.size) {
+      return (E) this.elementData[idx];
+    }
+    this.elementData[idx] = arr;
+    return oldValue;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public E remove(int idx) {
+    E oldValue = (E)this.elementData[idx];
+    if(idx < 0 && idx >= this.size) {
+      return (E) this.elementData[idx];
+    }
+    
+    System.arraycopy(this.elementData, idx + 1, this.elementData, idx, this.size - idx - 1);
+    this.size--;
+    return oldValue;
+  }
+  
 }
+
+
+
+
+

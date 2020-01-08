@@ -20,9 +20,12 @@ public class App {
     String command;
 
     System.out.println("===============================================");
-    System.out.println("명령어 모음 : /board/add, /board/list\n"
-        + "\t/board2/add, /board2/list\n"
-        + "\t/lesson/add, /lesson/list\n\t/member/add, /member/list");
+    System.out.print("명령어 모음 : /board/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n"
+        + "\t/lesson/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n"
+        + "\t/member/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n");
     System.out.println("===============================================");
 
     do {
@@ -39,12 +42,38 @@ public class App {
           lessonHandler.listLesson();
           break;
 
+          //새로운 기능 추가
+        case "/lesson/delete" :
+          lessonHandler.deleteLesson();
+          break;
+
+        case "/lesson/update" :
+          lessonHandler.updateLesson();
+          break;
+
+        case "/lesson/detail" :
+          lessonHandler.detailLesson();
+          break;
+
         case "/member/add" :
           memberHandler.addMember();
           break;
 
         case "/member/list" :
           memberHandler.listMember();
+          break;
+
+          // 새로운 기능 추가
+        case "/member/delete" :
+          memberHandler.deleteMember();
+          break;
+
+        case "/member/update" :
+          memberHandler.updateMember();
+          break;
+
+        case "/member/detail" :
+          memberHandler.detailMember();
           break;
 
         case "/board/add" :
@@ -55,24 +84,18 @@ public class App {
           boardHandler.listBoard();
           break;
 
-          // 새로운 구문 추가 (detail) : 추가연습
+          // 새로운 기능 추가
+        case "/board/delete" :
+          boardHandler.deleteBoard();
+          break;
+
+        case "/board/update" :
+          boardHandler.updateBoard();
+          break;
+
         case "/board/detail" :
           boardHandler.detailBoard();
           break;
-
-        case "/board2/add" :
-          boardHandler2.addBoard();
-          break;
-
-        case "/board2/list" :
-          boardHandler2.listBoard();
-          break;
-
-          // 새로운 구문 추가 (detail) : 추가연습
-        case "/board2/detail" :
-          boardHandler2.detailBoard();
-          break;
-
 
         default : 
           if(!command.equalsIgnoreCase("quit"))

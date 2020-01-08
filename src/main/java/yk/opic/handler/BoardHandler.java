@@ -3,6 +3,7 @@ package yk.opic.handler;
 import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.domain.Board;
+import yk.opic.domain.Board;
 import yk.opic.util.ArrayList;
 
 public class BoardHandler {
@@ -36,26 +37,76 @@ public class BoardHandler {
     Board[] board = new Board[this.boardList.size()];
     boardList.toArray(board);
     for(Board b : board) {
-      System.out.printf("%d, %s, %s, %d\n", 
+      System.out.printf("%1$d, %2$s, %3$tF %3$tH:%3$tM:%3$tS, %4$d\n", 
           b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }
   }
 
   public void detailBoard() {
-    System.out.print("게시물 인덱스? ");
-    int idx = input.nextInt();
+    System.out.print("인덱스 번호? ");
+    int tempIndex = input.nextInt();
     input.nextLine();
-    
-    Board board= this.boardList.detail(idx);
-    
-    if (board == null) {
-      System.out.println("게시물 번호가 유효하지 않습니다.");
-      return;
-    } else {
+
+    Board board = this.boardList.get(tempIndex);
+    if(board == null) {
+      System.out.println("해당 게시글을 찾을 수 없습니다.");
+    }
+    else {
       System.out.printf("번호 : %d\n", board.getNo());
       System.out.printf("제목 : %s\n", board.getTitle());
-      System.out.printf("등록일 : %tF\n", board.getDate());
-      System.out.printf("주회수 : %d\n", board.getViewCount());
+      System.out.printf("등록일 : %1$tF %1$tH:%1$tM:%1$tS\n", board.getDate());
+      System.out.printf("조회수 : %d\n", board.getViewCount());
     }
   }
+
+
+  public void updateBoard() {
+    System.out.print("인덱스 번호? ");
+    int tempIndex = input.nextInt();
+    input.nextLine();
+
+    Board oldValue = this.boardList.get(tempIndex);
+    if(oldValue == null) {
+      System.out.println("해당 게시글을 찾을 수 없습니다.");
+    }
+
+    Board newValue = new Board();
+    boolean changed = true;
+
+    System.out.printf("번호? %d\n", oldValue.getNo());
+    newValue.setNo(oldValue.getNo());
+
+    System.out.printf("제목? (%s) ", oldValue.getTitle());
+    String tempTitle= input.nextLine();
+    if(tempTitle.length() == 0) {
+      changed = false;
+      newValue.setTitle(oldValue.getTitle());
+    }
+    newValue.setTitle(tempTitle);
+
+    newValue.setDate(new Date(System.currentTimeMillis()));
+    newValue.setViewCount(0);
+
+    if(changed) {
+      this.boardList.set(tempIndex, newValue);
+      System.out.println("게시글을 변경했습니다.");
+    }
+    else System.out.println("게시글 변경을 취소했습니다.");
+
+  }
+
+  public void deleteBoard() {
+    System.out.print("인덱스 번호? ");
+    int tempIndex = input.nextInt();
+    input.nextLine();
+
+    Board board = this.boardList.get(tempIndex);
+    if(board == null) {
+      System.out.println("해당 게시글을 찾을 수 없습니다.");
+    }
+
+    this.boardList.remove(tempIndex);
+    System.out.println("게시글을 삭제했습니다.");
+  }
+
 }
