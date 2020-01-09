@@ -68,5 +68,49 @@ public class Lesson {
     this.dailyHour = dailyHour;
   }
   
-  
+  public boolean equals(Lesson value) {
+    if(value.getClass() != Lesson.class) {
+      return false;
+    }
+    
+    Lesson other = (Lesson) value;
+    
+    if(this.no != other.no) {
+      return false;
+    }
+
+    if(!this.title.equals(other.title)) {
+      return false;
+    }
+    
+    if(this.date != other.date) {
+      return false;
+    }
+    
+    if(this.viewCount != other.viewCount) {
+      return false;
+    }
+    
+    if(!this.context.equals(other.context)) {
+      return false;
+    }
+    
+    if(this.startDate != other.startDate) {
+      return false;
+    }
+
+    if(this.endDate != other.endDate) {
+      return false;
+    }
+
+    if(this.totalHour != other.totalHour) {
+      return false;
+    }
+    
+    if(this.dailyHour != other.dailyHour) {
+      return false;
+    }
+    
+    return true;
+  }
 }

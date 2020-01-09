@@ -3,19 +3,20 @@ package yk.opic;
 import yk.opic.handler.BoardHandler;
 import yk.opic.handler.LessonHandler;
 import yk.opic.handler.MemberHandler;
+import yk.opic.util.Prompt;
 
 public class App {
 
   static java.io.InputStream inputStream = System.in;
   static java.util.Scanner scanner = new java.util.Scanner(inputStream);
+  static Prompt prompt = new Prompt(scanner);
 
   static final int SIZE = 100;
 
   public static void main(String[] args) {
-    BoardHandler boardHandler = new BoardHandler(scanner);
-    BoardHandler boardHandler2 = new BoardHandler(scanner);
-    LessonHandler lessonHandler = new LessonHandler(scanner);
-    MemberHandler memberHandler = new MemberHandler(scanner);
+    BoardHandler boardHandler = new BoardHandler(prompt);
+    LessonHandler lessonHandler = new LessonHandler(prompt);
+    MemberHandler memberHandler = new MemberHandler(prompt);
 
     String command;
 

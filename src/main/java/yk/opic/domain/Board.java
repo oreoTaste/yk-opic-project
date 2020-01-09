@@ -33,5 +33,29 @@ public class Board {
     this.viewCount = viewCount;
   }
 
+  
+  public boolean equals(Board value) {
+    if(value.getClass() != Board.class) {
+      return false;
+    }
+    
+    Board other = (Board) value;
+    
+    if(this.no != other.no) {
+      return false;
+    }
 
+    if(!this.title.equals(other.title)) {
+      return false;
+    }
+    
+    //if(this.date != other.date) {
+    //  return false;
+    //}
+    
+    if(this.viewCount != other.viewCount) {
+      return false;
+    }
+    return true;
+  }
 }
