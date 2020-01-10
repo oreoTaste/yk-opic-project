@@ -65,6 +65,8 @@ public class StringClass {
 
     // StringBuffer 등장
     StringBuffer sb = new StringBuffer("StringBuffer");
+    System.out.println("===============");
+    System.out.println(sb.toString().equals(sb.toString()));
     System.out.println(sb);
     System.out.println(sb.replace(6, sb.length(), ""));
     System.out.println(sb);
