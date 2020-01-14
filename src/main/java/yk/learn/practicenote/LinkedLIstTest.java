@@ -1,27 +1,28 @@
 package yk.learn.practicenote;
 
-public class LinkedLIstTest {
+public class LinkedListTest {
   public static void main(String[] args) {
-    LinkedList<String> list = new LinkedList<>();
+    LinkedList list = new LinkedList();
+    list.add("aaaa");
+    list.add("bbbb");
+    list.add("cccc");
+    list.add("dddd");
+    list.add("eeee");
     
-    list.add("0aaaa");
-    list.add("1aaaa");
-    list.add("2aaaa");
-    list.add("3aaaa");
     
-    list.add(0,"first");
-    list.remove(1);
-    list.set(2, "second line");
+    list.add(1,"wow");
+    list.remove(3);
+    System.out.println(list.get(0));
+    list.set(0, "setted");
+    
     print(list);
-    
   }
   
-  static void print(LinkedList<String> list) {
+  public static void print(LinkedList list) {
+    String[] arr = (String[]) list.toArray(new String[0]);
     
-    String[] arr = new String[list.size()];
-    list.toArray(arr);
-    for(String value : arr) {
-      System.out.println(value);
+    for(String a : arr) {
+      System.out.println(a);
     }
   }
 }

@@ -3,8 +3,9 @@ package yk.learn.practicenote;
 import java.lang.reflect.Array;
 
 public class LinkedList<E> {
-  Node<E> first;
-  Node<E> last;
+  
+  private Node<E> first;
+  private Node<E> last;
   private int size;
   
   public void add(E value) {
@@ -13,7 +14,8 @@ public class LinkedList<E> {
     
     if(first == null) {
       last = first = newNode;
-    } else {
+    }
+    else {
       last.next = newNode;
       last = newNode;
     }
@@ -21,50 +23,41 @@ public class LinkedList<E> {
   }
   
   public E get(int index) {
-    if(index < 0 || index >= size) {
+    if(index < 0 || index >= this.size) {
       return null;
     }
     
     Node<E> cursor = first;
     for(int i = 0 ; i < index ; i++) {
       cursor = cursor.next;
-    }
-    return cursor.value;
-  }
-
-  public void add(int index, E value) {
-    if(index < 0 || index >= size) {
-      return;
-    }
-    
-    Node<E> newNode = new Node<>();
-    newNode.value = value;
-
-    Node<E> cursor = first;
-    for(int i = 0 ; i < index-1 ; i++) {
-      cursor = cursor.next;
-    }
-    
-    if(index == 0) {
-      newNode.next = first;
-      first = newNode;
-    }
-    else {
-      newNode.next = cursor.next.next;
-      cursor.next = newNode;
-    }
-    size++;
+    } return cursor.value;
   }
   
-  public E remove(int index) {
-    if(index < 0 || index >= size) {
+  public E set(int index, E value) {
+    if(index < 0 || index >= this.size) {
       return null;
     }
+    
+    Node<E> cursor = first;
+    for(int i = 0 ; i < index ; i++) {
+      cursor = cursor.next;
+    } 
+    E oldValue = cursor.value;
+    cursor.value = value;
+    return oldValue;
+  }
+  
+  public Object remove(int index) {
+    if(index < 0 || index >= this.size) {
+      return null;
+    }
+    
     Node<E> cursor = first;
     for(int i = 0 ; i < index-1 ; i++) {
       cursor = cursor.next;
-    }
-    Node<E> deletedNode = null;
+    } 
+    Node<E> deletedNode;
+    
     if(index == 0) {
       deletedNode = first;
       first = first.next;
@@ -75,54 +68,48 @@ public class LinkedList<E> {
     }
     size--;
     deletedNode.next = null;
-    return deletedNode.value;
+    return deletedNode;
   }
   
-  public E set(int index, E value) {
-    if(index < 0 || index >= size) {
-      return null;
-    }
-    
-    Node<E> cursor = first;
-    for(int i = 0 ; i < index ; i++) {
-      cursor = cursor.next;
-    }
-    E deletedValue = cursor.value;
-    cursor.value = value;
-    
-    return deletedValue;
-  }
   
-  public Object[] toArray() {
-    Object[] arr = new Object[size];
+  public void add(int index, E value) {
+    if(index < 0 || index >= this.size) {
+      return;
+    }
+    
+    Node<E> newNode = new Node<>();
+    newNode.value = value;
     
     Node<E> cursor = first;
-    for(int i = 0 ; i < size ; i++) {
-      arr[i] = cursor.value;
+    for(int i = 0 ; i < index-1 ; i++) {
       cursor = cursor.next;
-    }
-    return arr;
-  }
-
+    } 
+    
+    newNode.next = cursor.next;
+    cursor.next = newNode;
+    
+    size++;
+    return;
+  }  
+  
   @SuppressWarnings("unchecked")
-  public E[] toArray(E[] arr) {
-    if(arr.length < this.size) {
-      arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), size);
+  public E[] toArray(E[] obj) {
+    if(obj.length < this.size()) {
+      obj = (E[])Array.newInstance(obj.getClass().getComponentType(), this.size);
     }
-    
     Node<E> cursor = first;
-    for(int i = 0 ; i < size ; i++) {
-      arr[i] = cursor.value;
+    for(int i = 0 ; i < this.size(); i++) {
+      obj[i] = cursor.value;
       cursor = cursor.next;
     }
-    return arr;
+    return obj;
   }
   
   public int size() {
-    return size;
+    return this.size;
   }
   
-  static class Node<T> {
+  class Node<T> {
     T value;
     Node<T> next;
   }

@@ -6,22 +6,19 @@ import yk.opic.domain.Lesson;
 import yk.opic.domain.Member;
 import yk.opic.domain.Member;
 import yk.opic.util.ArrayList;
+import yk.opic.util.LinkedList;
 import yk.opic.util.Prompt;
 
 public class MemberHandler {
-  ArrayList<Member> memberList;
+  LinkedList<Member> memberList;
   public Scanner input;
   Prompt prompt;
 
   public MemberHandler(Prompt prompt) {
     this.prompt = prompt;
-    memberList = new ArrayList<>();
+    memberList = new LinkedList<>();
   }
 
-  public MemberHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    memberList = new ArrayList<>(capacity);
-  }
 
   ////////////////////////////////////////////////////////////////
 

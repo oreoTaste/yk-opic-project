@@ -8,6 +8,10 @@ public class LinkedList<E> {
   Node<E> last;
   int size;
 
+  public LinkedList() {
+    
+  }
+  
   public void add(E e) {
     Node<E> newNode = new Node<>();
     newNode.value = e;

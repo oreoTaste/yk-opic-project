@@ -3,19 +3,15 @@ package yk.opic.handler;
 import yk.opic.util.Prompt;
 import yk.opic.domain.Lesson;
 import yk.opic.util.ArrayList;
+import yk.opic.util.LinkedList;
 
 public class LessonHandler {
-  ArrayList<Lesson> lessonList;
+  LinkedList<Lesson> lessonList;
   Prompt prompt;
 
   public LessonHandler(Prompt prompt) {
     this.prompt = prompt;
-    lessonList = new ArrayList<>();
-  }
-
-  public LessonHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    lessonList = new ArrayList<>(capacity);
+    lessonList = new LinkedList<>();
   }
 
 
