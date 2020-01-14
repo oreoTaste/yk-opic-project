@@ -1,49 +1,48 @@
-package yk.learn.practicenote;
+package yk.opic.util;
 
 import java.util.Arrays;
 
 public class Stack<E> implements Cloneable {
+  private final int DEFAULT_CAPACITY;
   private Object[] elementData;
   private int size;
-  private final int DEFAULT_CAPACITY;
-  
+
   public Stack() {
-    DEFAULT_CAPACITY = 10;
+    DEFAULT_CAPACITY = 100;
     elementData = new Object[DEFAULT_CAPACITY];
     size = 0;
   }
-  
+
   public void push(Object value) {
-    if(this.size == elementData.length) {
+    if(this.elementData.length == size)
       grow();
-    }
     elementData[size++] = value;
   }
-  
+
   private void grow() {
-    elementData = Arrays.copyOf(elementData, newCapacity());
+    elementData = Arrays.copyOf(elementData, newCapaicity());
   }
 
-  private int newCapacity() {
+  private int newCapaicity() {
     int oldCapacity = this.elementData.length;
     return oldCapacity + (oldCapacity>>1);
   }
 
   public Object pop() {
-    if(empty())
+    if(empty()) {
       return null;
-    
-    Object popValue = elementData[--size];
+    }
+    Object popData = elementData[--size];
     elementData[size] = null;
-    return popValue;
+    return popData;
+  }
+
+  public boolean empty() {
+    return this.size == 0;
   }
 
   public Object peek() {
     return this.elementData[size-1];
-  }
-  
-  public boolean empty() {
-    return this.size == 0;
   }
   
   public int size() {
@@ -57,21 +56,20 @@ public class Stack<E> implements Cloneable {
       Stack<E> temp = (Stack<E>) super.clone();
       
       Object[] arr = new Object[this.size];
-      for (int i = 0; i < this.size; i++) {
-        arr[i] = this.elementData[i];
-      }
-      temp.elementData = arr;
-      return temp;
       
-      // 이렇게는 안되는걸까?
-      /*
-      temp.elementData = this.elementData.clone();
+      for(int i = 0 ; i < this.size ; i++) {
+        arr[i] = this.elementData[i];
+        
+      } temp.elementData = arr;
+      
       return temp;
-      */
       
     } catch (CloneNotSupportedException e) {
       e.printStackTrace();
     }
     return null;
   }
+
+
+
 }

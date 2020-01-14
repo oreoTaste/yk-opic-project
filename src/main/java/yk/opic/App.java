@@ -4,6 +4,7 @@ import yk.opic.handler.BoardHandler;
 import yk.opic.handler.LessonHandler;
 import yk.opic.handler.MemberHandler;
 import yk.opic.util.Prompt;
+import yk.opic.util.Stack;
 
 public class App {
 
@@ -12,6 +13,7 @@ public class App {
   static Prompt prompt = new Prompt(scanner);
 
   static final int SIZE = 100;
+  static Stack<String> commandStack = new Stack<>();
 
   public static void main(String[] args) {
     BoardHandler boardHandler = new BoardHandler(prompt);
@@ -34,6 +36,11 @@ public class App {
       System.out.print("명령> ");
       command = scanner.nextLine();
 
+      if(command.length() == 0)
+        continue;
+      commandStack.push(command);
+      
+      
       switch (command) {
         case "/lesson/add" :
           lessonHandler.addLesson();
@@ -98,6 +105,11 @@ public class App {
           boardHandler.detailBoard();
           break;
 
+        case "history" :
+          printCommandHistory();
+          break;
+
+          
         default : 
           if(!command.equalsIgnoreCase("quit"))
             System.out.println("실행할 수 없는 명령입니다.");
@@ -107,6 +119,24 @@ public class App {
     } while (!command.equalsIgnoreCase("quit"));
     scanner.close();
     System.out.println("...안녕!");
+  }
+  
+  private static void printCommandHistory() {
+    Stack<String> historyStack = commandStack.clone();
+    int count = 0;
+    while (!historyStack.empty()) {
+      System.out.println(historyStack.pop());
+      count++;
+      
+      if ((count % 5) == 0) {
+        System.out.print(":");
+        String str = scanner.nextLine();
+        if (str.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+    
   }
 
 }
