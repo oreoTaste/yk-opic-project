@@ -1,6 +1,7 @@
 package yk.learn.practicenote;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class LinkedList<E> {
   
@@ -89,7 +90,6 @@ public class LinkedList<E> {
     cursor.next = newNode;
     
     size++;
-    return;
   }  
   
   @SuppressWarnings("unchecked")
