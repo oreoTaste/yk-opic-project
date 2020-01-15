@@ -1,8 +1,13 @@
 package yk.opic;
 
+import yk.opic.domain.Board;
+import yk.opic.domain.Lesson;
+import yk.opic.domain.Member;
 import yk.opic.handler.BoardHandler;
 import yk.opic.handler.LessonHandler;
 import yk.opic.handler.MemberHandler;
+import yk.opic.util.ArrayList;
+import yk.opic.util.LinkedList;
 import yk.opic.util.Prompt;
 import yk.opic.util.Stack;
 import yk.opic.util.Queue;
@@ -18,9 +23,14 @@ public class App {
   static Queue<String> commandQueue = new Queue<>();
 
   public static void main(String[] args) {
-    BoardHandler boardHandler = new BoardHandler(prompt);
-    LessonHandler lessonHandler = new LessonHandler(prompt);
-    MemberHandler memberHandler = new MemberHandler(prompt);
+    LinkedList<Board> boardList = new LinkedList<>();
+    BoardHandler boardHandler = new BoardHandler(prompt, boardList);
+
+    ArrayList<Lesson> lessonList = new ArrayList<>();
+    LessonHandler lessonHandler = new LessonHandler(prompt, lessonList);
+
+    LinkedList<Member> memberList = new LinkedList<>();
+    MemberHandler memberHandler = new MemberHandler(prompt, memberList);
 
     String command;
 

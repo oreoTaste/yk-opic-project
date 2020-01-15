@@ -1,8 +1,9 @@
 package yk.opic.util;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
-public class LinkedList<E> {
+public class LinkedList<E> extends AbstractList<E>{
 
   Node<E> first;
   Node<E> last;
@@ -35,9 +36,9 @@ public class LinkedList<E> {
     } return cursor.value;
   }
 
-  public E add(int index, E obj) {
+  public void add(int index, E obj) {
     if(index < 0 || index >= size) {
-      return null;
+      return;
     }
     Node<E> newNode = new Node<>();
     newNode.value = obj;
@@ -56,7 +57,6 @@ public class LinkedList<E> {
       cursor.next = newNode;
     }
     size++;
-    return newNode.next.value;
   }
 
   public E remove(int index) {
@@ -98,6 +98,18 @@ public class LinkedList<E> {
   }
 
   @SuppressWarnings("unchecked")
+  @Override
+  public E[] toArray() {
+    Object[] arr = new Object[this.size];
+    Node<E> cursor = first;
+    for(int i = 0 ; i <this.size ; i++) {
+      arr[i] = cursor.value;
+      cursor = cursor.next;
+    }
+    return (E[]) arr;
+  }
+  
+  @SuppressWarnings("unchecked")
   public E[] toArray(E[] e) {
     if(e.length < this.size) {
       e = (E[])Array.newInstance(e.getClass().getComponentType(), this.size);
@@ -117,4 +129,5 @@ public class LinkedList<E> {
     T value;
     Node<T> next;
   }
+
 }

@@ -8,16 +8,17 @@ import yk.opic.domain.Board;
 import yk.opic.domain.Board;
 import yk.opic.util.ArrayList;
 import yk.opic.util.LinkedList;
+import yk.opic.util.List;
 import yk.opic.util.Prompt;
 
 public class BoardHandler {
-  LinkedList<Board> boardList;
+  List<Board> boardList;
   public Scanner input;
   Prompt prompt;
 
-  public BoardHandler(Prompt prompt) {
+  public BoardHandler(Prompt prompt, List<Board> list) {
     this.prompt = prompt;
-    boardList = new LinkedList<>();
+    boardList = list;
   }
 
 

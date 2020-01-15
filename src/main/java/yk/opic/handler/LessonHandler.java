@@ -4,14 +4,15 @@ import yk.opic.util.Prompt;
 import yk.opic.domain.Lesson;
 import yk.opic.util.ArrayList;
 import yk.opic.util.LinkedList;
+import yk.opic.util.List;
 
 public class LessonHandler {
-  LinkedList<Lesson> lessonList;
+  List<Lesson> lessonList;
   Prompt prompt;
 
-  public LessonHandler(Prompt prompt) {
+  public LessonHandler(Prompt prompt, List<Lesson> list) {
     this.prompt = prompt;
-    lessonList = new LinkedList<>();
+    this.lessonList = list;
   }
 
 

@@ -7,16 +7,17 @@ import yk.opic.domain.Member;
 import yk.opic.domain.Member;
 import yk.opic.util.ArrayList;
 import yk.opic.util.LinkedList;
+import yk.opic.util.List;
 import yk.opic.util.Prompt;
 
 public class MemberHandler {
-  LinkedList<Member> memberList;
+  List<Member> memberList;
   public Scanner input;
   Prompt prompt;
 
-  public MemberHandler(Prompt prompt) {
+  public MemberHandler(Prompt prompt, List<Member> list) {
     this.prompt = prompt;
-    memberList = new LinkedList<>();
+    memberList = list;
   }
 
 
