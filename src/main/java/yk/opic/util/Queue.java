@@ -10,10 +10,9 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return this.remove(0);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public Queue<E> clone() {
-      Queue<E> temp = new Queue<E>();;
+      Queue<E> temp = new Queue<E>();
 
       for(int i = 0 ; i < this.size() ; i++) {
         temp.offer(this.get(i));
@@ -21,4 +20,8 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
       return temp;
   }
 
+  public QueueIterator<E> iterator() {
+    return new QueueIterator<E>(this);
+  }
+  
 }

@@ -7,6 +7,7 @@ import yk.opic.handler.BoardHandler;
 import yk.opic.handler.LessonHandler;
 import yk.opic.handler.MemberHandler;
 import yk.opic.util.ArrayList;
+import yk.opic.util.Iterator;
 import yk.opic.util.LinkedList;
 import yk.opic.util.Prompt;
 import yk.opic.util.Stack;
@@ -119,11 +120,11 @@ public class App {
           break;
 
         case "history" :
-          printCommandHistory();
+          printCommandHistory(commandStack.iterator());
           break;
 
         case "history2" :
-          printCommandHistory2();
+          printCommandHistory(commandQueue.iterator());
           break;
 
 
@@ -139,6 +140,8 @@ public class App {
   }
 
 
+  /*
+  @SuppressWarnings("unused")
   private static void printCommandHistory2() {
     Queue<String> historyQueue = commandQueue.clone();
     int count = 0;
@@ -155,16 +158,17 @@ public class App {
       }
     }
   }
-
-  private static void printCommandHistory() {
-    Stack<String> historyStack = commandStack.clone();
+*/
+  
+  
+  private static void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
-    while (!historyStack.empty()) {
-      System.out.println(historyStack.pop());
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
       count++;
 
       if ((count % 5) == 0) {
-        System.out.print(":");
+        System.out.print(":(중지하고 싶으면 q)");
         String str = scanner.nextLine();
         if (str.equalsIgnoreCase("q")) {
           break;
