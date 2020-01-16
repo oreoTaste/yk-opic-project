@@ -1,27 +1,29 @@
 package yk.opic;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 import yk.opic.domain.Board;
 import yk.opic.domain.Lesson;
 import yk.opic.domain.Member;
 import yk.opic.handler.BoardHandler;
 import yk.opic.handler.LessonHandler;
 import yk.opic.handler.MemberHandler;
-import yk.opic.util.ArrayList;
-import yk.opic.util.Iterator;
-import yk.opic.util.LinkedList;
 import yk.opic.util.Prompt;
-import yk.opic.util.Stack;
-import yk.opic.util.Queue;
 
 public class App {
-
-  static java.io.InputStream inputStream = System.in;
-  static java.util.Scanner scanner = new java.util.Scanner(inputStream);
+  static Scanner scanner = new Scanner(System.in);
   static Prompt prompt = new Prompt(scanner);
 
-  static final int SIZE = 100;
-  static Stack<String> commandStack = new Stack<>();
-  static Queue<String> commandQueue = new Queue<>();
+  // java.util.Stack에서 제공하는 Iterator 객체는 FIFO 방식으로 값을 꺼내준다.
+  // LIFO 방식으로 꺼내는 Iterator가 필요하다면
+  // java.util.Deque 구현체를 사용하라.
+  static Queue<String> commandQueue = new LinkedList<>();
+  static Deque<String> commandStack = new ArrayDeque<>();
 
   public static void main(String[] args) {
     LinkedList<Board> boardList = new LinkedList<>();
@@ -34,15 +36,7 @@ public class App {
     MemberHandler memberHandler = new MemberHandler(prompt, memberList);
 
     String command;
-
-    System.out.println("===============================================");
-    System.out.print("명령어 모음 : /board/add, /../list, /../delete\n"
-        + "\t\t     /../update, /../detail\n"
-        + "\t/lesson/add, /../list, /../delete\n"
-        + "\t\t     /../update, /../detail\n"
-        + "\t/member/add, /../list, /../delete\n"
-        + "\t\t     /../update, /../detail\n");
-    System.out.println("===============================================");
+    firstInstruction();
 
     do {
       System.out.println();
@@ -138,6 +132,17 @@ public class App {
     System.out.println("...안녕!");
   }
   
+  private static void firstInstruction() {
+    System.out.println("===============================================");
+    System.out.print("명령어 모음 : /board/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n"
+        + "\t/lesson/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n"
+        + "\t/member/add, /../list, /../delete\n"
+        + "\t\t     /../update, /../detail\n");
+    System.out.println("===============================================");
+  }
+
   private static void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
     while (iterator.hasNext()) {

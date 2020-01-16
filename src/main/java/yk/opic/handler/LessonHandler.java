@@ -1,10 +1,8 @@
 package yk.opic.handler;
 
-import yk.opic.util.Prompt;
+import java.util.List;
 import yk.opic.domain.Lesson;
-import yk.opic.util.ArrayList;
-import yk.opic.util.LinkedList;
-import yk.opic.util.List;
+import yk.opic.util.Prompt;
 
 public class LessonHandler {
   List<Lesson> lessonList;

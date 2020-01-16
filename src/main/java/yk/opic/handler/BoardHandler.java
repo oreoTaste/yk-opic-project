@@ -1,14 +1,9 @@
 package yk.opic.handler;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Scanner;
 import yk.opic.domain.Board;
-import yk.opic.domain.Board;
-import yk.opic.domain.Board;
-import yk.opic.domain.Board;
-import yk.opic.util.ArrayList;
-import yk.opic.util.LinkedList;
-import yk.opic.util.List;
 import yk.opic.util.Prompt;
 
 public class BoardHandler {
