@@ -17,5 +17,7 @@ public interface List<E> {
   E[] toArray();
   
   E[] toArray(E[] arr);
+
+  Iterator<E> iterator();
   
 }

@@ -120,14 +120,13 @@ public class App {
           break;
 
         case "history" :
-          printCommandHistory(commandStack.iterator());
-          break;
-
-        case "history2" :
           printCommandHistory(commandQueue.iterator());
           break;
 
-
+        case "history2" :
+          printCommandHistory(commandStack.iterator());
+          break;
+          
         default : 
           if(!command.equalsIgnoreCase("quit"))
             System.out.println("실행할 수 없는 명령입니다.");
@@ -138,28 +137,6 @@ public class App {
     scanner.close();
     System.out.println("...안녕!");
   }
-
-
-  /*
-  @SuppressWarnings("unused")
-  private static void printCommandHistory2() {
-    Queue<String> historyQueue = commandQueue.clone();
-    int count = 0;
-
-    while (historyQueue.size() > 0) {
-      System.out.println(historyQueue.poll());
-
-      if ((++count % 5) == 0) {
-        System.out.print(":");
-        String str = scanner.nextLine();
-        if (str.equalsIgnoreCase("q")) {
-          break;
-        }
-      }
-    }
-  }
-*/
-  
   
   private static void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
