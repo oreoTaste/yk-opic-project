@@ -68,28 +68,26 @@ public class Stack<E> implements Cloneable {
   }
 
   public Iterator<E> iterator() {
-    return this.new StackIterator<E>();
+    // 로컬클래스로 유지보수 편의
+    return new Iterator<E>(){
+      
+      Stack<E> stack;
+      
+      { //익명클래스는 이름이 없어서, 생성자를 생성할 수 없다.
+        this.stack = (Stack<E>) Stack.this.clone();
+      }
+
+      @Override
+      public boolean hasNext() {
+        return !stack.empty();
+      }
+
+      @Override
+      public E next() {
+        return stack.pop();
+      }
+    };
   }
 
-  // 중첩클래스로 유지보수 편의
-  public class StackIterator<T> implements Iterator<T> {
-    
-    Stack<T> stack;
-    
-    @SuppressWarnings("unchecked")
-    public StackIterator() {
-      this.stack = (Stack<T>) Stack.this.clone();
-    }
-
-    @Override
-    public boolean hasNext() {
-      return !stack.empty();
-    }
-
-    @Override
-    public T next() {
-      return stack.pop();
-    }
-  }
   
 }

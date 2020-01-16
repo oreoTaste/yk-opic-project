@@ -20,29 +20,17 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
       return temp;
   }
 
-  public QueueIterator<E> iterator() {
-    return this.new QueueIterator<E>(this);
-  }
-  
-  class QueueIterator<T> implements Iterator<T> {
-    Queue<T> queue;
+  public Iterator<E> iterator() {
     
-    
-    @SuppressWarnings("unchecked")
-    public QueueIterator(Queue<T> queue) {
-      this.queue = (Queue<T>) Queue.this.clone();
-    }
-    
-    @Override
-    public boolean hasNext() {
-      return queue.size() > 0;
-    }
+    return new Iterator<E>() {
+      Queue<E> queue = (Queue<E>) Queue.this.clone();
+      
+      @Override
+      public boolean hasNext() {return queue.size() > 0;}
 
-    @Override
-    public T next() {
-      return queue.poll();
-    }
+      @Override
+      public E next() {return queue.poll();}
+    };
     
   }
-  
 }
