@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -87,27 +86,24 @@ public class App {
       commandStack.push(command);
       commandQueue.offer(command);
 
-      if (command.length() == 0) {
+      if (command.length() == 0)
         continue;
-      }
       if (command.equalsIgnoreCase("quit")) {
         saveLessonData();
         saveMemberData();
         saveBoardData();
         System.out.println("...안녕!");
         break;
-      } else if (command.equals("history")) {
+      } else if (command.equals("history"))
         printCommandHistory(commandQueue.iterator());
-      } else if (command.equals("history2")) {
+      else if (command.equals("history2"))
         printCommandHistory(commandStack.iterator());
-      }
 
       Command commandHandler = hashmap.get(command);
-      if (commandHandler != null) {
+      if (commandHandler != null)
         commandHandler.execute();
-      } else {
+      else
         System.out.println("실행할 수 없는 명령입니다.");
-      }
     }
     scanner.close();
   }
@@ -130,9 +126,8 @@ public class App {
       if (count % 5 == 0) {
         System.out.print(":(중지하고 싶으면 q)");
         String str = scanner.nextLine();
-        if (str.equalsIgnoreCase("q")) {
+        if (str.equalsIgnoreCase("q"))
           break;
-        }
       }
     }
   }
@@ -148,26 +143,13 @@ public class App {
       in = new FileReader(file);
       scanner = new Scanner(in);
 
-      while (true) {
+      while (true)
         try {
-          String line = scanner.nextLine();
-          String[] data = line.split(",");
-
-          Lesson lesson = new Lesson();
-          lesson.setNo(Integer.parseInt(data[0]));
-          lesson.setTitle(data[1]);
-          lesson.setContext(data[2]);
-          lesson.setStartDate(Date.valueOf(data[3]));
-          lesson.setEndDate(Date.valueOf(data[4]));
-          lesson.setTotalHour(Integer.parseInt(data[5]));
-          lesson.setDailyHour(Integer.parseInt(data[6]));
-
-          lessonList.add(lesson);
+          lessonList.add(Lesson.valueOf(scanner.nextLine().split(",")));
           count++;
         } catch (NumberFormatException | NoSuchElementException e) {
           break;
         }
-      }
       System.out.printf("총 %d개 수업정보를 로딩하였습니다.\n", count);
 
     } catch (FileNotFoundException e) {
@@ -190,11 +172,7 @@ public class App {
       int count = 0;
 
       for (Lesson lesson : lessonList) {
-        String line = String.format("%d,%s,%s,%s,%s,%d,%d\n", lesson.getNo(), lesson.getTitle(),
-            lesson.getContext(), lesson.getStartDate(), lesson.getEndDate(), lesson.getTotalHour(),
-            lesson.getDailyHour());
-
-        out.write(line);
+        out.write(lesson.toCsvString());
         count++;
       }
       System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", count);
@@ -219,26 +197,13 @@ public class App {
       in = new FileReader(file);
       scanner = new Scanner(in);
 
-      while (true) {
+      while (true)
         try {
-          String line = scanner.nextLine();
-          String[] data = line.split(",");
-
-          Member member = new Member();
-          member.setNo(Integer.parseInt(data[0]));
-          member.setName(data[1]);
-          member.setEmail(data[2]);
-          member.setPassword(data[3]);
-          member.setPhoto(data[4]);
-          member.setTel(data[5]);
-          member.setRegisteredDate(Date.valueOf(data[6]));
-
-          memberList.add(member);
+          memberList.add(Member.valueOf(scanner.nextLine().split(",")));
           count++;
         } catch (NumberFormatException | NoSuchElementException e) {
           break;
         }
-      }
       System.out.printf("총 %d개 멤버정보를 로딩하였습니다.\n", count);
 
     } catch (FileNotFoundException e) {
@@ -261,14 +226,10 @@ public class App {
       int count = 0;
 
       for (Member member : memberList) {
-        String line = String.format("%d,%s,%s,%s,%s,%s,%s\n", member.getNo(), member.getName(),
-            member.getEmail(), member.getPassword(), member.getPhoto(), member.getTel(),
-            member.getRegisteredDate());
-
-        out.write(line);
+        out.write(member.toCsvString());
         count++;
       }
-      System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", count);
+      System.out.printf("총 %d개 멤버 정보를 저장하였습니다.\n", count);
 
     } catch (IOException e) {
       System.out.println("파일 저장 오류 : \n" + e.getMessage());
@@ -290,24 +251,14 @@ public class App {
       scanner = new Scanner(in);
       int count = 0;
 
-      while (true) {
+      while (true)
         try {
-          String line = scanner.nextLine();
-          String[] data = line.split(",");
-
-          Board board = new Board();
-          board.setNo(Integer.parseInt(data[0]));
-          board.setTitle(data[0]);
-          board.setDate(Date.valueOf(data[0]));
-          board.setViewCount(Integer.valueOf(data[0]));
-
-          boardList.add(board);
+          boardList.add(Board.valueOf(scanner.nextLine().split(",")));
           count++;
         } catch (Exception e) {
           break;
         }
-      }
-      System.out.printf("총 %d개 멤버정보를 로딩하였습니다.\n", count);
+      System.out.printf("총 %d개 게시판 정보를 로딩하였습니다.\n", count);
 
     } catch (FileNotFoundException e) {
       System.out.println("파일 로딩 오류 : " + e.getMessage());
@@ -329,10 +280,7 @@ public class App {
       int count = 0;
 
       for (Board board : boardList) {
-        String line = String.format("%d,%s,%s,%d\n", board.getNo(), board.getTitle(),
-            board.getDate(), board.getViewCount());
-
-        out.write(line);
+        out.write(board.toCsvString());
         count++;
       }
       System.out.printf("총 %d개 게시판 정보를 저장하였습니다.\n", count);
