@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 
 public class FileIOTest {
   public static void main(String[] args) throws Exception {
+
     File file = new File("src/main/java/yk/learn/practicenote/test.txt");
     File dir = new File(file.getParent());
 
@@ -19,8 +20,7 @@ public class FileIOTest {
       System.out.println("파일 삭제 완료");
     }
 
-
-    System.out.println("============================");
+    System.out.println("===1=========================");
     // 파일 이름 받기(file.list()) : 밑에가 더 유용함.
     File file2 = new File(".");
 
@@ -28,33 +28,30 @@ public class FileIOTest {
 
       @Override
       public boolean accept(File dir, String name) {
-        if (name.endsWith(".java"))
+        if (name.contains("a")) {
           return true;
-        else return false;
+        } else {
+          return false;
+        }
       }
     });
     for(String name : names1) {
       System.out.println(name);
     }
-    
-    System.out.println("============================");
+
+    System.out.println("==2==========================");
     // 파일 이름 받기(file.listFiles())
     File[] names2 = file2.listFiles(new FileFilter() {
-
       @Override
       public boolean accept(File pathname) {
-        if(pathname.getName().endsWith("/java") && pathname.isFile())
+        if(pathname.getName().contains("a") && pathname.isFile()) {
           return true;
+        }
         return false;
       }
     });
-    
-
-
-    //파일을 통째로 받기(file.listFiles())
-    File[] file3 = file2.listFiles();
-    for(File f : file3) {
-      System.out.printf("%20s, %15s, %10s\n", f.getName(),f.isDirectory(), f.length());
+    for(File name : names2) {
+      System.out.printf("%20s %10s byte\n",name.getName(), name.length());
     }
 
 

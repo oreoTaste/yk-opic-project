@@ -20,33 +20,31 @@ public class FileDiagram {
 
     File dir = new File(".");
     System.out.println(dir.getCanonicalPath());
-    printList(dir, 1);
+    printList(dir, 0);
   }
 
   static void printList(File dir, int lvl) {
-    
     File[] files = dir.listFiles();
     for(File file : files) {
-      
+
       printIndent(lvl);
 
       if(file.isDirectory() && !file.isHidden()) {
         System.out.printf("%s/\n",file.getName());
         printList(file, lvl+1);
       }
-      else {
+      else if(file.isFile() && !file.isHidden()){
         System.out.print("ㄴㅡ ");
         System.out.printf("%s\n", file.getName());
       }
     }
   }
-  
+
   static void printIndent (int level) {
     for(int i = 0 ; i < level; i++) {
       System.out.print("  ");
     }
   }
-
 }
 
 
