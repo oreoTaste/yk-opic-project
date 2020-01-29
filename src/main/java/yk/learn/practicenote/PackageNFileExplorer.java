@@ -17,29 +17,27 @@ public class PackageNFileExplorer {
   static void printList(File dir, String packageName) throws IOException {
 
     File[] files = dir.listFiles( pathname -> {
-      if(pathname.isHidden()) {
+      if(pathname.isHidden())
         return false;
-      }
-      if(pathname.getName().contains("$")) {
+      if(pathname.getName().contains("$"))
         return false;
-      }
       if(pathname.isDirectory() ||
-          pathname.isFile() && pathname.getName().endsWith(".class")) {
+          pathname.isFile() && pathname.getName().endsWith(".class"))
         return true;
-      } else {
-        return false;
-      }});
-
+      else
+        return false;});
+      
     for(File file : files) {
-
       if(file.isDirectory()) {
         printList(file, packageName + file.getName() + ".");
-      } else {
+      }
+      else {
         System.out.println(packageName + file.getName().replace(".class", ""));
       }
-    }
-  }
+
+    }}
 }
+
 
 
 
