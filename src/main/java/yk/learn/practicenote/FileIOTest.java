@@ -26,29 +26,32 @@ public class FileIOTest {
     for(int i = 0 ; i < count10 ; i++) {
       System.out.printf("%x ", b11[i]);
     } System.out.println();
+    out10.close(); //not mandatory
+    in10.close(); //not mandatory
     
     System.out.println("======================================");
     
-    File file20 = new File("src/main/java/yk/learn/practicenote/test3.txt");
+    File file20 = new File("src/main/java/yk/learn/practicenote/test2.txt");
     BufferedOutputStream out20 = new BufferedOutputStream(new FileOutputStream(file20.getPath()));
     byte[] byte20 = new byte[] {'A', 'B', 'C', 0x30, 0x50, 0x15};
     out20.write(byte20);
     System.out.println("입력완료");
     out20.close();
 
-    BufferedInputStream in2 = new BufferedInputStream(new FileInputStream(file20.getPath()));
+    BufferedInputStream in20 = new BufferedInputStream(new FileInputStream(file20.getPath()));
     byte[] byte21 = new byte[100];
-    int count20 = in2.read(byte21);
+    int count20 = in20.read(byte21);
     System.out.println("총 개수 : " + count20);
     System.out.print("==> ");
     for(int i = 0 ; i < count20 ; i++) {
       System.out.printf("%x ", byte21[i]);
     } System.out.println();
+    in20.close(); //not mandatory
     
     
     System.out.println("======================================");
     
-    File file30 = new File("src/main/java/yk/learn/practicenote/test2.txt");
+    File file30 = new File("src/main/java/yk/learn/practicenote/test3.txt");
     FileWriter out30 = new FileWriter(file30.getPath());
     char[] cbuf = new char[] {'A', 'B', 'C', '가', '각', '간', '히'};
     out30.write(cbuf);
@@ -69,6 +72,7 @@ public class FileIOTest {
     String str = String.valueOf(buf30);
     System.out.print("==> ");
     System.out.println("String.valueOf : " + str);
+    in30.close(); //not mandatory
     
     System.out.println("======================================"); //33879
     
@@ -83,8 +87,8 @@ public class FileIOTest {
       out40.write(b);
     }
     long endTime = System.currentTimeMillis();
-    in40.close(); // not mendatory
-    out40.close(); // not mendatory
+    in40.close(); // not mandatory
+    out40.close(); // not mandatory
     System.out.println("Copying Time Spent (using FileI/OStream):" + (endTime - startTime));
     
     System.out.println("======================================"); // 100
