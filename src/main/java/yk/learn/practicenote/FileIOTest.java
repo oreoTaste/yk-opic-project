@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileIOTest {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
     File file10 = new File("src/main/java/yk/learn/practicenote/test1.txt");
     
     FileOutputStream out10 = new FileOutputStream(file10.getPath());
@@ -32,6 +32,7 @@ public class FileIOTest {
     System.out.println("======================================");
     
     File file20 = new File("src/main/java/yk/learn/practicenote/test2.txt");
+    
     BufferedOutputStream out20 = new BufferedOutputStream(new FileOutputStream(file20.getPath()));
     byte[] byte20 = new byte[] {'A', 'B', 'C', 0x30, 0x50, 0x15};
     out20.write(byte20);
@@ -52,6 +53,7 @@ public class FileIOTest {
     System.out.println("======================================");
     
     File file30 = new File("src/main/java/yk/learn/practicenote/test3.txt");
+    
     FileWriter out30 = new FileWriter(file30.getPath());
     char[] cbuf = new char[] {'A', 'B', 'C', '가', '각', '간', '히'};
     out30.write(cbuf);
@@ -75,8 +77,9 @@ public class FileIOTest {
     in30.close(); //not mandatory
     
     System.out.println("======================================"); //33879
-    
+
     File file40 = new File("docsForTest/jls11.pdf");
+
     FileInputStream in40 = new FileInputStream(file40.getPath());
     FileOutputStream out40 = new FileOutputStream(
         file40.getPath().replace("jls11.pdf", "jls11_1.pdf"));
@@ -90,15 +93,15 @@ public class FileIOTest {
     in40.close(); // not mandatory
     out40.close(); // not mandatory
     System.out.println("Copying Time Spent (using FileI/OStream):" + (endTime - startTime));
-    
+
     System.out.println("======================================"); // 100
     
     File file50 = new File("docsForTest/jls11.pdf");
+    
     BufferedInputStream in50 = new BufferedInputStream(
         new FileInputStream(file50.getPath()));
     BufferedOutputStream out50 = new BufferedOutputStream(
         new FileOutputStream(file50.getPath().replace("jls11.pdf", "jls11_1.pdf")));
-
     long startTime2 = System.currentTimeMillis();
     int buf;
     while((buf = in50.read()) != -1 ) {
@@ -108,6 +111,6 @@ public class FileIOTest {
     in50.close();
     out50.close();
     System.out.println("Copying Time Spent (using BufferedI/OStream):" + (endTime2 - startTime2));
-    
+
   }
 }
