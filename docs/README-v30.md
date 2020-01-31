@@ -1,11 +1,21 @@
-# eomcs-java-project-3.9
+# 30 - 직렬화와 역직렬화를 이용하여 객체를 통째로 읽고 쓰기
 
 직렬화와 역직렬화를 이용하여 객체를 통째로 읽고 쓰기
 
-- 직렬화 하는 방법과 역직렬화 하는 방법
-- `java.io.Serializable` 인터페이스와 `serialVersionUID` 스태틱 변수 
-  
-## 프로젝트 - 수업관리 시스템  
+## 학습목표
+- 객체를 직렬화 하는 방법과 역직렬화 하는 방법을 안다.
+- `java.io.Serializable` 인터페이스와 `serialVersionUID` 스태틱 변수의 용도를 안다
+ 
+ 
+## 실습 소스 및 결과
+
+- src/main/java/com/eomcs/lms/App.java 변경
+- src/main/java/com/eomcs/lms/domain/Lesson.java 변경
+- src/main/java/com/eomcs/lms/domain/Member.java 변경
+- src/main/java/com/eomcs/lms/domain/Board.java 변경
+
+
+## 실습
 
 ### 과제 1: 객체 단위로 읽고 출력하라.
 
@@ -35,10 +45,3 @@
 #### 실행 결과
 
 `App`의 실행 결과는 이전 버전과 같다.
-
-## 실습 소스
-
-- src/main/java/com/eomcs/lms/App.java 변경
-- src/main/java/com/eomcs/lms/domain/Lesson.java 변경
-- src/main/java/com/eomcs/lms/domain/Member.java 변경
-- src/main/java/com/eomcs/lms/domain/Board.java 변경
