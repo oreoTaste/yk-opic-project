@@ -1,21 +1,16 @@
 package yk.opic;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
+import yk.opic.context.ApplicationContextListener;
 import yk.opic.domain.Board;
 import yk.opic.domain.Lesson;
 import yk.opic.domain.Member;
@@ -45,14 +40,37 @@ public class App {
 
   static Queue<String> commandQueue = new LinkedList<>();
   static Deque<String> commandStack = new ArrayDeque<>();
-  static ArrayList<Lesson> lessonList = new ArrayList<>();
-  static LinkedList<Board> boardList = new LinkedList<>();
-  static LinkedList<Member> memberList = new LinkedList<>();
 
-  public static void main(String[] args) {
-    loadLessonData();
-    loadMemberData();
-    loadBoardData();
+
+  List<ApplicationContextListener> listeners = new ArrayList<>();
+  HashMap<String, Object> context = new LinkedHashMap<>();
+
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+
+  public void notifyApplicationInitialized() {
+    for(ApplicationContextListener listener : listeners) {
+      listener.contextInitialized(context);
+    }
+  }
+
+  public void notifyApplicationDestroyed() {
+    for(ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed(context);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void service() {
+    notifyApplicationInitialized();
+    List<Board> boardList = (List<Board>) context.get("boardList");
+    List<Member> memberList = (List<Member>) context.get("memberList");
+    List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
 
     HashMap<String, Command> hashmap = new HashMap<>();
     hashmap.put("/board/add", new BoardAddCommand(prompt, boardList));
@@ -92,10 +110,7 @@ public class App {
         continue;
       }
       if (command.equalsIgnoreCase("quit")) {
-        saveLessonData();
-        saveMemberData();
-        saveBoardData();
-        System.out.println("...안녕!");
+        notifyApplicationDestroyed();
         break;
       } else if (command.equals("history")) {
         printCommandHistory(commandQueue.iterator());
@@ -139,99 +154,12 @@ public class App {
   }
 
 
-  @SuppressWarnings("unchecked")
-  private static void loadLessonData() {
-    File file = new File("./lesson.ser");
 
-    try (ObjectInputStream in = new ObjectInputStream(
-        new BufferedInputStream(new FileInputStream(file)))){
-      while (true) {
-        try {
-
-          lessonList = (ArrayList<Lesson>) in.readObject();
-
-          System.out.printf("총 %d개 수업정보를 로딩하였습니다.\n", lessonList.size());
-        } catch (Exception e) {
-          break;
-        }
-      }
-
-    } catch (IOException e) {
-      System.out.println("파일 로딩 오류 : " + e.getMessage());
-    }
+  public static void main(String[] args) {
+    App app = new App();
+    app.addApplicationContextListener(new DataLoaderListener());
+    app.service();
   }
-
-  private static void saveLessonData() {
-    File file = new File("./lesson.ser");
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(new FileOutputStream(file)))){
-
-      out.writeObject(lessonList);
-      System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", lessonList.size());
-
-    } catch (IOException e) {
-      System.out.println("파일 저장 오류 : \n" + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private static void loadMemberData() {
-    File file = new File("./member.ser");
-    try (ObjectInputStream in = new ObjectInputStream(
-        new BufferedInputStream(new FileInputStream(file)))) {
-
-      memberList = (LinkedList<Member>)in.readObject();
-
-      System.out.printf("총 %d개 멤버 로딩하였습니다.\n", memberList.size());
-
-    } catch(Exception e) {
-      System.out.println("로딩 실패 : " + e.getMessage());
-    }
-  }
-
-  private static void saveMemberData() {
-    File file = new File("./member.ser");
-    try(ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(new FileOutputStream(file)))){
-
-      out.writeObject(memberList);
-
-      System.out.printf("총 %d개 멤버정보를 저장하였습니다.\n", memberList.size());
-    } catch (IOException e) {
-      System.out.println("파일 저장 오류 : \n" + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private static void loadBoardData() {
-    File file = new File("./board.ser");
-
-    try (ObjectInputStream in = new ObjectInputStream(
-        new BufferedInputStream(new FileInputStream(file)))) {
-
-      boardList = (LinkedList<Board>)in.readObject();
-
-      System.out.printf("총 %d개 게시글 로딩하였습니다.\n", boardList.size());
-
-    } catch (Exception e) {
-      System.out.println("로딩 실패 : " + e.getMessage());
-    }
-  }
-
-  private static void saveBoardData() {
-    File file = new File("./board.ser");
-
-    try (ObjectOutputStream out = new ObjectOutputStream(
-        new BufferedOutputStream(new FileOutputStream(file)))) {
-
-      out.writeObject(boardList);
-
-      System.out.printf("총 %d개 게시글 저장하였습니다.\n", boardList.size());
-    } catch (IOException e) {
-      System.out.println("저장 실패 : " + e.getMessage());
-    }
-  }
-
 
 
 }
