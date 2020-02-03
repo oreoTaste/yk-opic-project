@@ -8,6 +8,23 @@ public class Board {
   private Date date;
   private int viewCount;
 
+
+  public static Board valueOf(String line) {
+    String[] data = line.split(",");
+
+    Board board = new Board();
+    board.setNo(Integer.parseInt(data[0]));
+    board.setTitle(data[0]);
+    board.setDate(Date.valueOf(data[0]));
+    board.setViewCount(Integer.valueOf(data[0]));
+    return board;
+  }
+
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%d\n",
+        getNo(), getTitle(), getDate(), getViewCount());
+  }
+
   public int getNo() {
     return no;
   }
@@ -33,14 +50,13 @@ public class Board {
     this.viewCount = viewCount;
   }
 
-  
   public boolean equals(Board value) {
     if(value.getClass() != Board.class) {
       return false;
     }
-    
-    Board other = (Board) value;
-    
+
+    Board other = value;
+
     if(this.no != other.no) {
       return false;
     }
@@ -48,11 +64,11 @@ public class Board {
     if(!this.title.equals(other.title)) {
       return false;
     }
-    
+
     //if(this.date != other.date) {
     //  return false;
     //}
-    
+
     if(this.viewCount != other.viewCount) {
       return false;
     }
