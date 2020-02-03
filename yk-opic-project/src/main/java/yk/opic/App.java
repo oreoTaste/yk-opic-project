@@ -1,5 +1,7 @@
 package yk.opic;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -140,7 +142,7 @@ public class App {
   private static void loadLessonData() {
     File file = new File("./lesson.json");
 
-    try (FileReader in = new FileReader(file)){
+    try (BufferedReader in = new BufferedReader(new FileReader(file))){
       while (true) {
         try {
           lessonList.addAll(Arrays.asList(new Gson().fromJson(in, Lesson[].class)));
@@ -157,7 +159,7 @@ public class App {
 
   private static void saveLessonData() {
     File file = new File("./lesson.json");
-    try (FileWriter out = new FileWriter(file)){
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))){
       out.write(new Gson().toJson(lessonList));
       System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", lessonList.size());
 
@@ -169,7 +171,7 @@ public class App {
   private static void loadMemberData() {
     File file = new File("./member.json");
 
-    try(FileReader in = new FileReader(file)) {
+    try(BufferedReader in = new BufferedReader(new FileReader(file))) {
       while (true) {
         try {
           memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
@@ -185,7 +187,7 @@ public class App {
 
   private static void saveMemberData() {
     File file = new File("./member.json");
-    try(FileWriter out = new FileWriter(file)){
+    try(BufferedWriter out = new BufferedWriter(new FileWriter(file))){
       out.write(new Gson().toJson(memberList));
       System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", memberList.size());
     } catch (IOException e) {
@@ -196,7 +198,7 @@ public class App {
   private static void loadBoardData() {
     File file = new File("./board.json");
 
-    try(FileReader in = new FileReader(file);
+    try(BufferedReader in = new BufferedReader(new FileReader(file));
         Scanner scanner = new Scanner(in)){
 
       while (true) {
@@ -214,7 +216,7 @@ public class App {
 
   private static void saveBoardData() {
     File file = new File("./board.json");
-    try(FileWriter out = new FileWriter(file)) {
+    try(BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
       out.write(new Gson().toJson(boardList));
       System.out.printf("총 %d개 게시판 정보를 저장하였습니다.\n", boardList.size());
     } catch (IOException e) {
