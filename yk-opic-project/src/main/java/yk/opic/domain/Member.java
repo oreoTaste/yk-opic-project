@@ -2,7 +2,8 @@ package yk.opic.domain;
 
 import java.sql.Date;
 
-public class Member {
+public class Member implements java.io.Serializable {
+  private static final long serialVersionUID = 20200204L;
   private int no;
   private String name;
   private String email;

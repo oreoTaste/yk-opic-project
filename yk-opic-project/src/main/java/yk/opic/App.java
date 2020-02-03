@@ -2,13 +2,12 @@ package yk.opic;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -140,25 +139,16 @@ public class App {
   }
 
 
+  @SuppressWarnings("unchecked")
   private static void loadLessonData() {
-    File file = new File("./lesson.data");
+    File file = new File("./lesson.ser");
 
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(new FileInputStream(file)))){
       while (true) {
         try {
-          int size = in.readInt();
-          for(int i = 0; i < size; i++) {
-            Lesson lesson = new Lesson();
-            lesson.setNo(in.readInt());
-            lesson.setTitle(in.readUTF());
-            lesson.setContext(in.readUTF());
-            lesson.setStartDate(Date.valueOf(in.readUTF()));
-            lesson.setEndDate(Date.valueOf(in.readUTF()));
-            lesson.setTotalHour(in.readInt());
-            lesson.setDailyHour(in.readInt());
-            lessonList.add(lesson);
-          }
+
+          lessonList = (ArrayList<Lesson>) in.readObject();
 
           System.out.printf("총 %d개 수업정보를 로딩하였습니다.\n", lessonList.size());
         } catch (Exception e) {
@@ -172,20 +162,11 @@ public class App {
   }
 
   private static void saveLessonData() {
-    File file = new File("./lesson.data");
-    try (DataOutputStream out = new DataOutputStream(
+    File file = new File("./lesson.ser");
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))){
 
-      out.writeInt(lessonList.size());
-      for(Lesson lesson : lessonList) {
-        out.writeInt(lesson.getNo());
-        out.writeUTF(lesson.getTitle());
-        out.writeUTF(lesson.getContext());
-        out.writeUTF(lesson.getStartDate().toString());
-        out.writeUTF(lesson.getEndDate().toString());
-        out.writeInt(lesson.getTotalHour());
-        out.writeInt(lesson.getDailyHour());
-      }
+      out.writeObject(lessonList);
       System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", lessonList.size());
 
     } catch (IOException e) {
@@ -193,23 +174,14 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static void loadMemberData() {
-    File file = new File("./member.data");
-    try (DataInputStream in = new DataInputStream(
+    File file = new File("./member.ser");
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(new FileInputStream(file)))) {
 
-      int size = in.readInt();
-      for(int i = 0; i < size; i++) {
-        Member member = new Member();
-        member.setNo(in.readInt());
-        member.setName(in.readUTF());
-        member.setEmail(in.readUTF());
-        member.setPassword(in.readUTF());
-        member.setPhoto(in.readUTF());
-        member.setTel(in.readUTF());
-        member.setRegisteredDate(Date.valueOf(in.readUTF()));
-        memberList.add(member);
-      }
+      memberList = (LinkedList<Member>)in.readObject();
+
       System.out.printf("총 %d개 멤버 로딩하였습니다.\n", memberList.size());
 
     } catch(Exception e) {
@@ -218,20 +190,11 @@ public class App {
   }
 
   private static void saveMemberData() {
-    File file = new File("./member.data");
-    try(DataOutputStream out = new DataOutputStream(
+    File file = new File("./member.ser");
+    try(ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))){
 
-      out.writeInt(memberList.size());
-      for(Member member : memberList) {
-        out.writeInt(member.getNo());
-        out.writeUTF(member.getName());
-        out.writeUTF(member.getEmail());
-        out.writeUTF(member.getPassword());
-        out.writeUTF(member.getPhoto());
-        out.writeUTF(member.getTel());
-        out.writeUTF(member.getRegisteredDate().toString());
-      }
+      out.writeObject(memberList);
 
       System.out.printf("총 %d개 멤버정보를 저장하였습니다.\n", memberList.size());
     } catch (IOException e) {
@@ -239,21 +202,14 @@ public class App {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static void loadBoardData() {
-    File file = new File("./board.data");
+    File file = new File("./board.ser");
 
-    try (DataInputStream in = new DataInputStream(
+    try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(new FileInputStream(file)))) {
 
-      int size = in.readInt();
-      for(int i = 0; i < size; i++) {
-        Board board = new Board();
-        board.setNo(in.readInt());
-        board.setTitle(in.readUTF());
-        board.setDate(Date.valueOf(in.readUTF()));
-        board.setViewCount(in.readInt());
-        boardList.add(board);
-      }
+      boardList = (LinkedList<Board>)in.readObject();
 
       System.out.printf("총 %d개 게시글 로딩하였습니다.\n", boardList.size());
 
@@ -263,19 +219,12 @@ public class App {
   }
 
   private static void saveBoardData() {
-    File file = new File("./board.data");
+    File file = new File("./board.ser");
 
-    try (DataOutputStream out = new DataOutputStream(
+    try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))) {
 
-      out.writeInt(boardList.size());
-      for(Board board : boardList) {
-        out.writeInt(board.getNo());
-        out.writeUTF(board.getTitle());
-        out.writeUTF(board.getDate().toString());
-        out.writeInt(board.getViewCount());
-
-      }
+      out.writeObject(boardList);
 
       System.out.printf("총 %d개 게시글 저장하였습니다.\n", boardList.size());
     } catch (IOException e) {
