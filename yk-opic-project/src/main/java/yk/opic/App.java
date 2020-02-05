@@ -131,9 +131,9 @@ public class App {
   private static void firstInstruction() {
     System.out.println("===============================================");
     System.out
-    .print("명령어 모음 : /board/add, /../list, /../delete\n" + "\t\t     /../update, /../detail\n"
-        + "\t/lesson/add, /../list, /../delete\n" + "\t\t     /../update, /../detail\n"
-        + "\t/member/add, /../list, /../delete\n" + "\t\t     /../update, /../detail\n");
+    .print("명령어 모음 : /board/add, /../list, /../delete\n" + "\t\t\t\t\t\t\t\t\t\t\t /../update, /../detail\n"
+        + "\t\t\t\t\t\t\t/lesson/add, /../list, /../delete\n" + "\t\t\t\t\t\t\t\t\t\t\t/../update, /../detail\n"
+        + "\t\t\t\t\t\t\t/member/add, /../list, /../delete\n" + "\t\t\t\t\t\t\t\t\t\t\t/../update, /../detail\n");
     System.out.println("===============================================");
   }
 
