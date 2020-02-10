@@ -1,7 +1,8 @@
 package yk.opic.project.client;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -10,6 +11,23 @@ public class ClientApp {
   static Scanner scanner = new Scanner(System.in);
   public static void main(String[] args) throws UnknownHostException, IOException {
 
+    Socket socket = new Socket("localhost", 9999);
+    ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+    while(true) {
+      System.out.print(" >");
+      try {
+        String msg = scanner.nextLine();
+        out.writeUTF(msg);
+        System.out.println("서버측 : " + in.readUTF());
+      } catch(Exception e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+    /*
+    System.out.println("클라이언트 로딩 완료");
     try(
         Socket socket = getSocket();
         PrintStream out = new PrintStream(socket.getOutputStream());
@@ -27,9 +45,8 @@ public class ClientApp {
       System.out.println("오류발생");
     }
 
-
-
     scanner.close();
+     */
   }
 
 
