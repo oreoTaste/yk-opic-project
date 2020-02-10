@@ -19,43 +19,45 @@
 ### 훈련 1: 게시물 데이터를 처리하는 DAO 클래스를 정의하라
 
 - com.eomcs.lms.dao 패키지 생성
-- com.eomcs.lms.dao.BoardFileDao 클래스 정의
+- com.eomcs.lms.dao.BoardObjectFileDao 클래스 정의
+- com.eomcs.lms.dao.MemberObjectFileDao 클래스 정의
+- com.eomcs.lms.dao.LessonObjectFileDao 클래스 정의
 
 ### 훈련 2: BoardFileDao 객체를 적용하라
 
 - com.eomcs.lms.DataLoaderListener를 변경한다.
   - 게시물 데이터를 로딩, 저장하는 기존 코드를 제거한다.
-  - 대신 BoardFileDao 객체를 생성한다.
+  - 대신 BoardObjectFileDao 객체를 생성한다.
   
 - com.eomcs.lms.ServerApp을 변경한다.
-  - Map에서 BoardFileDao를 꺼내 관련 커맨드 객체에 주입한다.
+  - Map에서 BoardObjectFileDao를 꺼내 관련 커맨드 객체에 주입한다.
   
 - BoardXXXServlet을 변경한다.
-  - 생성자에서 List객체를 받는 대신에 BoardFileDao 객체를 받는다.
-  - 데이터를 저장, 조회, 변경, 삭제할때 BoardFileDao 객체를 통해 처리한다.
+  - 생성자에서 List객체를 받는 대신에 BoardObjectFileDao 객체를 받는다.
+  - 데이터를 저장, 조회, 변경, 삭제할때 BoardObjectFileDao 객체를 통해 처리한다.
 
 ### 훈련 3: MemberFileDao 객체를 적용하라
 
 - com.eomcs.lms.DataLoaderListener를 변경한다.
   - 게시물 데이터를 로딩, 저장하는 기존 코드를 제거한다.
-  - 대신 MemberFileDao 객체를 생성한다.
+  - 대신 MemberObjectFileDao 객체를 생성한다.
   
 - com.eomcs.lms.ServerApp을 변경한다.
-  - Map에서 MemberFileDao를 꺼내 관련 커맨드 객체에 주입한다.
+  - Map에서 MemberObjectFileDao를 꺼내 관련 커맨드 객체에 주입한다.
   
 - MemberXXXServlet을 변경한다.
-  - 생성자에서 List객체를 받는 대신에 MemberFileDao 객체를 받는다.
-  - 데이터를 저장, 조회, 변경, 삭제할때 MemberFileDao 객체를 통해 처리한다.
+  - 생성자에서 List객체를 받는 대신에 MemberObjectFileDao 객체를 받는다.
+  - 데이터를 저장, 조회, 변경, 삭제할때 MemberObjectFileDao 객체를 통해 처리한다.
   
 ### 훈련 4: LessonFileDao 객체를 적용하라
 
 - com.eomcs.lms.DataLoaderListener를 변경한다.
   - 게시물 데이터를 로딩, 저장하는 기존 코드를 제거한다.
-  - 대신 LessonFileDao 객체를 생성한다.
+  - 대신 LessonObjectFileDao 객체를 생성한다.
   
 - com.eomcs.lms.ServerApp을 변경한다.
-  - Map에서 LessonFileDao를 꺼내 관련 커맨드 객체에 주입한다.
+  - Map에서 LessonObjectFileDao를 꺼내 관련 커맨드 객체에 주입한다.
   
 - LessonXXXServlet을 변경한다.
-  - 생성자에서 List객체를 받는 대신에 LessonFileDao 객체를 받는다.
-  - 데이터를 저장, 조회, 변경, 삭제할때 LessonFileDao 객체를 통해 처리한다.
+  - 생성자에서 List객체를 받는 대신에 LessonObjectFileDao 객체를 받는다.
+  - 데이터를 저장, 조회, 변경, 삭제할때 LessonObjectFileDao 객체를 통해 처리한다.
