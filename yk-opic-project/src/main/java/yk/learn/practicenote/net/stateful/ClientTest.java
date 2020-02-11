@@ -1,5 +1,5 @@
 // 타입아웃 시간 설정하기
-package yk.learn.practicenote.net;
+package yk.learn.practicenote.net.stateful;
 
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
@@ -7,6 +7,22 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientTest {
+  
+  static class RequestHandler extends Thread {
+    Socket socket;
+    
+    RequestHandler(Socket socket) {
+      this.socket = socket;
+    }
+    
+    @Override
+    public void run() {
+      
+    }
+    
+  }
+  
+  
   final static String INNET_ADDRESS = "localhost";
   final static int SOCKET_NUMBER = 9999;
   final static int TIME_OUT = 5000;
