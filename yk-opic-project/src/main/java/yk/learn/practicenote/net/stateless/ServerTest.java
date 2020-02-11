@@ -1,5 +1,5 @@
-// stateful
-package yk.learn.practicenote.net.stateful;
+// stateless
+package yk.learn.practicenote.net.stateless;
 
 import java.io.PrintStream;
 import java.net.ServerSocket;

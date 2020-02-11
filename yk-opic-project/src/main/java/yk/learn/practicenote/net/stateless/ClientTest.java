@@ -1,5 +1,5 @@
-// stateful
-package yk.learn.practicenote.net.stateful;
+// stateless
+package yk.learn.practicenote.net.stateless;
 
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
@@ -16,6 +16,8 @@ public class ClientTest {
   public static void main(String[] args) throws Exception {
     System.out.println("Client On!");
 
+    System.out.print(" >");
+    String msg = scanner.nextLine();
     // when trying to set timeout of client
     /*
     Socket socket = new Socket("localhost",9999);
@@ -29,8 +31,7 @@ public class ClientTest {
       try(PrintStream out = new PrintStream(socket.getOutputStream());
           Scanner in = new Scanner(socket.getInputStream())) {
 
-        System.out.print(" >");
-        out.println(scanner.nextLine());
+        out.println(msg);
         out.flush();
 
         System.out.println("response : " + in.nextLine());
