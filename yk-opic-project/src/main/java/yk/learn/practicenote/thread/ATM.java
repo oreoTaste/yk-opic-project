@@ -1,10 +1,11 @@
 package yk.learn.practicenote.thread;
 
-public class ATM extends Thread {
+public class ATM implements Runnable {
+  String name;
   Account account;
 
   public ATM(String name, Account account) {
-    super(name);
+    this.name = name;
     this.account = account;
   }
 
@@ -15,7 +16,7 @@ public class ATM extends Thread {
 
     while (true) {
       try {
-        money = account.withdraw(100000);
+        money = account.withdraw(1_000);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -24,7 +25,7 @@ public class ATM extends Thread {
       }
       sum += money;
     }
-    System.out.printf("%s에서 찾은 돈: %d원\n", this.getName(), sum);
+    System.out.printf("%s에서 찾은 돈: %d원\n", this.name, sum);
   }
 }
 

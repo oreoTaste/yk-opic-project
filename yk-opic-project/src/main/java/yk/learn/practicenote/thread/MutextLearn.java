@@ -34,19 +34,19 @@ public class MutextLearn {
   // 4) Thread-Safe : Critical Section이 없는 즉, Synchronized가 필요 없는.
   
   public static void main(String[] args) throws InterruptedException {
-    Account account = new Account("111-11-1111-111", 100_0000);
+    Account account = new Account("111-11-1111-111", 1_000_000);
 
-    ATM 강남 = new ATM("강남", account);
-    ATM 서초 = new ATM("서초", account);
-    ATM 부산 = new ATM("부산", account);
-    ATM 대전 = new ATM("대전", account);
-    ATM 광주 = new ATM("광주", account);
+    Thread 강남 = new Thread(new ATM("강남", account));
+    Thread 서초 = new Thread(new ATM("서초", account));
+    Thread 부산 = new Thread(new ATM("부산", account));
+    Thread 대전 = new Thread(new ATM("대전", account));
+    Thread 광주 = new Thread(new ATM("광주", account));
 
     강남.start();
     서초.start();
     부산.start();
     대전.start();
     광주.start();
-
+    
   }
 }
