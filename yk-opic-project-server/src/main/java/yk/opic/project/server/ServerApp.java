@@ -7,12 +7,60 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
+import yk.opic.project.server.context.ApplicationContextListener;
+import yk.opic.project.server.domain.Board;
+import yk.opic.project.server.domain.Lesson;
+import yk.opic.project.server.domain.Member;
 
+// v32_3
 public class ServerApp {
-  public static void main(String[] args) throws UnknownHostException, IOException {
-    Scanner scanner = new Scanner(System.in);
+  static Scanner scanner = new Scanner(System.in);
+  
+  static List<ApplicationContextListener> listeners = new ArrayList<>();
+  static HashMap<String, Object> context = new LinkedHashMap<>();
+  
+  private void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
 
+  private void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+  
+  private static void notifyApplicationInitialized() {
+    for(ApplicationContextListener list : listeners) {
+      list.contextInitialized(context);
+    }
+  }
+  
+  private static void notifyApplicationDestroyed() {
+    for(ApplicationContextListener list : listeners) {
+      list.contextDestroyed(context);
+    }
+  }
+  
+  public static void main(String[] args) throws UnknownHostException, IOException {
+    
+    ServerApp serverApp = new ServerApp();
+    serverApp.addApplicationContextListener(new DataLoaderListener());
+    
+    serverApp.service();
+  }
+  
+  
+  public static void service() throws IOException {
+    
+    notifyApplicationInitialized();
+    
+    List<Board> boardList = (List<Board>) context.get("boardList");
+    List<Member> memberList = (List<Member>) context.get("memberList");
+    List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
+    
     ServerSocket serverSocket = new ServerSocket(9999);
     Socket socket = serverSocket.accept();
     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -44,6 +92,7 @@ public class ServerApp {
     }
      */
   }
+
 
   private static void processRequest(ServerSocket serverSocket) {
 
