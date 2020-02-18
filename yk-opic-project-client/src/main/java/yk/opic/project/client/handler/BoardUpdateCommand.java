@@ -7,14 +7,14 @@ import yk.opic.project.client.domain.Board;
 import yk.opic.project.client.util.Prompt;
 
 public class BoardUpdateCommand implements Command {
-  Prompt prompt;
   ObjectOutputStream out;
   ObjectInputStream in;
+  Prompt prompt;
 
-  public BoardUpdateCommand(Prompt prompt, ObjectOutputStream out, ObjectInputStream in) {
-    this.prompt = prompt;
+  public BoardUpdateCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
     this.out = out;
     this.in = in;
+    this.prompt = prompt;
   }
 
   @Override

@@ -17,6 +17,9 @@ import yk.opic.project.server.domain.Member;
 
 // v32_3
 public class ServerApp {
+  List<Board> boardList;
+  List<Member> memberList;
+  List<Lesson> lessonList;
   static Scanner scanner = new Scanner(System.in);
 
   static List<ApplicationContextListener> listeners = new ArrayList<>();
@@ -42,18 +45,12 @@ public class ServerApp {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     System.out.println("서버 시작");
 
-    try {
-      ServerApp serverApp = new ServerApp();
-      serverApp.addApplicationContextListener(new DataLoaderListener());
-      notifyApplicationInitialized();
-      serverApp.service();
-      notifyApplicationDestroyed();
-    } catch(Exception e) {
-      e.printStackTrace();
-    }
+    ServerApp serverApp = new ServerApp();
+    serverApp.addApplicationContextListener(new DataLoaderListener());
+    serverApp.service();
   }
 
 
@@ -68,18 +65,22 @@ public class ServerApp {
         Socket socket = serverSocket.accept();
         System.out.println("...클라이언트 접속 대기");
         processRequest(socket);
-
+        System.out.println("=========================");
       }
 
     } catch (Exception e) {
       System.out.println("서버 준비중 오류발생");
     }
+
+    notifyApplicationDestroyed();
   }
 
 
   @SuppressWarnings("unchecked")
-  private static void processRequest(Socket socket) throws Exception {
-    try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+  private void processRequest(Socket clientSocket) throws Exception {
+
+    try(Socket socket = clientSocket;
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
       while(true) {
@@ -90,9 +91,9 @@ public class ServerApp {
           out.flush();
         }
 
-        List<Board> boardList = (List<Board>) context.get("boardList");
-        List<Member> memberList = (List<Member>) context.get("memberList");
-        List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
+        boardList = (List<Board>) context.get("boardList");
+        memberList = (List<Member>) context.get("memberList");
+        lessonList = (List<Lesson>) context.get("lessonList");
 
 
         if(request.equalsIgnoreCase("/board/list")) {
@@ -217,6 +218,8 @@ public class ServerApp {
 
 
       }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }

@@ -1,41 +1,41 @@
 package yk.opic.project.client.handler;
 
-import java.util.List;
-import yk.opic.project.client.domain.Member;
-import yk.opic.util.Prompt;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import yk.opic.project.client.util.Prompt;
 
 public class MemberDeleteCommand implements Command {
-  List<Member> memberList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
   Prompt prompt;
 
-  public MemberDeleteCommand(Prompt prompt, List<Member> list) {
+  public MemberDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    memberList = list;
   }
-
 
   @Override
   public void execute() {
 
-    int no = prompt.inputInt("번호? ");
-    int index = indexOfMember(no);
+    try {
+      int no = prompt.inputInt("번호? ");
+      out.writeUTF("/member/delete");
 
-    if (index == -1) {
-      System.out.println("해당 회원을 찾을 수 없습니다.");
-    }
+      out.writeInt(no);
+      out.flush();
 
-    memberList.remove(index);
-    System.out.println("회원을 삭제했습니다.");
-  }
-
-
-  public int indexOfMember(int no) {
-    for (int i = 0; i < memberList.size(); i++) {
-      if (memberList.get(i).getNo() == no) {
-        return i;
+      String response = in.readUTF();
+      if(response.equalsIgnoreCase("OK")) {
+        System.out.println("게시글을 삭제했습니다.");
+      } else if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
       }
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return -1;
   }
 
 }

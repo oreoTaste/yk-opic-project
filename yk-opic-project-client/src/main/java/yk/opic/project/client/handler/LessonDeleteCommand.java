@@ -1,40 +1,43 @@
 package yk.opic.project.client.handler;
 
-import java.util.List;
-import yk.opic.project.client.domain.Lesson;
-import yk.opic.util.Prompt;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import yk.opic.project.client.util.Prompt;
 
 public class LessonDeleteCommand implements Command {
-  List<Lesson> lessonList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
   Prompt prompt;
 
-  public LessonDeleteCommand(Prompt prompt, List<Lesson> list) {
+  public LessonDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    lessonList = list;
   }
 
 
   @Override
   public void execute() {
-    int no = prompt.inputInt("번호? ");
-    int index = indexOfLesson(no);
 
-    if (index == -1) {
-      System.out.println("해당 수업을 찾을 수 없습니다.");
-    }
+    try {
+      int no = prompt.inputInt("번호? ");
+      out.writeUTF("/lesson/delete");
 
-    lessonList.remove(index);
-    System.out.println("수업을 삭제했습니다.");
-  }
+      out.writeInt(no);
+      out.flush();
 
-
-  public int indexOfLesson(int no) {
-    for (int i = 0; i < lessonList.size(); i++) {
-      if (lessonList.get(i).getNo() == no) {
-        return i;
+      String response = in.readUTF();
+      if(response.equalsIgnoreCase("OK")) {
+        System.out.println("게시글을 삭제했습니다.");
+      } else if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
       }
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return -1;
+
   }
 
 

@@ -1,66 +1,78 @@
 package yk.opic.project.client.handler;
 
-import java.util.List;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import yk.opic.project.client.domain.Lesson;
-import yk.opic.util.Prompt;
+import yk.opic.project.client.util.Prompt;
 
 public class LessonUpdateCommand implements Command {
-  List<Lesson> lessonList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
   Prompt prompt;
 
-  public LessonUpdateCommand(Prompt prompt, List<Lesson> list) {
+  public LessonUpdateCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    lessonList = list;
   }
 
   @Override
   public void execute() {
-    int no = prompt.inputInt("번호? ");
-    int index = indexOfLesson(no);
 
-    if (index == -1) {
-      System.out.println("해당 수업을 찾을 수 없습니다.");
-    }
+    try {
+      int no = prompt.inputInt("번호? ");
+      out.writeUTF("/lesson/detail");
+      out.writeInt(no);
+      out.flush();
 
-    Lesson oldLesson = lessonList.get(index);
-    Lesson newLesson = new Lesson();
+      String response = in.readUTF();
 
-    newLesson.setNo(oldLesson.getNo());
+      if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
+      } else if(response.equalsIgnoreCase("OK")) {
 
-    newLesson.setTitle(prompt.inputString(String.format("수업명? (%s) ", oldLesson.getTitle()),
-        oldLesson.getTitle()));
+        Lesson oldLesson = (Lesson) in.readObject();
+        Lesson newLesson = new Lesson();
 
-    newLesson.setContext(prompt.inputString(String.format("수업내용? (%s) ", oldLesson.getContext()),
-        oldLesson.getContext()));
+        newLesson.setNo(oldLesson.getNo());
 
-    newLesson.setStartDate(prompt.inputDate(String.format("시작일? (%s) ", oldLesson.getStartDate()),
-        oldLesson.getStartDate()));
+        newLesson.setTitle(prompt.inputString(String.format("수업명? (%s) ", oldLesson.getTitle()),
+            oldLesson.getTitle()));
 
-    newLesson.setEndDate(prompt.inputDate(String.format("종료일? (%s) ", oldLesson.getEndDate()),
-        oldLesson.getEndDate()));
+        newLesson.setContext(prompt.inputString(String.format("수업내용? (%s) ", oldLesson.getContext()),
+            oldLesson.getContext()));
 
-    newLesson.setTotalHour(prompt.inputInt(String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
-        oldLesson.getTotalHour()));
+        newLesson.setStartDate(prompt.inputDate(String.format("시작일? (%s) ", oldLesson.getStartDate()),
+            oldLesson.getStartDate()));
 
-    newLesson.setDailyHour(prompt.inputInt(String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),
-        oldLesson.getDailyHour()));
+        newLesson.setEndDate(prompt.inputDate(String.format("종료일? (%s) ", oldLesson.getEndDate()),
+            oldLesson.getEndDate()));
 
-    if (newLesson.equals(oldLesson)) {
-      System.out.println("수업 변경을 취소했습니다.");
-    } else {
-      lessonList.set(index, newLesson);
-      System.out.println("수업을 변경했습니다.");
-    }
-  }
+        newLesson.setTotalHour(prompt.inputInt(String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
+            oldLesson.getTotalHour()));
 
-  public int indexOfLesson(int no) {
-    for (int i = 0; i < lessonList.size(); i++) {
-      if (lessonList.get(i).getNo() == no) {
-        return i;
+        newLesson.setDailyHour(prompt.inputInt(String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),
+            oldLesson.getDailyHour()));
+
+        if (newLesson.equals(oldLesson)) {
+          System.out.println("수업정보 변경을 취소했습니다.");
+        } else {
+
+          out.writeUTF("/lesson/update");
+          out.writeObject(newLesson);
+          out.flush();
+
+          String reply = in.readUTF();
+          if(reply.equalsIgnoreCase("OK")) {
+            System.out.println("수업 변경을 완료하였습니다.");
+          } else if(reply.equalsIgnoreCase("FAIL")) {
+            System.out.println(in.readUTF());
+          }
+        }
       }
+    } catch(Exception e) {
+      e.printStackTrace();
     }
-    return -1;
   }
-
 
 }

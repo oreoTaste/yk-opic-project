@@ -1,19 +1,22 @@
 package yk.opic.project.client.handler;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
-import java.util.List;
 import yk.opic.project.client.domain.Member;
-import yk.opic.util.Prompt;
+import yk.opic.project.client.util.Prompt;
 
 public class MemberAddCommand implements Command {
-  List<Member> memberList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
   Prompt prompt;
 
-  public MemberAddCommand(Prompt prompt, List<Member> list) {
+  public MemberAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    memberList = list;
   }
-
   @Override
   public void execute() {
 
@@ -27,7 +30,20 @@ public class MemberAddCommand implements Command {
     member.setTel(prompt.inputString("전화? "));
     member.setRegisteredDate(new Date(System.currentTimeMillis()));
 
-    memberList.add(member);
+    try {
+      out.writeUTF("/member/add");
+      out.writeObject(member);
+      out.flush();
+
+      String response = in.readUTF();
+      if(response.equalsIgnoreCase("OK")) {
+        System.out.println("저장완료");
+      } else if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 

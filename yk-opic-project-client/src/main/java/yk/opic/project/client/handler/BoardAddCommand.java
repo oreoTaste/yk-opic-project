@@ -8,14 +8,14 @@ import yk.opic.project.client.domain.Board;
 import yk.opic.project.client.util.Prompt;
 
 public class BoardAddCommand implements Command {
-  Prompt prompt;
   ObjectOutputStream out;
   ObjectInputStream in;
+  Prompt prompt;
 
-  public BoardAddCommand(Prompt prompt, ObjectOutputStream out, ObjectInputStream in) {
-    this.prompt = prompt;
+  public BoardAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
     this.out = out;
     this.in = in;
+    this.prompt = prompt;
   }
 
   @Override

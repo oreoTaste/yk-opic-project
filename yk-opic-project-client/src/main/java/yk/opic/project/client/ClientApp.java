@@ -1,6 +1,5 @@
 package yk.opic.project.client;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -23,23 +22,17 @@ import yk.opic.project.client.util.Prompt;
 public class ClientApp {
   static Scanner scanner = new Scanner(System.in);
   static Prompt prompt = new Prompt(scanner);
-  static Queue<String> commandQueue = new LinkedList<>();
-  static Deque<String> commandStack = new ArrayDeque<>();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
 
     System.out.println("클라이언트 시작");
 
-    try {
-      ClientApp clientApp = new ClientApp();
-      clientApp.service();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    ClientApp clientApp = new ClientApp();
+    clientApp.service();
 
   }
 
-  public void service() throws Exception {
+  public void service() {
     String serverAddr;
     serverAddr = "localhost";//prompt.inputString("서버주소 : ");
     int portNumber;
@@ -49,8 +42,8 @@ public class ClientApp {
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-        System.out.println("서버 접속완료");
-        processCommand(out, in);
+      System.out.println("서버 접속완료");
+      processCommand(out, in);
 
     } catch(Exception e) {
       System.out.println("오류발생");
@@ -61,15 +54,17 @@ public class ClientApp {
 
 
   private void processCommand(ObjectOutputStream out, ObjectInputStream in) {
+    Queue<String> commandQueue = new LinkedList<>();
+    Deque<String> commandStack = new ArrayDeque<>();
+    HashMap<String, Command> hashmap = new HashMap<>();
 
-    while(true) {
-      HashMap<String, Command> hashmap = new HashMap<>();
-      hashmap.put("/board/add", new BoardAddCommand(prompt, out, in));
-      hashmap.put("/board/delete", new BoardDeleteCommand(prompt, out, in));
-      hashmap.put("/board/detail", new BoardDetailCommand(prompt, out, in));
-      hashmap.put("/board/list", new BoardListCommand(out, in));
-      hashmap.put("/board/update", new BoardUpdateCommand(prompt, out, in));
-      /*
+    hashmap.put("/board/add", new BoardAddCommand(out, in, prompt));
+    hashmap.put("/board/delete", new BoardDeleteCommand(out, in, prompt));
+    hashmap.put("/board/detail", new BoardDetailCommand(out, in, prompt));
+    hashmap.put("/board/list", new BoardListCommand(out, in));
+    hashmap.put("/board/update", new BoardUpdateCommand(out, in, prompt));
+
+    /*
     hashmap.put("/lesson/add", new LessonAddCommand(prompt, lessonList));
     hashmap.put("/lesson/delete", new LessonDeleteCommand(prompt, lessonList));
     hashmap.put("/lesson/detail", new LessonDetailCommand(prompt, lessonList));
@@ -81,9 +76,10 @@ public class ClientApp {
     hashmap.put("/member/detail", new MemberDetailCommand(prompt, memberList));
     hashmap.put("/member/list", new MemberListCommand(memberList));
     hashmap.put("/member/update", new MemberUpdateCommand(prompt, memberList));
-       */
-      System.out.println();
-      String command = prompt.inputString("명령> ");
+     */
+
+    while(true) {
+      String command = prompt.inputString("\n명령> ");
       commandStack.push(command);
       commandQueue.offer(command);
 
@@ -91,22 +87,24 @@ public class ClientApp {
         continue;
       }
       if (command.equalsIgnoreCase("quit")) {
-        try {
-          out.writeUTF("quit");
-          break;
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+        System.out.println("...안녕");
+        break;
       } else if (command.equals("history")) {
         printCommandHistory(commandQueue.iterator());
+        continue;
       } else if (command.equals("history2")) {
         printCommandHistory(commandStack.iterator());
+        continue;
       }
 
 
       Command commandHandler = hashmap.get(command);
       if (commandHandler != null) {
-        commandHandler.execute();
+        try {
+          commandHandler.execute();
+        } catch (Exception e) {
+          System.out.println("명령어 실행중 오류발생 : " + e.getMessage());
+        }
       } else {
         System.out.println("실행할 수 없는 명령입니다.");
       }

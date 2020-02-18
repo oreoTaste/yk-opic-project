@@ -8,7 +8,12 @@ public class Board implements java.io.Serializable {
   private String title;
   private Date date;
   private int viewCount;
-  
+
+  @Override
+  public String toString() {
+    return "Board [no=" + no + ", title=" + title + ", date=" + date + ", viewCount=" + viewCount
+        + "]";
+  }
 
   public static Board valueOf(String line) {
     String[] data = line.split(",");

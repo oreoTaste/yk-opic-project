@@ -1,16 +1,20 @@
 package yk.opic.project.client.handler;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import yk.opic.project.client.domain.Lesson;
-import yk.opic.util.Prompt;
+import yk.opic.project.client.util.Prompt;
 
 public class LessonAddCommand implements Command {
-  List<Lesson> lessonList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
   Prompt prompt;
 
-  public LessonAddCommand(Prompt prompt, List<Lesson> list) {
+  public LessonAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    lessonList = list;
   }
 
   @Override
@@ -29,8 +33,20 @@ public class LessonAddCommand implements Command {
       return;
     }
 
-    System.out.println();
-    lessonList.add(lesson);
+    try {
+      out.writeUTF("/lesson/add");
+      out.writeObject(lesson);
+      out.flush();
+
+      String response = in.readUTF();
+      if(response.equalsIgnoreCase("OK")) {
+        System.out.println("저장완료");
+      } else if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 

@@ -6,14 +6,14 @@ import java.io.ObjectOutputStream;
 import yk.opic.project.client.util.Prompt;
 
 public class BoardDeleteCommand implements Command {
-  Prompt prompt;
   ObjectOutputStream out;
   ObjectInputStream in;
+  Prompt prompt;
 
-  public BoardDeleteCommand(Prompt prompt, ObjectOutputStream out, ObjectInputStream in) {
-    this.prompt = prompt;
+  public BoardDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
     this.out = out;
     this.in = in;
+    this.prompt = prompt;
   }
 
   @Override
