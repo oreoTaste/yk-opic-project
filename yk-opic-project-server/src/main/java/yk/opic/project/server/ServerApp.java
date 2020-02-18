@@ -64,8 +64,12 @@ public class ServerApp {
     try(ServerSocket serverSocket = new ServerSocket(9999)){
       System.out.println("서버 연결 완료");
 
-      System.out.println("...클라이언트 접속 대기");
-      processRequest(serverSocket);
+      while(true) {
+        Socket socket = serverSocket.accept();
+        System.out.println("...클라이언트 접속 대기");
+        processRequest(socket);
+
+      }
 
     } catch (Exception e) {
       System.out.println("서버 준비중 오류발생");
@@ -74,12 +78,11 @@ public class ServerApp {
 
 
   @SuppressWarnings("unchecked")
-  private static void processRequest(ServerSocket serverSocket) throws Exception {
-    while(true) {
-      try(Socket socket = serverSocket.accept();
-          ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-          ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+  private static void processRequest(Socket socket) throws Exception {
+    try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
+      while(true) {
         String request = in.readUTF();
 
         if(request.equalsIgnoreCase("quit")) {
@@ -99,25 +102,30 @@ public class ServerApp {
 
         } else if(request.equalsIgnoreCase("/board/add")) {
 
-          Board board = (Board) in.readObject();
+          try {
+            Board board = (Board) in.readObject();
 
-          int index = 0;
-          for(; index < boardList.size(); index++) {
+            int index = 0;
+            for(; index < boardList.size(); index++) {
 
-            if(boardList.get(index).getNo() == board.getNo()) {
-              break;
+              if(boardList.get(index).getNo() == board.getNo()) {
+                break;
+              }
+
             }
 
-          }
-
-          if(index == boardList.size()) {
-            boardList.add(board);
-            out.writeUTF("OK");
-          } else {
+            if(index == boardList.size()) {
+              boardList.add(board);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("같은 번호의 게시물이 있습니다.");
+            }
+          } catch(Exception e) {
             out.writeUTF("FAIL");
-            out.writeUTF("같은 번호의 게시물이 있습니다.");
+            out.writeUTF(e.getMessage());
+            e.printStackTrace();
           }
-
 
         } else if(request.equalsIgnoreCase("/board/detail")) {
 

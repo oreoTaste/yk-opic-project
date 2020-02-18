@@ -8,7 +8,7 @@ public class Board implements java.io.Serializable {
   private String title;
   private Date date;
   private int viewCount;
-
+  
 
   public static Board valueOf(String line) {
     String[] data = line.split(",");
@@ -52,27 +52,23 @@ public class Board implements java.io.Serializable {
   }
 
   public boolean equals(Board value) {
-    if(value.getClass() != Board.class) {
+    if(value.getClass() != Board.class)
       return false;
-    }
 
     Board other = value;
 
-    if(this.no != other.no) {
+    if(this.no != other.no)
       return false;
-    }
 
-    if(!this.title.equals(other.title)) {
+    if(!this.title.equals(other.title))
       return false;
-    }
 
     //if(this.date != other.date) {
     //  return false;
     //}
 
-    if(this.viewCount != other.viewCount) {
+    if(this.viewCount != other.viewCount)
       return false;
-    }
     return true;
   }
 }

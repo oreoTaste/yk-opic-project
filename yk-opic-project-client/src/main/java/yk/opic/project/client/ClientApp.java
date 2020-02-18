@@ -40,15 +40,17 @@ public class ClientApp {
   }
 
   public void service() throws Exception {
-    String serverAddr = prompt.inputString("서버주소 : ");
-    int portNumber = prompt.inputInt("포트번호 : ");
+    String serverAddr;
+    serverAddr = "localhost";//prompt.inputString("서버주소 : ");
+    int portNumber;
+    portNumber = 9999;//prompt.inputInt("포트번호 : ");
 
     try(Socket socket = new Socket(serverAddr, portNumber);
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-      System.out.println("서버 접속완료");
-      processCommand(out, in);
+        System.out.println("서버 접속완료");
+        processCommand(out, in);
 
     } catch(Exception e) {
       System.out.println("오류발생");
@@ -100,6 +102,7 @@ public class ClientApp {
       } else if (command.equals("history2")) {
         printCommandHistory(commandStack.iterator());
       }
+
 
       Command commandHandler = hashmap.get(command);
       if (commandHandler != null) {
