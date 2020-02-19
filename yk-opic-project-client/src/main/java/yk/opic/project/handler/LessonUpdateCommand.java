@@ -36,19 +36,24 @@ public class LessonUpdateCommand implements Command {
 
         newLesson.setNo(oldLesson.getNo());
 
-        newLesson.setTitle(prompt.inputString(String.format("수업명? (%s) ", oldLesson.getTitle()),
+        newLesson.setTitle(prompt.inputString(
+            String.format("수업명? (%s) ", oldLesson.getTitle()),
             oldLesson.getTitle()));
 
-        newLesson.setContext(prompt.inputString(String.format("수업내용? (%s) ", oldLesson.getContext()),
+        newLesson.setContext(prompt.inputString(
+            String.format("수업내용? (%s) ", oldLesson.getContext()),
             oldLesson.getContext()));
 
-        newLesson.setStartDate(prompt.inputDate(String.format("시작일? (%s) ", oldLesson.getStartDate()),
+        newLesson.setStartDate(prompt.inputDate(
+            String.format("시작일? (%s) ", oldLesson.getStartDate()),
             oldLesson.getStartDate()));
 
-        newLesson.setEndDate(prompt.inputDate(String.format("종료일? (%s) ", oldLesson.getEndDate()),
+        newLesson.setEndDate(prompt.inputDate(
+            String.format("종료일? (%s) ", oldLesson.getEndDate()),
             oldLesson.getEndDate()));
 
-        newLesson.setTotalHour(prompt.inputInt(String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
+        newLesson.setTotalHour(prompt.inputInt(
+            String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
             oldLesson.getTotalHour()));
 
         newLesson.setDailyHour(prompt.inputInt(String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),

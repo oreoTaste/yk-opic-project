@@ -39,7 +39,9 @@ public class BoardUpdateCommand implements Command {
         newBoard.setNo(oldBoard.getNo());
 
         newBoard.setTitle(
-            prompt.inputString(String.format("제목? (%s) ", oldBoard.getTitle()), oldBoard.getTitle()));
+            prompt.inputString(
+                String.format("제목? (%s) ", oldBoard.getTitle()),
+                oldBoard.getTitle()));
 
         newBoard.setDate(new Date(System.currentTimeMillis()));
 

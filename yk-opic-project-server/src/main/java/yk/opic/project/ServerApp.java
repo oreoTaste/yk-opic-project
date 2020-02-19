@@ -14,8 +14,8 @@ import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.domain.Board;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.Member;
- 
-// v32_3
+
+// v32_4
 public class ServerApp {
   List<Board> boardList;
   List<Member> memberList;
@@ -29,6 +29,7 @@ public class ServerApp {
     listeners.add(listener);
   }
 
+  @SuppressWarnings("unused")
   private void removeApplicationContextListener(ApplicationContextListener listener) {
     listeners.remove(listener);
   }
@@ -86,15 +87,13 @@ public class ServerApp {
       while(true) {
         String request = in.readUTF();
 
-        if(request.equalsIgnoreCase("quit")) {
-          out.writeUTF("OK");
-          out.flush();
+        if(request.equalsIgnoreCase("quit") || request.equalsIgnoreCase("/server/stop")) {
+          break;
         }
 
         boardList = (List<Board>) context.get("boardList");
         memberList = (List<Member>) context.get("memberList");
         lessonList = (List<Lesson>) context.get("lessonList");
-
 
         if(request.equalsIgnoreCase("/board/list")) {
           out.writeUTF("OK");
@@ -105,7 +104,6 @@ public class ServerApp {
 
           try {
             Board board = (Board) in.readObject();
-            System.out.println("in후");
 
             int index = 0;
             for(; index < boardList.size(); index++) {
@@ -133,7 +131,7 @@ public class ServerApp {
             out.flush();
             e.printStackTrace();
           }
- 
+
         } else if(request.equalsIgnoreCase("/board/detail")) {
 
           int no = in.readInt();
@@ -205,30 +203,220 @@ public class ServerApp {
 
         } else if(request.equalsIgnoreCase("/lesson/list")) {
 
+          out.writeUTF("OK");
+          out.reset();
+          out.writeObject(lessonList);
+
         } else if(request.equalsIgnoreCase("/lesson/add")) {
+
+          try {
+            Lesson lesson = (Lesson) in.readObject();
+
+            int index = 0;
+            for(; index < lessonList.size(); index++) {
+
+              if(lessonList.get(index).getNo() == lesson.getNo()) {
+                break;
+              }
+
+            }
+
+            if(index == lessonList.size()) {
+              lessonList.add(lesson);
+              out.writeUTF("OK");
+              out.flush();
+            } else {
+              out.writeUTF("FAIL");
+              out.flush();
+              out.writeUTF("같은 번호의 수업정보가 있습니다.");
+              out.flush();
+            }
+          } catch(Exception e) {
+            out.writeUTF("FAIL");
+            out.flush();
+            out.writeUTF(e.getMessage());
+            out.flush();
+            e.printStackTrace();
+          }
 
         } else if(request.equalsIgnoreCase("/lesson/detail")) {
 
+          int no = in.readInt();
+
+          int index = 0;
+          for(; index < lessonList.size(); index++) {
+
+            if(lessonList.get(index).getNo() == no) {
+              break;
+            }
+
+          }
+
+          if(index == lessonList.size()) {
+            out.writeUTF("FAIL");
+            out.writeUTF("해당 번호의 수업정보가 없습니다.");
+          } else {
+            out.writeUTF("OK");
+            out.writeObject(lessonList.get(index));
+          }
+
         } else if(request.equalsIgnoreCase("/lesson/update")) {
+
+          Lesson lesson = new Lesson();
+          lesson = (Lesson) in.readObject();
+
+          int index = 0;
+          for(; index < lessonList.size(); index++) {
+
+            if(lessonList.get(index).getNo() == lesson.getNo()) {
+              break;
+            }
+
+          }
+
+          if(index == lessonList.size()) {
+            out.writeUTF("FAIL");
+            out.writeUTF("해당 번호의 수업정보가 없습니다.");
+            out.flush();
+          } else {
+            lessonList.set(index, lesson);
+            out.writeUTF("OK");
+            out.flush();
+          }
 
         } else if(request.equalsIgnoreCase("/lesson/delete")) {
 
+          int no = in.readInt();
+
+          int index = 0;
+          for(; index < lessonList.size(); index++) {
+
+            if(lessonList.get(index).getNo() == no) {
+              break;
+            }
+
+          }
+
+          if(index == lessonList.size()) {
+            out.writeUTF("FAIL");
+            out.flush();
+            out.writeUTF("해당 번호의 게시물이 없습니다.");
+            out.flush();
+          } else {
+            lessonList.remove(index);
+            out.writeUTF("OK");
+            out.flush();
+          }
+
         } else if(request.equalsIgnoreCase("/member/list")) {
+
+          out.writeUTF("OK");
+          out.reset();
+          out.writeObject(memberList);
 
         } else if(request.equalsIgnoreCase("/member/add")) {
 
+          try {
+            Member member = (Member) in.readObject();
+
+            int index = 0;
+            for(; index < memberList.size(); index++) {
+
+              if(memberList.get(index).getNo() == member.getNo()) {
+                break;
+              }
+
+            }
+
+            if(index == memberList.size()) {
+              memberList.add(member);
+              out.writeUTF("OK");
+              out.flush();
+            } else {
+              out.writeUTF("FAIL");
+              out.flush();
+              out.writeUTF("같은 번호의 멤버 정보가 있습니다.");
+              out.flush();
+            }
+          } catch(Exception e) {
+            out.writeUTF("FAIL");
+            out.flush();
+            out.writeUTF(e.getMessage());
+            out.flush();
+            e.printStackTrace();
+          }
+
         } else if(request.equalsIgnoreCase("/member/detail")) {
+
+          int no = in.readInt();
+
+          int index = 0;
+          for(; index < memberList.size(); index++) {
+
+            if(memberList.get(index).getNo() == no) {
+              break;
+            }
+
+          }
+
+          if(index == memberList.size()) {
+            out.writeUTF("FAIL");
+            out.writeUTF("해당 번호의 멤버정보가 없습니다.");
+          } else {
+            out.writeUTF("OK");
+            out.writeObject(memberList.get(index));
+          }
 
         } else if(request.equalsIgnoreCase("/member/update")) {
 
+          Member member = new Member();
+          member = (Member) in.readObject();
+
+          int index = 0;
+          for(; index < memberList.size(); index++) {
+
+            if(memberList.get(index).getNo() == member.getNo()) {
+              break;
+            }
+
+          }
+
+          if(index == memberList.size()) {
+            out.writeUTF("FAIL");
+            out.writeUTF("해당 번호의 멤버정보가 없습니다.");
+            out.flush();
+          } else {
+            memberList.set(index, member);
+            out.writeUTF("OK");
+            out.flush();
+          }
+
         } else if(request.equalsIgnoreCase("/member/delete")) {
 
+          int no = in.readInt();
+
+          int index = 0;
+          for(; index < lessonList.size(); index++) {
+
+            if(memberList.get(index).getNo() == no) {
+              break;
+            }
+
+          }
+
+          if(index == memberList.size()) {
+            out.writeUTF("FAIL");
+            out.flush();
+            out.writeUTF("해당 번호의 멤버정보가 없습니다.");
+            out.flush();
+          } else {
+            memberList.remove(index);
+            out.writeUTF("OK");
+            out.flush();
+          }
         }
-
-
-
-
       }
+
     } catch (Exception e) {
       e.printStackTrace();
     }

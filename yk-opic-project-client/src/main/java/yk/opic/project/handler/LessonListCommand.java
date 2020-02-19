@@ -1,22 +1,44 @@
 package yk.opic.project.handler;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import yk.opic.project.domain.Lesson;
 
 public class LessonListCommand implements Command {
-  List<Lesson> lessonList;
+  ObjectOutputStream out;
+  ObjectInputStream in;
 
-  public LessonListCommand(List<Lesson> list) {
-    lessonList = list;
+  public LessonListCommand(ObjectOutputStream out, ObjectInputStream in) {
+    this.out = out;
+    this.in = in;
   }
 
   @Override
   public void execute() {
-    Lesson[] lesson = new Lesson[lessonList.size()];
-    lessonList.toArray(lesson);
-    for (Lesson ls : lesson) {
-      System.out.printf("%d, %s     , %tF ~ %tF, %d\n", ls.getNo(), ls.getTitle(),
-          ls.getStartDate(), ls.getEndDate(), ls.getTotalHour());
+
+    try {
+      out.writeUTF("/lesson/list");
+      out.flush();
+
+      String response = in.readUTF();
+
+      if(response.equalsIgnoreCase("OK")) {
+        List<Lesson> lesson = (List<Lesson>) in.readObject();
+
+        for (Lesson ls : lesson) {
+          System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
+              ls.getNo(),
+              ls.getTitle(),
+              ls.getStartDate(),
+              ls.getEndDate(),
+              ls.getTotalHour());
+        }
+      } else if(response.equalsIgnoreCase("FAIL")) {
+        System.out.println(in.readUTF());
+      }
+    } catch(Exception e) {
+      e.printStackTrace();
     }
   }
 

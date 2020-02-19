@@ -5,16 +5,16 @@ import java.util.Scanner;
 
 public class Prompt {
   Scanner input;
-  
+
   public Prompt(Scanner input) {
     this.input = input;
   }
-  
+
   public int inputInt(String msg) {
     System.out.print(msg);
     return Integer.valueOf(input.nextLine());
   }
-  
+
   public String inputString(String msg) {
     System.out.print(msg);
     return input.nextLine();
@@ -33,7 +33,7 @@ public class Prompt {
     }
     return Integer.valueOf(input.nextLine());
   }
-  
+
   public String inputString(String msg, String value) {
     System.out.print(msg);
     String temp = input.nextLine();
@@ -49,6 +49,6 @@ public class Prompt {
     if(temp.length() == 0) {
       return value;
     }
-    return Date.valueOf(input.nextLine());
+    return Date.valueOf(temp);
   }
 }

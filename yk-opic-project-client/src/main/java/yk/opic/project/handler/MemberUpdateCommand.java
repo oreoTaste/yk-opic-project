@@ -24,7 +24,7 @@ public class MemberUpdateCommand implements Command {
 
     try {
       int no = prompt.inputInt("번호? ");
-      out.writeUTF("/lesson/detail");
+      out.writeUTF("/member/detail");
       out.writeInt(no);
       out.flush();
 

@@ -1,5 +1,6 @@
 package yk.opic.project;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,9 +17,19 @@ import yk.opic.project.handler.BoardDetailCommand;
 import yk.opic.project.handler.BoardListCommand;
 import yk.opic.project.handler.BoardUpdateCommand;
 import yk.opic.project.handler.Command;
+import yk.opic.project.handler.LessonAddCommand;
+import yk.opic.project.handler.LessonDeleteCommand;
+import yk.opic.project.handler.LessonDetailCommand;
+import yk.opic.project.handler.LessonListCommand;
+import yk.opic.project.handler.LessonUpdateCommand;
+import yk.opic.project.handler.MemberAddCommand;
+import yk.opic.project.handler.MemberDeleteCommand;
+import yk.opic.project.handler.MemberDetailCommand;
+import yk.opic.project.handler.MemberListCommand;
+import yk.opic.project.handler.MemberUpdateCommand;
 import yk.opic.project.util.Prompt;
 
-//v32_3
+//v32_4
 public class ClientApp {
   static Scanner scanner = new Scanner(System.in);
   static Prompt prompt = new Prompt(scanner);
@@ -64,19 +75,17 @@ public class ClientApp {
     hashmap.put("/board/list", new BoardListCommand(out, in));
     hashmap.put("/board/update", new BoardUpdateCommand(out, in, prompt));
 
-    /*
-    hashmap.put("/lesson/add", new LessonAddCommand(prompt, lessonList));
-    hashmap.put("/lesson/delete", new LessonDeleteCommand(prompt, lessonList));
-    hashmap.put("/lesson/detail", new LessonDetailCommand(prompt, lessonList));
-    hashmap.put("/lesson/list", new LessonListCommand(lessonList));
-    hashmap.put("/lesson/update", new LessonUpdateCommand(prompt, lessonList));
+    hashmap.put("/lesson/add", new LessonAddCommand(out, in, prompt));
+    hashmap.put("/lesson/delete", new LessonDeleteCommand(out, in, prompt));
+    hashmap.put("/lesson/detail", new LessonDetailCommand(out, in, prompt));
+    hashmap.put("/lesson/list", new LessonListCommand(out, in));
+    hashmap.put("/lesson/update", new LessonUpdateCommand(out, in, prompt));
 
-    hashmap.put("/member/add", new MemberAddCommand(prompt, memberList));
-    hashmap.put("/member/delete", new MemberDeleteCommand(prompt, memberList));
-    hashmap.put("/member/detail", new MemberDetailCommand(prompt, memberList));
-    hashmap.put("/member/list", new MemberListCommand(memberList));
-    hashmap.put("/member/update", new MemberUpdateCommand(prompt, memberList));
-     */
+    hashmap.put("/member/add", new MemberAddCommand(out, in, prompt));
+    hashmap.put("/member/delete", new MemberDeleteCommand(out, in, prompt));
+    hashmap.put("/member/detail", new MemberDetailCommand(out, in, prompt));
+    hashmap.put("/member/list", new MemberListCommand(out, in));
+    hashmap.put("/member/update", new MemberUpdateCommand(out, in, prompt));
 
     while(true) {
       String command = prompt.inputString("\n명령> ");
@@ -86,9 +95,15 @@ public class ClientApp {
       if (command.length() == 0) {
         continue;
       }
-      if (command.equalsIgnoreCase("quit")) {
-        System.out.println("...안녕");
-        break;
+      if (command.equalsIgnoreCase("quit") || command.equals("/server/stop")) {
+        try {
+          out.writeUTF("quit");
+          out.flush();
+          System.out.println("...안녕");
+          break;
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       } else if (command.equals("history")) {
         printCommandHistory(commandQueue.iterator());
         continue;
