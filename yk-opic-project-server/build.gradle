@@ -1,3 +1,4 @@
+
 plugins {
     id 'java'
     id 'eclipse'
@@ -9,11 +10,13 @@ repositories {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    targetCompatibility = '1.8'
     sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 }
 
 dependencies {
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.4'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.guava:guava:28.1-jre'
     testImplementation 'junit:junit:4.12'
 }
