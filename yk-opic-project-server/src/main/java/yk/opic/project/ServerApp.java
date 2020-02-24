@@ -32,7 +32,7 @@ import yk.opic.project.servlet.MemberListServlet;
 import yk.opic.project.servlet.MemberUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
-// v32_5
+// v32_6
 public class ServerApp {
   List<Board> boardList;
   List<Member> memberList;
