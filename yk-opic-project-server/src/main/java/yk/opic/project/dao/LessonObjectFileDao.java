@@ -77,7 +77,7 @@ public class LessonObjectFileDao {
     return 1;
   }
   
-  public int insert(Lesson lesson) {
+  public int insert(Lesson lesson) throws Exception {
     int index = indexOf(lesson.getNo());
     if(index < 0)
       return 0;
@@ -89,7 +89,7 @@ public class LessonObjectFileDao {
   
   
 
-  public int indexOf(int no) {
+  public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)
         return i;

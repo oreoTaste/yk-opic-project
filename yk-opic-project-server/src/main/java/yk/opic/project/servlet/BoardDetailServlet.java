@@ -2,38 +2,31 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import yk.opic.project.dao.BoardObjectFileDao;
 import yk.opic.project.domain.Board;
 
 public class BoardDetailServlet implements Servlet {
-  List<Board> boardList;
+  BoardObjectFileDao boardDao;
 
-  public BoardDetailServlet(List<Board> boardList) {
-    this.boardList = boardList;
+  public BoardDetailServlet(BoardObjectFileDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
 
     try {
+      
       int no = in.readInt();
+      Board board = boardDao.findByNo(no);
 
-      int index = 0;
-      for(; index < boardList.size(); index++) {
-
-        if(boardList.get(index).getNo() == no) {
-          break;
-        }
-
-      }
-
-      if(index == boardList.size()) {
+      if(board == null) {
         out.writeUTF("FAIL");
         out.writeUTF("해당 번호의 게시물이 없습니다.");
         out.flush();
       } else {
         out.writeUTF("OK");
-        out.writeObject(boardList.get(index));
+        out.writeObject(board);
         out.flush();
       }
     } catch(Exception e) {

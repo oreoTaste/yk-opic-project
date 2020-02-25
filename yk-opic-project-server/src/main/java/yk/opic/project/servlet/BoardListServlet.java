@@ -2,21 +2,20 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
-import yk.opic.project.domain.Board;
+import yk.opic.project.dao.BoardObjectFileDao;
 
 public class BoardListServlet implements Servlet {
-  List<Board> boardList;
+  BoardObjectFileDao boardDao;
 
-  public BoardListServlet(List<Board> boardList) {
-    this.boardList = boardList;
+  public BoardListServlet(BoardObjectFileDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
         out.writeUTF("OK");
         out.reset();
-        out.writeObject(boardList);
+        out.writeObject(boardDao.findAll());
   }
 
 }

@@ -2,35 +2,25 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
-import yk.opic.project.domain.Board;
+import yk.opic.project.dao.BoardObjectFileDao;
 
 public class BoardDeleteServlet implements Servlet {
-  List<Board> boardList;
+  BoardObjectFileDao boardDao;
 
-  public BoardDeleteServlet(List<Board> boardList) {
-    this.boardList = boardList;
+  public BoardDeleteServlet(BoardObjectFileDao boardDao) {
+    this.boardDao = boardDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     int no = in.readInt();
+    int index = boardDao.delete(no);
 
-    int index = 0;
-    for(; index < boardList.size(); index++) {
-
-      if(boardList.get(index).getNo() == no) {
-        break;
-      }
-    }
-
-    if(index == boardList.size()) {
+    if(index == 0) {
       out.writeUTF("FAIL");
-      out.flush();
       out.writeUTF("해당 번호의 게시물이 없습니다.");
       out.flush();
     } else {
-      boardList.remove(index);
       out.writeUTF("OK");
       out.flush();
     }

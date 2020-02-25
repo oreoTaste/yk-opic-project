@@ -16,7 +16,7 @@ public class MemberObjectFileDao {
 
   File file;
   List<Member> list;
-  
+
   public MemberObjectFileDao(String fileName) {
     this.file = new File(fileName);
     list = new LinkedList<>();
@@ -49,4 +49,54 @@ public class MemberObjectFileDao {
       System.out.println("파일 저장 오류 : \n" + e.getMessage());
     }
   }
+
+  public int insert(Member member) throws Exception {
+    int index = indexOf(member.getNo());
+    if(index < 0)
+      return 0;
+
+    list.add(member);
+    saveData();
+    return 1;
+  }
+
+  public Member findByNo(int no) throws Exception {
+    int index = indexOf(no);
+
+    if (index == -1) {
+      System.out.println("해당 회원을 찾을 수 없습니다.");
+      return null;
+    }
+    saveData();
+    return list.get(index);
+  }
+  
+  public List<Member> findAll() throws Exception {
+    return list;
+  }
+  
+  public int delete(int no) throws Exception {
+
+    int index = indexOf(no);
+
+    if (index == -1) {
+      System.out.println("해당 회원을 찾을 수 없습니다.");
+      return 0;
+    }
+
+    list.remove(index);
+    saveData();
+    System.out.println("회원을 삭제했습니다.");
+    return 1;
+  }
+
+
+  public int indexOf(int no) throws Exception {
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).getNo() == no)
+        return i;
+    }
+    return -1;
+  }
+
 }
