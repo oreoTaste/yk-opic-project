@@ -29,6 +29,7 @@ public class BoardAddCommand implements Command {
 
     try {
       out.writeUTF("/board/add");
+      out.flush();
       out.writeObject(board);
       out.flush();
       

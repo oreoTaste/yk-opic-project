@@ -21,10 +21,10 @@ public class BoardUpdateCommand implements Command {
   public void execute() {
 
     try {
-
-      int no = prompt.inputInt("번호? ");
       out.writeUTF("/board/detail");
-      out.writeInt(no);
+      out.flush();
+
+      out.writeInt(prompt.inputInt("번호? "));
       out.flush();
 
       String response = in.readUTF();

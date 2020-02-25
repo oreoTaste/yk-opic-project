@@ -77,6 +77,10 @@ public class ServerApp {
   public void service() throws IOException {
 
     notifyApplicationInitialized();
+    
+    boardList = (List<Board>) context.get("boardList");
+    memberList = (List<Member>) context.get("memberList");
+    lessonList = (List<Lesson>) context.get("lessonList");
 
     servletMap = new HashMap<>();
     servletMap.put("/board/add", new BoardAddServlet(boardList));
@@ -129,9 +133,7 @@ public class ServerApp {
           break;
         }
 
-        boardList = (List<Board>) context.get("boardList");
-        memberList = (List<Member>) context.get("memberList");
-        lessonList = (List<Lesson>) context.get("lessonList");
+
 
         Servlet servlet = servletMap.get(request);
 

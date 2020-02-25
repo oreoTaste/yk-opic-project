@@ -20,9 +20,10 @@ public class LessonUpdateCommand implements Command {
   public void execute() {
 
     try {
-      int no = prompt.inputInt("번호? ");
       out.writeUTF("/lesson/detail");
-      out.writeInt(no);
+      out.flush();
+      
+      out.writeInt(prompt.inputInt("번호? "));
       out.flush();
 
       String response = in.readUTF();

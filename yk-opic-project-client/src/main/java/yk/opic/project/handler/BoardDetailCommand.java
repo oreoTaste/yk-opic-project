@@ -21,13 +21,14 @@ public class BoardDetailCommand implements Command {
 
     try {
 
-      int no = prompt.inputInt("번호? ");
       out.writeUTF("/board/detail");
+      int no = prompt.inputInt("번호? ");
       out.writeInt(no);
       out.flush();
 
       String response = in.readUTF();
       if(response.equalsIgnoreCase("OK")) {
+
         Board board = (Board) in.readObject();
 
         System.out.printf("번호 : %d\n", board.getNo());
@@ -35,7 +36,8 @@ public class BoardDetailCommand implements Command {
         System.out.printf("등록일 : %1$tF %1$tH:%1$tM:%1$tS\n", board.getDate());
         System.out.printf("조회수 : %d\n", board.getViewCount());
 
-      } else if(response.equalsIgnoreCase("FAIL")) {
+      } else {
+
         System.out.println(in.readUTF());
       }
     } catch(Exception e) {

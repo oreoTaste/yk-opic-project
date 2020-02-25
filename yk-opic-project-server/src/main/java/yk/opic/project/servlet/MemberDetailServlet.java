@@ -28,9 +28,11 @@ public class MemberDetailServlet implements Servlet {
     if(index == memberList.size()) {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 멤버정보가 없습니다.");
+      out.flush();
     } else {
       out.writeUTF("OK");
       out.writeObject(memberList.get(index));
+      out.flush();
     }
   }
 

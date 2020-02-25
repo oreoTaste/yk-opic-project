@@ -14,35 +14,9 @@ public class BoardListServlet implements Servlet {
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
-    try {
-      Board board = (Board) in.readObject();
-
-      int index = 0;
-      for(; index < boardList.size(); index++) {
-
-        if(boardList.get(index).getNo() == board.getNo()) {
-          break;
-        }
-
-      }
-
-      if(index == boardList.size()) {
-        boardList.add(board);
         out.writeUTF("OK");
-        out.flush();
-      } else {
-        out.writeUTF("FAIL");
-        out.flush();
-        out.writeUTF("같은 번호의 게시물이 있습니다.");
-        out.flush();
-      }
-    } catch(Exception e) {
-      out.writeUTF("FAIL");
-      out.flush();
-      out.writeUTF(e.getMessage());
-      out.flush();
-      e.printStackTrace();
-    }
+        out.reset();
+        out.writeObject(boardList);
   }
 
 }

@@ -28,9 +28,11 @@ public class LessonDetailServlet implements Servlet {
     if(index == lessonList.size()) {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 수업정보가 없습니다.");
+      out.flush();
     } else {
       out.writeUTF("OK");
       out.writeObject(lessonList.get(index));
+      out.flush();
     }
   }
 
