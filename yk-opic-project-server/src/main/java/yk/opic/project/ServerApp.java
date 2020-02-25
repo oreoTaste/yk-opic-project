@@ -74,6 +74,7 @@ public class ServerApp {
   }
 
 
+  @SuppressWarnings("unchecked")
   public void service() throws IOException {
 
     notifyApplicationInitialized();
