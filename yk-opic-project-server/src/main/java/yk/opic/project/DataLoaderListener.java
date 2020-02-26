@@ -10,7 +10,7 @@ public class DataLoaderListener implements ApplicationContextListener {
   BoardObjectFileDao boardDao;
   LessonObjectFileDao lessonDao;
   MemberObjectFileDao memberDao;
-  
+
   public DataLoaderListener() {
     boardDao = new BoardObjectFileDao("./board.ser");
     lessonDao = new LessonObjectFileDao("./lesson.ser");
@@ -21,8 +21,8 @@ public class DataLoaderListener implements ApplicationContextListener {
   public void contextInitialized(HashMap<String, Object> context) {
     System.out.println("로딩시작");
 
-    context.put("boardDao", lessonDao);
-    context.put("lessonDao", boardDao);
+    context.put("boardDao", boardDao);
+    context.put("lessonDao", lessonDao);
     context.put("memberDao", memberDao);
   }
 

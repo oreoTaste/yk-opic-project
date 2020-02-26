@@ -63,7 +63,6 @@ public class ClientApp {
     scanner.close();
   }
 
-
   private void processCommand(ObjectOutputStream out, ObjectInputStream in) {
     Queue<String> commandQueue = new LinkedList<>();
     Deque<String> commandStack = new ArrayDeque<>();

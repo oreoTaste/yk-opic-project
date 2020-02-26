@@ -31,7 +31,7 @@ public class Prompt {
     if(temp.length() == 0) {
       return value;
     }
-    return Integer.valueOf(input.nextLine());
+    return Integer.parseInt(input.nextLine());
   }
 
   public String inputString(String msg, String value) {

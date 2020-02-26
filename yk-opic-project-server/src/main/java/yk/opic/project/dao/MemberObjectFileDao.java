@@ -20,11 +20,11 @@ public class MemberObjectFileDao {
   public MemberObjectFileDao(String fileName) {
     this.file = new File(fileName);
     list = new LinkedList<>();
+    loadData();
   }
 
   @SuppressWarnings("unchecked")
   public void loadData() {
-    File file = new File("./member.ser");
     try (ObjectInputStream in = new ObjectInputStream(
         new BufferedInputStream(new FileInputStream(file)))) {
 
@@ -38,7 +38,6 @@ public class MemberObjectFileDao {
   }
 
   public void saveData() {
-    File file = new File("./member.ser");
     try(ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))){
 
@@ -52,7 +51,7 @@ public class MemberObjectFileDao {
 
   public int insert(Member member) throws Exception {
     int index = indexOf(member.getNo());
-    if(index < 0)
+    if(index == 0)
       return 0;
 
     list.add(member);
@@ -70,11 +69,11 @@ public class MemberObjectFileDao {
     saveData();
     return list.get(index);
   }
-  
+
   public List<Member> findAll() throws Exception {
     return list;
   }
-  
+
   public int delete(int no) throws Exception {
 
     int index = indexOf(no);
@@ -88,6 +87,28 @@ public class MemberObjectFileDao {
     saveData();
     System.out.println("회원을 삭제했습니다.");
     return 1;
+  }
+
+  public int update(Member member) throws Exception {
+
+    int index = indexOf(member.getNo());
+
+    if (index == -1) {
+      System.out.println("해당 회원을 찾을 수 없습니다.");
+      return 0;
+    }
+
+    Member oldMember = list.get(index);
+
+    if (member.equals(oldMember)) {
+      System.out.println("회원 변경을 취소했습니다.");
+      return 0;
+    } else {
+      list.set(index, member);
+      saveData();
+      System.out.println("회원을 변경했습니다.");
+      return 1;
+    }
   }
 
 

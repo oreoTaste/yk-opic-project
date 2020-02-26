@@ -29,10 +29,9 @@ public class BoardAddCommand implements Command {
 
     try {
       out.writeUTF("/board/add");
-      out.flush();
       out.writeObject(board);
       out.flush();
-      
+
       String response = in.readUTF();
       if(response.equalsIgnoreCase("OK")) {
         System.out.println("저장완료");

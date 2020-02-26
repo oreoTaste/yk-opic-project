@@ -2,14 +2,14 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import yk.opic.project.dao.MemberObjectFileDao;
 import yk.opic.project.domain.Member;
 
 public class MemberAddServlet implements Servlet {
-  List<Member> memberList;
+  MemberObjectFileDao memberDao;
 
-  public MemberAddServlet(List<Member> memberList) {
-    this.memberList = memberList;
+  public MemberAddServlet(MemberObjectFileDao memberDao) {
+    this.memberDao = memberDao;
   }
 
   @Override
@@ -17,28 +17,18 @@ public class MemberAddServlet implements Servlet {
     try {
       Member member = (Member) in.readObject();
 
-      int index = 0;
-      for(; index < memberList.size(); index++) {
+      int index = memberDao.insert(member);
 
-        if(memberList.get(index).getNo() == member.getNo()) {
-          break;
-        }
-
-      }
-
-      if(index == memberList.size()) {
-        memberList.add(member);
+      if(index > 0) {
         out.writeUTF("OK");
         out.flush();
       } else {
         out.writeUTF("FAIL");
-        out.flush();
         out.writeUTF("같은 번호의 멤버 정보가 있습니다.");
         out.flush();
       }
     } catch(Exception e) {
       out.writeUTF("FAIL");
-      out.flush();
       out.writeUTF(e.getMessage());
       out.flush();
       e.printStackTrace();

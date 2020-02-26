@@ -20,6 +20,7 @@ public class LessonObjectFileDao {
   public LessonObjectFileDao(String fileName) {
     this.file = new File(fileName);
     list = new LinkedList<>();
+    loadData();
   }
 
   @SuppressWarnings("unchecked")
@@ -40,6 +41,7 @@ public class LessonObjectFileDao {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))){
 
+      out.reset();
       out.writeObject(list);
       System.out.printf("총 %d개 수업정보를 저장하였습니다.\n", list.size());
 
@@ -47,8 +49,8 @@ public class LessonObjectFileDao {
       System.out.println("파일 저장 오류 : \n" + e.getMessage());
     }
   }
-  
-  
+
+
   public Lesson findByNo(int no) throws Exception {
     int index = indexOf(no);
 
@@ -56,13 +58,13 @@ public class LessonObjectFileDao {
       System.out.println("해당 수업을 찾을 수 없습니다.");
       return null;
     }
-      return list.get(index);
+    return list.get(index);
   }
 
   public List<Lesson> findAll() throws Exception {
-      return list;
+    return list;
   }
-  
+
   public int delete(int no) throws Exception {
     int index = indexOf(no);
 
@@ -76,18 +78,18 @@ public class LessonObjectFileDao {
     System.out.println("수업을 삭제했습니다.");
     return 1;
   }
-  
+
   public int insert(Lesson lesson) throws Exception {
     int index = indexOf(lesson.getNo());
-    if(index < 0)
+    if(index > -1)
       return 0;
-    
+
     list.add(lesson);
     saveData();
     return 1;
   }
-  
-  
+
+
   public int update(Lesson lesson) throws Exception {
     int index = indexOf(lesson.getNo());
 
@@ -103,12 +105,13 @@ public class LessonObjectFileDao {
       return 0;
     } else {
       list.set(index, lesson);
+      saveData();
       System.out.println("수업을 변경했습니다.");
       return 1;
     }
   }
-  
-  
+
+
 
   public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
@@ -117,5 +120,5 @@ public class LessonObjectFileDao {
     }
     return -1;
   }
-  
+
 }

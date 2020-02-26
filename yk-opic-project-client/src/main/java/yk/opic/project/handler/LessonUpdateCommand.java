@@ -22,7 +22,7 @@ public class LessonUpdateCommand implements Command {
     try {
       out.writeUTF("/lesson/detail");
       out.flush();
-      
+
       out.writeInt(prompt.inputInt("번호? "));
       out.flush();
 
@@ -57,7 +57,8 @@ public class LessonUpdateCommand implements Command {
             String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
             oldLesson.getTotalHour()));
 
-        newLesson.setDailyHour(prompt.inputInt(String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),
+        newLesson.setDailyHour(prompt.inputInt(
+            String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),
             oldLesson.getDailyHour()));
 
         if (newLesson.equals(oldLesson)) {

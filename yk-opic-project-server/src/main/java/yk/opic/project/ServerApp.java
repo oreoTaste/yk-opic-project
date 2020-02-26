@@ -25,6 +25,11 @@ import yk.opic.project.servlet.LessonDeleteServlet;
 import yk.opic.project.servlet.LessonDetailServlet;
 import yk.opic.project.servlet.LessonListServlet;
 import yk.opic.project.servlet.LessonUpdateServlet;
+import yk.opic.project.servlet.MemberAddServlet;
+import yk.opic.project.servlet.MemberDeleteServlet;
+import yk.opic.project.servlet.MemberDetailServlet;
+import yk.opic.project.servlet.MemberListServlet;
+import yk.opic.project.servlet.MemberUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
 // v32_6
@@ -32,7 +37,6 @@ public class ServerApp {
   Map<String, Servlet> servletMap;
 
   static Scanner scanner = new Scanner(System.in);
-
   static List<ApplicationContextListener> listeners = new ArrayList<>();
   static HashMap<String, Object> context = new LinkedHashMap<>();
 
@@ -66,15 +70,14 @@ public class ServerApp {
   }
 
 
-  @SuppressWarnings("unchecked")
   public void service() throws IOException {
 
     notifyApplicationInitialized();
-    
-    BoardObjectFileDao boardDao = new BoardObjectFileDao("./board.ser");
-    LessonObjectFileDao lessonDao = new LessonObjectFileDao("./lesson.ser");
-    MemberObjectFileDao memberDao = new MemberObjectFileDao("./member.ser");
-    
+
+    BoardObjectFileDao boardDao = (BoardObjectFileDao) context.get("boardDao");
+    LessonObjectFileDao lessonDao = (LessonObjectFileDao) context.get("lessonDao");
+    MemberObjectFileDao memberDao = (MemberObjectFileDao) context.get("memberDao");
+
     servletMap = new HashMap<>();
     servletMap.put("/board/add", new BoardAddServlet(boardDao));
     servletMap.put("/board/delete", new BoardDeleteServlet(boardDao));
@@ -88,14 +91,12 @@ public class ServerApp {
     servletMap.put("/lesson/list", new LessonListServlet(lessonDao));
     servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
 
-    /*
-    servletMap.put("/member/add", new MemberAddServlet(memberList));
-    servletMap.put("/member/delete", new MemberDeleteServlet(memberList));
-    servletMap.put("/member/detail", new MemberDetailServlet(memberList));
-    servletMap.put("/member/list", new MemberListServlet(memberList));
-    servletMap.put("/member/update", new MemberUpdateServlet(memberList));
-    */
-    
+    servletMap.put("/member/add", new MemberAddServlet(memberDao));
+    servletMap.put("/member/delete", new MemberDeleteServlet(memberDao));
+    servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
+    servletMap.put("/member/list", new MemberListServlet(memberDao));
+    servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
+
     try(ServerSocket serverSocket = new ServerSocket(9999)){
       System.out.println("서버 연결 완료");
 

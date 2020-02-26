@@ -16,10 +16,11 @@ public class BoardObjectFileDao {
 
   File file;
   List<Board> list;
-  
+
   public BoardObjectFileDao(String fileName) {
     this.file = new File(fileName);
     list = new LinkedList<>();
+    loadData();
   }
 
   @SuppressWarnings("unchecked")
@@ -50,15 +51,15 @@ public class BoardObjectFileDao {
 
   public int insert(Board board) throws Exception {
     int index = indexOf(board.getNo());
-    
+
     if(index <= 0)
       return 0;
 
-      list.add(board);
-      saveData();
-      return 1;
+    list.add(board);
+    saveData();
+    return 1;
   }
-  
+
   public Board findByNo(int no) throws Exception {
 
     int index = indexOf(no);
@@ -69,7 +70,7 @@ public class BoardObjectFileDao {
     }
     return list.get(index);
   }
-  
+
   public List<Board> findAll() throws Exception {
     return list;
   }
@@ -81,13 +82,13 @@ public class BoardObjectFileDao {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return 0;
     }
-    
+
     list.remove(index);
     saveData();
     System.out.println("게시글을 삭제했습니다.");
     return 1;
   }
-  
+
   public int update(Board board) throws Exception {
 
     int index = indexOf(board.getNo());
@@ -109,7 +110,7 @@ public class BoardObjectFileDao {
       return 1;
     }
   }
-  
+
 
   public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
@@ -118,5 +119,5 @@ public class BoardObjectFileDao {
     }
     return -1;
   }
-  
+
 }
