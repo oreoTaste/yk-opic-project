@@ -48,6 +48,6 @@ public abstract class AbstractObjectFileDao<T>{
     }
   }
 
-  abstract int indexOf(int no) throws Exception;
+  public abstract int indexOf(int no) throws Exception;
 
 }

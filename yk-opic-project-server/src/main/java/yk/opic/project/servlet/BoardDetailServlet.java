@@ -2,13 +2,13 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.json.BoardJsonFileDao;
+import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
 
 public class BoardDetailServlet implements Servlet {
-  BoardJsonFileDao boardDao;
+  BoardDao boardDao;
 
-  public BoardDetailServlet(BoardJsonFileDao boardDao) {
+  public BoardDetailServlet(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 

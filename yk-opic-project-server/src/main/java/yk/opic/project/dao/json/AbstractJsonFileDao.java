@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import com.google.gson.Gson;
 
-public abstract class AbstractJsonFileDao<T>{
+public abstract class AbstractJsonFileDao<T> {
 
   File file;
   List<T> list;
@@ -84,6 +84,6 @@ public abstract class AbstractJsonFileDao<T>{
     }
   }
 
-  abstract int indexOf(int no) throws Exception;
+  public abstract int indexOf(int no) throws Exception;
 
 }

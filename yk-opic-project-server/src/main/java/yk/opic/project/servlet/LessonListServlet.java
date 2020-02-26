@@ -2,12 +2,12 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.json.LessonJsonFileDao;
+import yk.opic.project.dao.LessonDao;
 
 public class LessonListServlet implements Servlet {
-  LessonJsonFileDao lessonDao;
+  LessonDao lessonDao;
 
-  public LessonListServlet(LessonJsonFileDao lessonDao) {
+  public LessonListServlet(LessonDao lessonDao) {
     this.lessonDao = lessonDao;
   }
 

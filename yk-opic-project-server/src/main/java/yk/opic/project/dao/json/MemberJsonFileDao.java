@@ -1,9 +1,10 @@
 package yk.opic.project.dao.json;
 
 import java.util.List;
+import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
 
-public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
+public class MemberJsonFileDao extends AbstractJsonFileDao<Member> implements MemberDao{
 
   public MemberJsonFileDao(String fileName) {
     super(fileName);
@@ -11,6 +12,7 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
   }
 
 
+  @Override
   public int insert(Member member) throws Exception {
     int index = indexOf(member.getNo());
     if(index == 0)
@@ -21,6 +23,7 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
     return 1;
   }
 
+  @Override
   public Member findByNo(int no) throws Exception {
     int index = indexOf(no);
 
@@ -32,10 +35,12 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
     return list.get(index);
   }
 
+  @Override
   public List<Member> findAll() throws Exception {
     return list;
   }
 
+  @Override
   public int delete(int no) throws Exception {
 
     int index = indexOf(no);
@@ -51,6 +56,7 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
     return 1;
   }
 
+  @Override
   public int update(Member member) throws Exception {
 
     int index = indexOf(member.getNo());
@@ -74,7 +80,7 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> {
   }
 
   @Override
-  protected int indexOf(int no) throws Exception {
+  public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)
         return i;

@@ -1,9 +1,10 @@
 package yk.opic.project.dao.json;
 
 import java.util.List;
+import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
 
-public class BoardJsonFileDao extends AbstractJsonFileDao<Board> {
+public class BoardJsonFileDao extends AbstractJsonFileDao<Board> implements BoardDao {
 
   public BoardJsonFileDao(String fileName) {
     super(fileName);
@@ -74,7 +75,7 @@ public class BoardJsonFileDao extends AbstractJsonFileDao<Board> {
   }
 
   @Override
-  protected int indexOf(int no) throws Exception {
+  public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)
         return i;

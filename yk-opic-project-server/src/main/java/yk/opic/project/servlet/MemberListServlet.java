@@ -2,12 +2,12 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.json.MemberJsonFileDao;
+import yk.opic.project.dao.MemberDao;
 
 public class MemberListServlet implements Servlet {
-  MemberJsonFileDao memberDao;
+  MemberDao memberDao;
 
-  public MemberListServlet(MemberJsonFileDao memberDao) {
+  public MemberListServlet(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

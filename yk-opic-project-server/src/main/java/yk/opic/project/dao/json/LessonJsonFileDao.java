@@ -1,9 +1,10 @@
 package yk.opic.project.dao.json;
 
 import java.util.List;
+import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
 
-public class LessonJsonFileDao extends AbstractJsonFileDao<Lesson> {
+public class LessonJsonFileDao extends AbstractJsonFileDao<Lesson> implements LessonDao {
 
   public LessonJsonFileDao(String fileName) {
     super(fileName);
@@ -72,7 +73,7 @@ public class LessonJsonFileDao extends AbstractJsonFileDao<Lesson> {
 
 
   @Override
-  protected int indexOf(int no) throws Exception {
+  public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)
         return i;

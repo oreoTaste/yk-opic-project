@@ -2,12 +2,12 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.json.BoardJsonFileDao;
+import yk.opic.project.dao.BoardDao;
 
 public class BoardDeleteServlet implements Servlet {
-  BoardJsonFileDao boardDao;
+  BoardDao boardDao;
 
-  public BoardDeleteServlet(BoardJsonFileDao boardDao) {
+  public BoardDeleteServlet(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 

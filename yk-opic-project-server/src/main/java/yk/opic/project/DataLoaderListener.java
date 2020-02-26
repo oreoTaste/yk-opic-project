@@ -2,14 +2,17 @@ package yk.opic.project;
 
 import java.util.HashMap;
 import yk.opic.project.context.ApplicationContextListener;
+import yk.opic.project.dao.BoardDao;
+import yk.opic.project.dao.LessonDao;
+import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.json.BoardJsonFileDao;
 import yk.opic.project.dao.json.LessonJsonFileDao;
 import yk.opic.project.dao.json.MemberJsonFileDao;
 
 public class DataLoaderListener implements ApplicationContextListener {
-  BoardJsonFileDao boardDao;
-  LessonJsonFileDao lessonDao;
-  MemberJsonFileDao memberDao;
+  BoardDao boardDao;
+  LessonDao lessonDao;
+  MemberDao memberDao;
 
   public DataLoaderListener() {
     boardDao = new BoardJsonFileDao("./board.json");

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import yk.opic.project.domain.Board;
 
-public class BoardObjectFileDao extends AbstractObjectFileDao<Board> {
+public class BoardObjectFileDao extends AbstractObjectFileDao<Board> implements BoardDao {
 
   public BoardObjectFileDao(String fileName) {
     super(fileName);
