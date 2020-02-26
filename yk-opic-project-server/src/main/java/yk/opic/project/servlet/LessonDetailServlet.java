@@ -2,36 +2,32 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import yk.opic.project.dao.LessonObjectFileDao;
 import yk.opic.project.domain.Lesson;
 
 public class LessonDetailServlet implements Servlet {
-  List<Lesson> lessonList;
+  LessonObjectFileDao lessonDao;
 
-  public LessonDetailServlet(List<Lesson> lessonList) {
-    this.lessonList = lessonList;
+  public LessonDetailServlet(LessonObjectFileDao lessonDao) {
+    this.lessonDao = lessonDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     int no = in.readInt();
 
-    int index = 0;
-    for(; index < lessonList.size(); index++) {
+    Lesson lesson = lessonDao.findByNo(no);
+    
 
-      if(lessonList.get(index).getNo() == no) {
-        break;
-      }
-
-    }
-
-    if(index == lessonList.size()) {
+    if(lesson == null) {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 수업정보가 없습니다.");
       out.flush();
     } else {
       out.writeUTF("OK");
-      out.writeObject(lessonList.get(index));
+      out.flush();
+      out.reset();
+      out.writeObject(lesson);
       out.flush();
     }
   }

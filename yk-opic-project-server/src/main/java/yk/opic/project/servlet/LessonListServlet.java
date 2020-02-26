@@ -2,21 +2,20 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
-import yk.opic.project.domain.Lesson;
+import yk.opic.project.dao.LessonObjectFileDao;
 
 public class LessonListServlet implements Servlet {
-  List<Lesson> lessonList;
+  LessonObjectFileDao lessonDao;
 
-  public LessonListServlet(List<Lesson> lessonList) {
-    this.lessonList = lessonList;
+  public LessonListServlet(LessonObjectFileDao lessonDao) {
+    this.lessonDao = lessonDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     out.writeUTF("OK");
     out.reset();
-    out.writeObject(lessonList);
+    out.writeObject(lessonDao.findAll());
   }
 
 }

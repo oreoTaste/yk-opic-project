@@ -20,6 +20,11 @@ import yk.opic.project.servlet.BoardDeleteServlet;
 import yk.opic.project.servlet.BoardDetailServlet;
 import yk.opic.project.servlet.BoardListServlet;
 import yk.opic.project.servlet.BoardUpdateServlet;
+import yk.opic.project.servlet.LessonAddServlet;
+import yk.opic.project.servlet.LessonDeleteServlet;
+import yk.opic.project.servlet.LessonDetailServlet;
+import yk.opic.project.servlet.LessonListServlet;
+import yk.opic.project.servlet.LessonUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
 // v32_6
@@ -77,13 +82,13 @@ public class ServerApp {
     servletMap.put("/board/list", new BoardListServlet(boardDao));
     servletMap.put("/board/update", new BoardUpdateServlet(boardDao));
 
-    /*
-    servletMap.put("/lesson/add", new LessonAddServlet(lessonList));
-    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonList));
-    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonList));
-    servletMap.put("/lesson/list", new LessonListServlet(lessonList));
-    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonList));
+    servletMap.put("/lesson/add", new LessonAddServlet(lessonDao));
+    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));
+    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonDao));
+    servletMap.put("/lesson/list", new LessonListServlet(lessonDao));
+    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
 
+    /*
     servletMap.put("/member/add", new MemberAddServlet(memberList));
     servletMap.put("/member/delete", new MemberDeleteServlet(memberList));
     servletMap.put("/member/detail", new MemberDetailServlet(memberList));

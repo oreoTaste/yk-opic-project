@@ -88,6 +88,27 @@ public class LessonObjectFileDao {
   }
   
   
+  public int update(Lesson lesson) throws Exception {
+    int index = indexOf(lesson.getNo());
+
+    if (index == -1) {
+      System.out.println("해당 수업을 찾을 수 없습니다.");
+      return 0;
+    }
+
+    Lesson oldLesson = list.get(index);
+
+    if (lesson.equals(oldLesson)) {
+      System.out.println("수업 변경을 취소했습니다.");
+      return 0;
+    } else {
+      list.set(index, lesson);
+      System.out.println("수업을 변경했습니다.");
+      return 1;
+    }
+  }
+  
+  
 
   public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
