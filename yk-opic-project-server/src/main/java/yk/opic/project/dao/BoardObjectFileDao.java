@@ -2,7 +2,6 @@ package yk.opic.project.dao;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,17 +11,14 @@ import java.util.LinkedList;
 import java.util.List;
 import yk.opic.project.domain.Board;
 
-public class BoardObjectFileDao {
-
-  File file;
-  List<Board> list;
+public class BoardObjectFileDao extends AbstractObjectFileDao<Board> {
 
   public BoardObjectFileDao(String fileName) {
-    this.file = new File(fileName);
-    list = new LinkedList<>();
+    super(fileName);
     loadData();
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void loadData() {
     try (ObjectInputStream in = new ObjectInputStream(
@@ -37,6 +33,7 @@ public class BoardObjectFileDao {
     }
   }
 
+  @Override
   public void saveData() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -111,7 +108,7 @@ public class BoardObjectFileDao {
     }
   }
 
-
+  @Override
   public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)

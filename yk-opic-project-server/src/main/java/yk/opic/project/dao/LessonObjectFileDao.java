@@ -2,27 +2,22 @@ package yk.opic.project.dao;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import yk.opic.project.domain.Lesson;
 
-public class LessonObjectFileDao {
-
-  File file;
-  List<Lesson> list;
+public class LessonObjectFileDao extends AbstractObjectFileDao<Lesson> {
 
   public LessonObjectFileDao(String fileName) {
-    this.file = new File(fileName);
-    list = new LinkedList<>();
+    super(fileName);
     loadData();
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public void loadData() {
     try (ObjectInputStream in = new ObjectInputStream(
@@ -37,6 +32,7 @@ public class LessonObjectFileDao {
     }
   }
 
+  @Override
   public void saveData() {
     try (ObjectOutputStream out = new ObjectOutputStream(
         new BufferedOutputStream(new FileOutputStream(file)))){
@@ -112,7 +108,7 @@ public class LessonObjectFileDao {
   }
 
 
-
+  @Override
   public int indexOf(int no) throws Exception {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no)
