@@ -1,20 +1,15 @@
 package yk.opic.project.handler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Date;
+import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
 import yk.opic.project.util.Prompt;
 
 public class BoardAddCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  BoardDao boardDao;
   Prompt prompt;
 
-  public BoardAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public BoardAddCommand(BoardDao boardDao, Prompt prompt) {
     this.prompt = prompt;
   }
 
@@ -28,19 +23,11 @@ public class BoardAddCommand implements Command {
     board.setViewCount(0);
 
     try {
-      out.writeUTF("/board/add");
-      out.writeObject(board);
-      out.flush();
-
-      String response = in.readUTF();
-      if(response.equalsIgnoreCase("OK")) {
-        System.out.println("저장완료");
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+      boardDao.insert(board);
+    } catch (Exception e) {
+      e.getMessage();
     }
+
   }
 
 }

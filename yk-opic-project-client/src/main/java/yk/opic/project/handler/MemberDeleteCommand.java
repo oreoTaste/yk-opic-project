@@ -1,18 +1,14 @@
 package yk.opic.project.handler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import yk.opic.project.dao.MemberDao;
 import yk.opic.project.util.Prompt;
 
 public class MemberDeleteCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  MemberDao memberDao;
   Prompt prompt;
 
-  public MemberDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public MemberDeleteCommand(MemberDao memberDao, Prompt prompt) {
+    this.memberDao = memberDao;
     this.prompt = prompt;
   }
 
@@ -21,19 +17,10 @@ public class MemberDeleteCommand implements Command {
 
     try {
       int no = prompt.inputInt("번호? ");
-      out.writeUTF("/member/delete");
-
-      out.writeInt(no);
-      out.flush();
-
-      String response = in.readUTF();
-      if(response.equalsIgnoreCase("OK")) {
+      if(memberDao.delete(no) == 1)
         System.out.println("게시글을 삭제했습니다.");
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
-      }
-
-    } catch (IOException e) {
+    } catch (Exception e) {
+      System.out.println("게시물 삭제 실패");
       e.printStackTrace();
     }
   }

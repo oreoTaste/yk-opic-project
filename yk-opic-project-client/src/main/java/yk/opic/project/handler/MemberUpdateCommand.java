@@ -1,76 +1,54 @@
 package yk.opic.project.handler;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Date;
+import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
 import yk.opic.project.util.Prompt;
 
 public class MemberUpdateCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  MemberDao memberDao;
   Prompt prompt;
 
-  public MemberUpdateCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public MemberUpdateCommand(MemberDao memberDao, Prompt prompt) {
+    this.memberDao = memberDao;
     this.prompt = prompt;
   }
-
-
 
   @Override
   public void execute() {
 
     try {
-      out.writeUTF("/member/detail");
-      out.flush();
-      
-      out.writeInt(prompt.inputInt("번호? "));
-      out.flush();
+      Member oldMember = memberDao.findByNo(prompt.inputInt("번호? "));
 
-      String response = in.readUTF();
+      Member newMember = new Member();
 
-      if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
-      } else if(response.equalsIgnoreCase("OK")) {
+      newMember.setNo(oldMember.getNo());
 
-        Member oldMember = (Member) in.readObject();
-        Member newMember = new Member();
+      newMember.setName(
+          prompt.inputString(String.format("이름? (%s) ", oldMember.getName()), oldMember.getName()));
 
-        newMember.setNo(oldMember.getNo());
+      newMember.setEmail(prompt.inputString(String.format("이메일? (%s) ", oldMember.getEmail()),
+          oldMember.getEmail()));
 
-        newMember.setName(
-            prompt.inputString(String.format("이름? (%s) ", oldMember.getName()), oldMember.getName()));
+      newMember.setPassword(prompt.inputString(String.format("비밀번호? (%s) ", oldMember.getPassword()),
+          oldMember.getPassword()));
 
-        newMember.setEmail(prompt.inputString(String.format("이메일? (%s) ", oldMember.getEmail()),
-            oldMember.getEmail()));
+      newMember.setPhoto(
+          prompt.inputString(String.format("사진? (%s) ", oldMember.getPhoto()), oldMember.getPhoto()));
 
-        newMember.setPassword(prompt.inputString(String.format("비밀번호? (%s) ", oldMember.getPassword()),
-            oldMember.getPassword()));
+      newMember.setTel(
+          prompt.inputString(String.format("전화? (%s) ", oldMember.getTel()), oldMember.getTel()));
 
-        newMember.setPhoto(
-            prompt.inputString(String.format("사진? (%s) ", oldMember.getPhoto()), oldMember.getPhoto()));
+      newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
 
-        newMember.setTel(
-            prompt.inputString(String.format("전화? (%s) ", oldMember.getTel()), oldMember.getTel()));
+      if (newMember.equals(oldMember)) {
+        System.out.println("멤버 변경을 취소했습니다.");
+      } else {
 
-        newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
-
-        if (newMember.equals(oldMember)) {
-          System.out.println("멤버 변경을 취소했습니다.");
-        } else {
-
-          out.writeUTF("/member/update");
-          out.writeObject(newMember);
-          out.flush();
-
-          String reply = in.readUTF();
-          if(reply.equalsIgnoreCase("OK")) {
-            System.out.println("멤버 변경을 완료하였습니다.");
-          } else if(reply.equalsIgnoreCase("FAIL")) {
-            System.out.println(in.readUTF());
-          }
+        if(memberDao.update(newMember) == 1)
+          System.out.println("멤버 변경을 완료하였습니다.");
+        else {
+          System.out.println("멤버 변경 실패");
         }
       }
     } catch(Exception e) {

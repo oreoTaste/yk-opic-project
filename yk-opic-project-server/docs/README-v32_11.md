@@ -13,9 +13,9 @@
 ## 실습 소스 및 결과
 
 - src/main/java/com/eomcs/lms/dao/proxy 패키지 생성
-- src/main/java/com/eomcs/lms/dao/proxy/BoardDaoProxy.java 인터페이스 추가
-- src/main/java/com/eomcs/lms/dao/proxy/LessonDaoProxy.java 인터페이스 추가
-- src/main/java/com/eomcs/lms/dao/proxy/MemberDaoProxy.java 인터페이스 추가
+- src/main/java/com/eomcs/lms/dao/proxy/BoardDaoProxy.java 클래스 추가
+- src/main/java/com/eomcs/lms/dao/proxy/LessonDaoProxy.java 클래스 추가
+- src/main/java/com/eomcs/lms/dao/proxy/MemberDaoProxy.java 클래스 추가
 
 
 ## 실습  

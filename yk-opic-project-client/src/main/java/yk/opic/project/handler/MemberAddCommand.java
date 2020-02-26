@@ -1,20 +1,16 @@
 package yk.opic.project.handler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Date;
+import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
 import yk.opic.project.util.Prompt;
 
 public class MemberAddCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  MemberDao memberDao;
   Prompt prompt;
 
-  public MemberAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public MemberAddCommand(MemberDao memberDao, Prompt prompt) {
+    this.memberDao = memberDao;
     this.prompt = prompt;
   }
   @Override
@@ -31,18 +27,9 @@ public class MemberAddCommand implements Command {
     member.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     try {
-      out.writeUTF("/member/add");
-      out.writeObject(member);
-      out.flush();
-
-      String response = in.readUTF();
-      if(response.equalsIgnoreCase("OK")) {
-        System.out.println("저장완료");
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+      memberDao.insert(member);
+    } catch (Exception e) {
+      System.out.println("멤버 입력중 오류발생");
     }
   }
 
