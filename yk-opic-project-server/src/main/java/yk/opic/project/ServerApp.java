@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import yk.opic.project.context.ApplicationContextListener;
-import yk.opic.project.dao.BoardObjectFileDao;
-import yk.opic.project.dao.LessonObjectFileDao;
-import yk.opic.project.dao.MemberObjectFileDao;
+import yk.opic.project.dao.json.BoardJsonFileDao;
+import yk.opic.project.dao.json.LessonJsonFileDao;
+import yk.opic.project.dao.json.MemberJsonFileDao;
 import yk.opic.project.servlet.BoardAddServlet;
 import yk.opic.project.servlet.BoardDeleteServlet;
 import yk.opic.project.servlet.BoardDetailServlet;
@@ -74,9 +74,9 @@ public class ServerApp {
 
     notifyApplicationInitialized();
 
-    BoardObjectFileDao boardDao = (BoardObjectFileDao) context.get("boardDao");
-    LessonObjectFileDao lessonDao = (LessonObjectFileDao) context.get("lessonDao");
-    MemberObjectFileDao memberDao = (MemberObjectFileDao) context.get("memberDao");
+    BoardJsonFileDao boardDao = (BoardJsonFileDao) context.get("boardDao");
+    LessonJsonFileDao lessonDao = (LessonJsonFileDao) context.get("lessonDao");
+    MemberJsonFileDao memberDao = (MemberJsonFileDao) context.get("memberDao");
 
     servletMap = new HashMap<>();
     servletMap.put("/board/add", new BoardAddServlet(boardDao));

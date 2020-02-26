@@ -2,13 +2,13 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.BoardObjectFileDao;
+import yk.opic.project.dao.json.BoardJsonFileDao;
 import yk.opic.project.domain.Board;
 
 public class BoardUpdateServlet implements Servlet {
-  BoardObjectFileDao boardDao;
+  BoardJsonFileDao boardDao;
 
-  public BoardUpdateServlet(BoardObjectFileDao boardDao) {
+  public BoardUpdateServlet(BoardJsonFileDao boardDao) {
     this.boardDao = boardDao;
   }
 
@@ -18,7 +18,7 @@ public class BoardUpdateServlet implements Servlet {
     board = (Board) in.readObject();
 
     int index = boardDao.update(board);
-    
+
     if(index == 0) {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 게시물이 없습니다.");

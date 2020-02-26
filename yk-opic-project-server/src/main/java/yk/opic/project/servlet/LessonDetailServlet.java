@@ -2,13 +2,13 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.LessonObjectFileDao;
+import yk.opic.project.dao.json.LessonJsonFileDao;
 import yk.opic.project.domain.Lesson;
 
 public class LessonDetailServlet implements Servlet {
-  LessonObjectFileDao lessonDao;
+  LessonJsonFileDao lessonDao;
 
-  public LessonDetailServlet(LessonObjectFileDao lessonDao) {
+  public LessonDetailServlet(LessonJsonFileDao lessonDao) {
     this.lessonDao = lessonDao;
   }
 
@@ -17,7 +17,7 @@ public class LessonDetailServlet implements Servlet {
     int no = in.readInt();
 
     Lesson lesson = lessonDao.findByNo(no);
-    
+
 
     if(lesson == null) {
       out.writeUTF("FAIL");

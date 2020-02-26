@@ -2,13 +2,13 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.MemberObjectFileDao;
+import yk.opic.project.dao.json.MemberJsonFileDao;
 import yk.opic.project.domain.Member;
 
 public class MemberUpdateServlet implements Servlet {
-  MemberObjectFileDao memberDao;
+  MemberJsonFileDao memberDao;
 
-  public MemberUpdateServlet(MemberObjectFileDao memberDao) {
+  public MemberUpdateServlet(MemberJsonFileDao memberDao) {
     this.memberDao = memberDao;
   }
   @Override

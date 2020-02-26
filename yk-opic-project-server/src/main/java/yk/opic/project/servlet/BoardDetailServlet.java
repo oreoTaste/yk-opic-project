@@ -2,13 +2,13 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.BoardObjectFileDao;
+import yk.opic.project.dao.json.BoardJsonFileDao;
 import yk.opic.project.domain.Board;
 
 public class BoardDetailServlet implements Servlet {
-  BoardObjectFileDao boardDao;
+  BoardJsonFileDao boardDao;
 
-  public BoardDetailServlet(BoardObjectFileDao boardDao) {
+  public BoardDetailServlet(BoardJsonFileDao boardDao) {
     this.boardDao = boardDao;
   }
 
@@ -16,7 +16,7 @@ public class BoardDetailServlet implements Servlet {
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
 
     try {
-      
+
       int no = in.readInt();
       Board board = boardDao.findByNo(no);
 

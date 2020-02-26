@@ -2,20 +2,20 @@ package yk.opic.project.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import yk.opic.project.dao.LessonObjectFileDao;
+import yk.opic.project.dao.json.LessonJsonFileDao;
 import yk.opic.project.domain.Lesson;
 
 public class LessonAddServlet implements Servlet {
-  LessonObjectFileDao lessonDao;
+  LessonJsonFileDao lessonDao;
 
-  public LessonAddServlet(LessonObjectFileDao lessonDao) {
+  public LessonAddServlet(LessonJsonFileDao lessonDao) {
     this.lessonDao = lessonDao;
   }
 
   @Override
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     try {
-      
+
       Lesson lesson = (Lesson) in.readObject();
       int index = lessonDao.insert(lesson);
 
