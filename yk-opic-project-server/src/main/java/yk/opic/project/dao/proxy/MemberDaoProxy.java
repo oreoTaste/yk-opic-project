@@ -24,10 +24,12 @@ public class MemberDaoProxy implements MemberDao {
 
     String response = in.readUTF();
     if(response.equalsIgnoreCase("OK")) {
+      return 1;
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 1;
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -40,9 +42,10 @@ public class MemberDaoProxy implements MemberDao {
     if(response.equalsIgnoreCase("OK")) {
       return (Member) in.readObject();
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return null;
     }
-    return null;
+    throw new Exception(in.readUTF());
   }
 
   @SuppressWarnings("unchecked")
@@ -56,9 +59,10 @@ public class MemberDaoProxy implements MemberDao {
     if(response.equalsIgnoreCase("OK")) {
       return (List<Member>) in.readObject();
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return null;
     }
-    return null;
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -69,10 +73,12 @@ public class MemberDaoProxy implements MemberDao {
 
     String response = in.readUTF();
     if(response.equalsIgnoreCase("OK")) {
+      return 1;
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 1;
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -85,9 +91,10 @@ public class MemberDaoProxy implements MemberDao {
     if(reply.equalsIgnoreCase("OK")) {
       return 1;
     } else if(reply.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 0;
+    throw new Exception(in.readUTF());
   }
 
 }

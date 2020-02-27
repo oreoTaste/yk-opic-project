@@ -32,7 +32,6 @@ import yk.opic.project.servlet.MemberListServlet;
 import yk.opic.project.servlet.MemberUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
-// v32_6
 public class ServerApp {
   Map<String, Servlet> servletMap;
 

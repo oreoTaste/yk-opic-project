@@ -32,6 +32,8 @@ public class MemberDetailCommand implements Command {
         System.out.printf("사진: %s\n", member.getPhoto());
         System.out.printf("전화: %s\n", member.getTel());
         System.out.printf("가입일: %1$tF %1$tH:%1$tM:%1$tS\n", member.getRegisteredDate());
+      } else {
+
       }
     } catch(Exception e) {
       System.out.println("멤버 조회 실패");

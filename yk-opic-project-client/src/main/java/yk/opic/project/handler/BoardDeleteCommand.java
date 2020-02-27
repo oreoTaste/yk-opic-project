@@ -17,9 +17,16 @@ public class BoardDeleteCommand implements Command {
 
     try {
       int no = prompt.inputInt("번호? ");
-      boardDao.delete(no);
+      int index = boardDao.delete(no);
+
+      if(index > 0) {
+        System.out.println("게시글을 삭제했습니다.");
+      } else {
+
+      }
 
     } catch (Exception e) {
+      System.out.println("게시글 삭제중 오류발생!");
       e.printStackTrace();
     }
 

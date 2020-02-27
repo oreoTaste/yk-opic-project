@@ -24,20 +24,25 @@ public class MemberUpdateCommand implements Command {
 
       newMember.setNo(oldMember.getNo());
 
-      newMember.setName(
-          prompt.inputString(String.format("이름? (%s) ", oldMember.getName()), oldMember.getName()));
+      newMember.setName(prompt.inputString(
+          String.format("이름? (%s) ", oldMember.getName()),
+          oldMember.getName()));
 
-      newMember.setEmail(prompt.inputString(String.format("이메일? (%s) ", oldMember.getEmail()),
+      newMember.setEmail(prompt.inputString(
+          String.format("이메일? (%s) ", oldMember.getEmail()),
           oldMember.getEmail()));
 
-      newMember.setPassword(prompt.inputString(String.format("비밀번호? (%s) ", oldMember.getPassword()),
+      newMember.setPassword(prompt.inputString(
+          String.format("비밀번호? (%s) ", oldMember.getPassword()),
           oldMember.getPassword()));
 
-      newMember.setPhoto(
-          prompt.inputString(String.format("사진? (%s) ", oldMember.getPhoto()), oldMember.getPhoto()));
+      newMember.setPhoto(prompt.inputString(
+          String.format("사진? (%s) ", oldMember.getPhoto()),
+          oldMember.getPhoto()));
 
-      newMember.setTel(
-          prompt.inputString(String.format("전화? (%s) ", oldMember.getTel()), oldMember.getTel()));
+      newMember.setTel(prompt.inputString(
+          String.format("전화? (%s) ", oldMember.getTel()),
+          oldMember.getTel()));
 
       newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
 
@@ -45,14 +50,13 @@ public class MemberUpdateCommand implements Command {
         System.out.println("멤버 변경을 취소했습니다.");
       } else {
 
-        if(memberDao.update(newMember) == 1)
+        if(memberDao.update(newMember) > 0)
           System.out.println("멤버 변경을 완료하였습니다.");
         else {
           System.out.println("멤버 변경 실패");
         }
       }
     } catch(Exception e) {
-      e.printStackTrace();
     }
   }
 

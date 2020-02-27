@@ -27,7 +27,11 @@ public class MemberAddCommand implements Command {
     member.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     try {
-      memberDao.insert(member);
+      int index = memberDao.insert(member);
+      if(index > 0) {
+        System.out.println("멤버 정보를 추가하였습니다.");
+      } else
+        System.out.println("같은 멤버가 존재합니다.");
     } catch (Exception e) {
       System.out.println("멤버 입력중 오류발생");
     }

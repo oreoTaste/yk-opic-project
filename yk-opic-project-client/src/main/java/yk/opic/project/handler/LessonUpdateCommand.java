@@ -78,7 +78,7 @@ public class LessonUpdateCommand implements Command {
         }
       }
     } catch(Exception e) {
-      e.printStackTrace();
+      System.out.println("수업정보 변경중 오류발생!");
     }
   }
 

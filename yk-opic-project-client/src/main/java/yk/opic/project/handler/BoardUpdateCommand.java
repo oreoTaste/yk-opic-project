@@ -36,10 +36,14 @@ public class BoardUpdateCommand implements Command {
       if (newBoard.equals(oldBoard)) {
         System.out.println("게시글 변경을 취소했습니다.");
       } else {
-        boardDao.update(newBoard);
+        int index = boardDao.update(newBoard);
+
+        if(index > 0) {
+          System.out.println("게시글을 변경했습니다.");
+        } else
+          System.out.println("게시글 변경을 취소했습니다.");
       }
     } catch(Exception e) {
-      e.printStackTrace();
     }
 
 

@@ -19,7 +19,7 @@ public class BoardAddServlet implements Servlet {
       Board board = (Board) in.readObject();
       int index = boardDao.insert(board);
 
-      if(index >= 0) {
+      if(index > 0) {
         out.writeUTF("OK");
         out.flush();
       } else {

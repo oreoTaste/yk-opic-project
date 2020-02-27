@@ -17,10 +17,13 @@ public class MemberDeleteCommand implements Command {
 
     try {
       int no = prompt.inputInt("번호? ");
-      if(memberDao.delete(no) == 1)
-        System.out.println("게시글을 삭제했습니다.");
+      if(memberDao.delete(no) > 0)
+        System.out.println("멤버정보를 삭제했습니다.");
+      else {
+
+      }
     } catch (Exception e) {
-      System.out.println("게시물 삭제 실패");
+      System.out.println("멤버정보 삭제 실패");
       e.printStackTrace();
     }
   }

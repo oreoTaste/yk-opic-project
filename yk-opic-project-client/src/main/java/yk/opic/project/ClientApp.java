@@ -33,7 +33,6 @@ import yk.opic.project.handler.MemberListCommand;
 import yk.opic.project.handler.MemberUpdateCommand;
 import yk.opic.project.util.Prompt;
 
-//v32_4
 public class ClientApp {
   static Scanner scanner = new Scanner(System.in);
   static Prompt prompt = new Prompt(scanner);

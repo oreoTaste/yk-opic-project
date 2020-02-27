@@ -20,15 +20,18 @@ public class BoardDaoProxy implements BoardDao {
   public int insert(Board board) throws Exception {
 
     out.writeUTF("/board/add");
+    out.reset();
     out.writeObject(board);
     out.flush();
 
     String response = in.readUTF();
     if(response.equalsIgnoreCase("OK")) {
+      return 1;
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 1;
+    throw new Exception(in.readUTF());
   }
 
   @SuppressWarnings("unchecked")
@@ -41,9 +44,10 @@ public class BoardDaoProxy implements BoardDao {
     if(response.equalsIgnoreCase("OK")) {
       return (List<Board>) in.readObject();
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return null;
     }
-    return null;
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -55,10 +59,11 @@ public class BoardDaoProxy implements BoardDao {
     String response = in.readUTF();
     if(response.equalsIgnoreCase("OK")) {
       return (Board) in.readObject();
-
-    } else {
-      throw new Exception(in.readUTF());
+    } else if(response.equalsIgnoreCase("FAIL")){
+      System.out.println(in.readUTF());
+      return null;
     }
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -69,12 +74,12 @@ public class BoardDaoProxy implements BoardDao {
 
     String reply = in.readUTF();
     if(reply.equalsIgnoreCase("OK")) {
-      System.out.println("게시글 변경을 완료하였습니다.");
       return 1;
     } else if(reply.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 0;
+    throw new Exception(in.readUTF());
   }
 
   @Override
@@ -85,10 +90,12 @@ public class BoardDaoProxy implements BoardDao {
 
     String response = in.readUTF();
     if(response.equalsIgnoreCase("OK")) {
+      return 1;
     } else if(response.equalsIgnoreCase("FAIL")) {
-      throw new Exception(in.readUTF());
+      System.out.println(in.readUTF());
+      return 0;
     }
-    return 1;
+    throw new Exception(in.readUTF());
   }
 
 }
