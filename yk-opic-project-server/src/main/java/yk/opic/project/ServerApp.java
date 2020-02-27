@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
@@ -33,11 +32,9 @@ import yk.opic.project.servlet.MemberUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
 public class ServerApp {
-  Map<String, Servlet> servletMap;
-
-  static Scanner scanner = new Scanner(System.in);
-  static List<ApplicationContextListener> listeners = new ArrayList<>();
-  static HashMap<String, Object> context = new LinkedHashMap<>();
+  Map<String, Servlet> servletMap = new HashMap<>();
+  List<ApplicationContextListener> listeners = new ArrayList<>();
+  HashMap<String, Object> context = new LinkedHashMap<>();
 
   private void addApplicationContextListener(ApplicationContextListener listener) {
     listeners.add(listener);
@@ -48,13 +45,13 @@ public class ServerApp {
     listeners.remove(listener);
   }
 
-  private static void notifyApplicationInitialized() {
+  private void notifyApplicationInitialized() {
     for(ApplicationContextListener list : listeners) {
       list.contextInitialized(context);
     }
   }
 
-  private static void notifyApplicationDestroyed() {
+  private void notifyApplicationDestroyed() {
     for(ApplicationContextListener list : listeners) {
       list.contextDestroyed(context);
     }
@@ -77,7 +74,6 @@ public class ServerApp {
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
     MemberDao memberDao = (MemberDao) context.get("memberDao");
 
-    servletMap = new HashMap<>();
     servletMap.put("/board/add", new BoardAddServlet(boardDao));
     servletMap.put("/board/delete", new BoardDeleteServlet(boardDao));
     servletMap.put("/board/detail", new BoardDetailServlet(boardDao));
@@ -101,8 +97,10 @@ public class ServerApp {
 
       while(true) {
         Socket socket = serverSocket.accept();
-        System.out.println("...클라이언트 접속 대기");
-        processRequest(socket);
+        System.out.println("...클라이언트 접속!");
+        if(processRequest(socket) == 9) {
+          break;
+        }
         System.out.println("=========================");
       }
 
@@ -114,47 +112,46 @@ public class ServerApp {
   }
 
 
-  private void processRequest(Socket clientSocket) throws Exception {
+  private int processRequest(Socket clientSocket) throws Exception {
 
     try(Socket socket = clientSocket;
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
-      while(true) {
-        String request = in.readUTF();
+      String request = in.readUTF();
 
-        if(request.equalsIgnoreCase("quit") || request.equalsIgnoreCase("/server/stop")) {
-          break;
-        }
-
-
-
-        Servlet servlet = servletMap.get(request);
-
-        if(servlet == null) {
-          out.writeUTF("FAIL");
-          out.flush();
-          out.writeUTF("요청한 명령을 처리할 수 없습니다.");
-          out.flush();
-        } else {
-          try {
-            servlet.service(in, out);
-          } catch (Exception e) {
-            out.writeUTF("FAIL");
-            out.flush();
-            out.writeUTF(e.getMessage());
-            out.flush();
-
-            System.out.println("클라이언트 요청 처리 중 오류 발생:");
-            e.printStackTrace();
-          }
-        }
-
+      if(request.equalsIgnoreCase("/server/stop")) {
+        return 9;
       }
 
+      Servlet servlet = servletMap.get(request);
+
+      if(servlet == null) {
+        notFound(out);
+      } else {
+        try {
+          servlet.service(in, out);
+        } catch (Exception e) {
+          out.writeUTF("FAIL");
+          out.writeUTF(e.getMessage());
+          out.flush();
+
+          System.out.println("클라이언트 요청 처리 중 오류 발생:");
+          e.printStackTrace();
+        }
+      }
+
+      return 0;
     } catch (Exception e) {
       e.printStackTrace();
+      return -1;
     }
+  }
+
+  private void notFound(ObjectOutputStream out) throws Exception {
+    out.writeUTF("FAIL");
+    out.writeUTF("요청한 명령을 처리할 수 없습니다.");
+    out.flush();
   }
 
 

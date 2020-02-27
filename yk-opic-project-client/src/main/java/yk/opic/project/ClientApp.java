@@ -1,9 +1,5 @@
 package yk.opic.project;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -15,6 +11,7 @@ import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.proxy.BoardDaoProxy;
+import yk.opic.project.dao.proxy.DaoProxyHelper;
 import yk.opic.project.dao.proxy.LessonDaoProxy;
 import yk.opic.project.dao.proxy.MemberDaoProxy;
 import yk.opic.project.handler.BoardAddCommand;
@@ -39,6 +36,17 @@ public class ClientApp {
   static Scanner scanner = new Scanner(System.in);
   static Prompt prompt = new Prompt(scanner);
 
+  Queue<String> commandQueue;
+  Deque<String> commandStack;
+
+  String serverAddr = null;
+  int portNumber = 0;
+
+  public ClientApp() {
+    commandQueue = new LinkedList<>();
+    commandStack = new ArrayDeque<>();
+  }
+
   public static void main(String[] args) throws Exception {
 
     System.out.println("클라이언트 시작");
@@ -49,69 +57,24 @@ public class ClientApp {
   }
 
   public void service() {
-    String serverAddr;
-    serverAddr = "localhost";//prompt.inputString("서버주소 : ");
-    int portNumber;
-    portNumber = 9999;//prompt.inputInt("포트번호 : ");
-
-    try(Socket socket = new Socket(serverAddr, portNumber);
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-
-      System.out.println("서버 접속완료");
-      processCommand(out, in);
-
+    try {
+      serverAddr = prompt.inputString("서버주소 : ");
+      portNumber = prompt.inputInt("포트번호 : ");
     } catch(Exception e) {
-      System.out.println("오류발생");
+      System.out.println("서버주소 및 포트번호가 유효하지 않습니다.");
+      scanner.close();
+      return;
     }
-
-    scanner.close();
-  }
-
-  private void processCommand(ObjectOutputStream out, ObjectInputStream in) {
-    Queue<String> commandQueue = new LinkedList<>();
-    Deque<String> commandStack = new ArrayDeque<>();
-    HashMap<String, Command> hashmap = new HashMap<>();
-
-    BoardDao boardDao = new BoardDaoProxy(out, in);
-    MemberDao memberDao = new MemberDaoProxy(out, in);
-    LessonDao lessonDao = new LessonDaoProxy(out, in);
-
-    hashmap.put("/board/add", new BoardAddCommand(boardDao, prompt));
-    hashmap.put("/board/delete", new BoardDeleteCommand(boardDao, prompt));
-    hashmap.put("/board/detail", new BoardDetailCommand(boardDao, prompt));
-    hashmap.put("/board/list", new BoardListCommand(boardDao));
-    hashmap.put("/board/update", new BoardUpdateCommand(boardDao, prompt));
-
-    hashmap.put("/lesson/add", new LessonAddCommand(lessonDao, prompt));
-    hashmap.put("/lesson/delete", new LessonDeleteCommand(lessonDao, prompt));
-    hashmap.put("/lesson/detail", new LessonDetailCommand(lessonDao, prompt));
-    hashmap.put("/lesson/list", new LessonListCommand(lessonDao));
-    hashmap.put("/lesson/update", new LessonUpdateCommand(lessonDao, prompt));
-
-    hashmap.put("/member/add", new MemberAddCommand(memberDao, prompt));
-    hashmap.put("/member/delete", new MemberDeleteCommand(memberDao, prompt));
-    hashmap.put("/member/detail", new MemberDetailCommand(memberDao, prompt));
-    hashmap.put("/member/list", new MemberListCommand(memberDao));
-    hashmap.put("/member/update", new MemberUpdateCommand(memberDao, prompt));
 
     while(true) {
       String command = prompt.inputString("\n명령> ");
-      commandStack.push(command);
-      commandQueue.offer(command);
 
       if (command.length() == 0) {
         continue;
       }
-      if (command.equalsIgnoreCase("quit") || command.equals("/server/stop")) {
-        try {
-          out.writeUTF("quit");
-          out.flush();
-          System.out.println("...안녕");
-          break;
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+      if (command.equalsIgnoreCase("quit") || command.equalsIgnoreCase("/server/stop")) {
+        System.out.println("...안녕");
+        break;
       } else if (command.equals("history")) {
         printCommandHistory(commandQueue.iterator());
         continue;
@@ -120,20 +83,54 @@ public class ClientApp {
         continue;
       }
 
+      commandStack.push(command);
+      commandQueue.offer(command);
+      System.out.println("<<");
+      processCommand(command);
+      System.out.println(">>");
+
+    }
+    scanner.close();
+  }
+
+  private void processCommand(String command) {
+
+    try{
+      DaoProxyHelper daoProxyHelper = new DaoProxyHelper(serverAddr, portNumber);
+      BoardDao boardDao = new BoardDaoProxy(daoProxyHelper);
+      MemberDao memberDao = new MemberDaoProxy(daoProxyHelper);
+      LessonDao lessonDao = new LessonDaoProxy(daoProxyHelper);
+
+      HashMap<String, Command> hashmap = new HashMap<>();
+      hashmap.put("/board/add", new BoardAddCommand(boardDao, prompt));
+      hashmap.put("/board/delete", new BoardDeleteCommand(boardDao, prompt));
+      hashmap.put("/board/detail", new BoardDetailCommand(boardDao, prompt));
+      hashmap.put("/board/list", new BoardListCommand(boardDao));
+      hashmap.put("/board/update", new BoardUpdateCommand(boardDao, prompt));
+
+      hashmap.put("/lesson/add", new LessonAddCommand(lessonDao, prompt));
+      hashmap.put("/lesson/delete", new LessonDeleteCommand(lessonDao, prompt));
+      hashmap.put("/lesson/detail", new LessonDetailCommand(lessonDao, prompt));
+      hashmap.put("/lesson/list", new LessonListCommand(lessonDao));
+      hashmap.put("/lesson/update", new LessonUpdateCommand(lessonDao, prompt));
+
+      hashmap.put("/member/add", new MemberAddCommand(memberDao, prompt));
+      hashmap.put("/member/delete", new MemberDeleteCommand(memberDao, prompt));
+      hashmap.put("/member/detail", new MemberDetailCommand(memberDao, prompt));
+      hashmap.put("/member/list", new MemberListCommand(memberDao));
+      hashmap.put("/member/update", new MemberUpdateCommand(memberDao, prompt));
 
       Command commandHandler = hashmap.get(command);
       if (commandHandler != null) {
-        try {
-          commandHandler.execute();
-        } catch (Exception e) {
-          System.out.println("명령어 실행중 오류발생 : " + e.getMessage());
-        }
+        commandHandler.execute();
       } else {
         System.out.println("실행할 수 없는 명령입니다.");
       }
+    } catch(Exception e) {
+      System.out.println("명령어 실행중 오류발생 : " + e.getMessage());
+      e.printStackTrace();
     }
   }
-
   private static void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
     while (iterator.hasNext()) {

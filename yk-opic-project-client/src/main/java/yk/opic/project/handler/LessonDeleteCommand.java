@@ -21,7 +21,7 @@ public class LessonDeleteCommand implements Command {
       int index = lessonDao.delete(no);
 
       if(index > 0) {
-        System.out.println("게시글을 삭제했습니다.");
+        System.out.println("수업정보를 삭제했습니다.");
       } else {
       }
 
