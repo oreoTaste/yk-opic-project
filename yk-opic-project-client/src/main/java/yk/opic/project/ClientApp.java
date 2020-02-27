@@ -12,8 +12,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 import yk.opic.project.dao.BoardDao;
+import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.proxy.BoardDaoProxy;
+import yk.opic.project.dao.proxy.LessonDaoProxy;
 import yk.opic.project.dao.proxy.MemberDaoProxy;
 import yk.opic.project.handler.BoardAddCommand;
 import yk.opic.project.handler.BoardDeleteCommand;
@@ -73,6 +75,7 @@ public class ClientApp {
 
     BoardDao boardDao = new BoardDaoProxy(out, in);
     MemberDao memberDao = new MemberDaoProxy(out, in);
+    LessonDao lessonDao = new LessonDaoProxy(out, in);
 
     hashmap.put("/board/add", new BoardAddCommand(boardDao, prompt));
     hashmap.put("/board/delete", new BoardDeleteCommand(boardDao, prompt));
@@ -80,11 +83,11 @@ public class ClientApp {
     hashmap.put("/board/list", new BoardListCommand(boardDao));
     hashmap.put("/board/update", new BoardUpdateCommand(boardDao, prompt));
 
-    hashmap.put("/lesson/add", new LessonAddCommand(out, in, prompt));
-    hashmap.put("/lesson/delete", new LessonDeleteCommand(out, in, prompt));
-    hashmap.put("/lesson/detail", new LessonDetailCommand(out, in, prompt));
-    hashmap.put("/lesson/list", new LessonListCommand(out, in));
-    hashmap.put("/lesson/update", new LessonUpdateCommand(out, in, prompt));
+    hashmap.put("/lesson/add", new LessonAddCommand(lessonDao, prompt));
+    hashmap.put("/lesson/delete", new LessonDeleteCommand(lessonDao, prompt));
+    hashmap.put("/lesson/detail", new LessonDetailCommand(lessonDao, prompt));
+    hashmap.put("/lesson/list", new LessonListCommand(lessonDao));
+    hashmap.put("/lesson/update", new LessonUpdateCommand(lessonDao, prompt));
 
     hashmap.put("/member/add", new MemberAddCommand(memberDao, prompt));
     hashmap.put("/member/delete", new MemberDeleteCommand(memberDao, prompt));

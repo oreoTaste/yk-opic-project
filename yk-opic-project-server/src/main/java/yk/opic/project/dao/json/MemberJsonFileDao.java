@@ -8,7 +8,6 @@ public class MemberJsonFileDao extends AbstractJsonFileDao<Member> implements Me
 
   public MemberJsonFileDao(String fileName) {
     super(fileName);
-    loadData();
   }
 
 

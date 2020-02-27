@@ -1,19 +1,15 @@
 package yk.opic.project.handler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.util.Prompt;
 
 public class LessonAddCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  LessonDao lessonDao;
   Prompt prompt;
 
-  public LessonAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public LessonAddCommand(LessonDao lessonDao, Prompt prompt) {
+    this.lessonDao = lessonDao;
     this.prompt = prompt;
   }
 
@@ -34,17 +30,15 @@ public class LessonAddCommand implements Command {
     }
 
     try {
-      out.writeUTF("/lesson/add");
-      out.writeObject(lesson);
-      out.flush();
+      int index = lessonDao.insert(lesson);
 
-      String response = in.readUTF();
-      if(response.equalsIgnoreCase("OK")) {
-        System.out.println("저장완료");
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
+      if(index > 0) {
+        System.out.println("수업정보를 등록하였습니다");
+      } else {
+        System.out.println("해당 수업정보가 이미 존재합니다.");
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
+      System.out.println("수업정도 등록중 오류발생!");
       e.printStackTrace();
     }
   }

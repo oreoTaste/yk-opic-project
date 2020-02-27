@@ -8,10 +8,10 @@ public class BoardJsonFileDao extends AbstractJsonFileDao<Board> implements Boar
 
   public BoardJsonFileDao(String fileName) {
     super(fileName);
-    loadData();
   }
 
 
+  @Override
   public int insert(Board board) throws Exception {
     int index = indexOf(board.getNo());
 
@@ -23,6 +23,7 @@ public class BoardJsonFileDao extends AbstractJsonFileDao<Board> implements Boar
     return 1;
   }
 
+  @Override
   public Board findByNo(int no) throws Exception {
 
     int index = indexOf(no);
@@ -34,10 +35,12 @@ public class BoardJsonFileDao extends AbstractJsonFileDao<Board> implements Boar
     return list.get(index);
   }
 
+  @Override
   public List<Board> findAll() throws Exception {
     return list;
   }
 
+  @Override
   public int delete(int no) throws Exception {
     int index = indexOf(no);
 
@@ -52,6 +55,7 @@ public class BoardJsonFileDao extends AbstractJsonFileDao<Board> implements Boar
     return 1;
   }
 
+  @Override
   public int update(Board board) throws Exception {
 
     int index = indexOf(board.getNo());

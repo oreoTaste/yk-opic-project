@@ -1,31 +1,23 @@
 package yk.opic.project.handler;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
+import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
 
 public class LessonListCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  LessonDao lessonDao;
 
-  public LessonListCommand(ObjectOutputStream out, ObjectInputStream in) {
-    this.out = out;
-    this.in = in;
+  public LessonListCommand(LessonDao lessonDao) {
+    this.lessonDao = lessonDao;
   }
 
   @Override
   public void execute() {
 
     try {
-      out.writeUTF("/lesson/list");
-      out.flush();
+      List<Lesson> lesson = lessonDao.findAll();
 
-      String response = in.readUTF();
-
-      if(response.equalsIgnoreCase("OK")) {
-        List<Lesson> lesson = (List<Lesson>) in.readObject();
-
+      if(lesson != null) {
         for (Lesson ls : lesson) {
           System.out.printf("%d, %s     , %tF ~ %tF, %d\n",
               ls.getNo(),
@@ -34,10 +26,11 @@ public class LessonListCommand implements Command {
               ls.getEndDate(),
               ls.getTotalHour());
         }
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
+      } else {
+        System.out.println("수업정보가 없습니다.");
       }
     } catch(Exception e) {
+      System.out.println("수업정보 불러오기 실패!");
       e.printStackTrace();
     }
   }

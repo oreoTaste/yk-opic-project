@@ -1,18 +1,14 @@
 package yk.opic.project.handler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import yk.opic.project.dao.LessonDao;
 import yk.opic.project.util.Prompt;
 
 public class LessonDeleteCommand implements Command {
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  LessonDao lessonDao;
   Prompt prompt;
 
-  public LessonDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
-    this.out = out;
-    this.in = in;
+  public LessonDeleteCommand(LessonDao lessonDao, Prompt prompt) {
+    this.lessonDao = lessonDao;
     this.prompt = prompt;
   }
 
@@ -22,19 +18,15 @@ public class LessonDeleteCommand implements Command {
 
     try {
       int no = prompt.inputInt("번호? ");
-      out.writeUTF("/lesson/delete");
+      int index = lessonDao.delete(no);
 
-      out.writeInt(no);
-      out.flush();
-
-      String response = in.readUTF();
-      if(response.equalsIgnoreCase("OK")) {
+      if(index > 0) {
         System.out.println("게시글을 삭제했습니다.");
-      } else if(response.equalsIgnoreCase("FAIL")) {
-        System.out.println(in.readUTF());
+      } else {
       }
 
-    } catch (IOException e) {
+    } catch (Exception e) {
+      System.out.println("수업정보 삭제중 오류발생!");
       e.printStackTrace();
     }
 
