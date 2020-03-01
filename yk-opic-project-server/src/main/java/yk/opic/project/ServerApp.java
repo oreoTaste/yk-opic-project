@@ -98,10 +98,11 @@ public class ServerApp {
       while(true) {
         Socket socket = serverSocket.accept();
         System.out.println("...클라이언트 접속!");
-        if(processRequest(socket) == 9) {
-          break;
-        }
-        System.out.println("=========================");
+
+        new Thread(() -> {
+          processRequest(socket);
+          System.out.println("=========================");
+        }).start();
       }
 
     } catch (Exception e) {
@@ -112,7 +113,7 @@ public class ServerApp {
   }
 
 
-  private int processRequest(Socket clientSocket) throws Exception {
+  private int processRequest(Socket clientSocket) {
 
     try(Socket socket = clientSocket;
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
