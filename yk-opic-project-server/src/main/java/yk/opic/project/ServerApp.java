@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
@@ -35,6 +37,9 @@ public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();
   List<ApplicationContextListener> listeners = new ArrayList<>();
   HashMap<String, Object> context = new LinkedHashMap<>();
+
+  // 스레드풀 생산!
+  ExecutorService executorService = Executors.newCachedThreadPool();
 
   private void addApplicationContextListener(ApplicationContextListener listener) {
     listeners.add(listener);
@@ -99,10 +104,13 @@ public class ServerApp {
         Socket socket = serverSocket.accept();
         System.out.println("...클라이언트 접속!");
 
-        new Thread(() -> {
+        executorService.submit(() -> {
           processRequest(socket);
           System.out.println("=========================");
-        }).start();
+        });
+
+        new Thread().start();
+
       }
 
     } catch (Exception e) {
@@ -110,6 +118,8 @@ public class ServerApp {
     }
 
     notifyApplicationDestroyed();
+
+    executorService.shutdown();
   }
 
 
