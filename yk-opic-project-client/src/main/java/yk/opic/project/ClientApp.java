@@ -1,5 +1,8 @@
 package yk.opic.project;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -10,10 +13,7 @@ import java.util.Scanner;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
-import yk.opic.project.dao.proxy.BoardDaoProxy;
 import yk.opic.project.dao.proxy.DaoProxyHelper;
-import yk.opic.project.dao.proxy.LessonDaoProxy;
-import yk.opic.project.dao.proxy.MemberDaoProxy;
 import yk.opic.project.handler.BoardAddCommand;
 import yk.opic.project.handler.BoardDeleteCommand;
 import yk.opic.project.handler.BoardDetailCommand;
@@ -30,6 +30,9 @@ import yk.opic.project.handler.MemberDeleteCommand;
 import yk.opic.project.handler.MemberDetailCommand;
 import yk.opic.project.handler.MemberListCommand;
 import yk.opic.project.handler.MemberUpdateCommand;
+import yk.opic.project.mariadb.BoardDaoImpl;
+import yk.opic.project.mariadb.LessonDaoImpl;
+import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.util.Prompt;
 
 public class ClientApp {
@@ -39,12 +42,18 @@ public class ClientApp {
   Queue<String> commandQueue;
   Deque<String> commandStack;
 
+  Connection con;
+
   String serverAddr = null;
   int portNumber = 0;
 
-  public ClientApp() {
+  public ClientApp() throws ClassNotFoundException, SQLException {
     commandQueue = new LinkedList<>();
     commandStack = new ArrayDeque<>();
+
+    Class.forName("org.mariadb.jdbc.Driver");
+    con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
   }
 
   public static void main(String[] args) throws Exception {
@@ -90,16 +99,20 @@ public class ClientApp {
       System.out.println(">>");
 
     }
-    scanner.close();
+    try {
+      scanner.close();
+      con.close();
+    } catch (SQLException e) {
+    }
   }
 
   private void processCommand(String command) {
 
     try{
       DaoProxyHelper daoProxyHelper = new DaoProxyHelper(serverAddr, portNumber);
-      BoardDao boardDao = new BoardDaoProxy(daoProxyHelper);
-      MemberDao memberDao = new MemberDaoProxy(daoProxyHelper);
-      LessonDao lessonDao = new LessonDaoProxy(daoProxyHelper);
+      BoardDao boardDao = new BoardDaoImpl(con);
+      MemberDao memberDao = new MemberDaoImpl(con);
+      LessonDao lessonDao = new LessonDaoImpl(con);
 
       HashMap<String, Command> hashmap = new HashMap<>();
       hashmap.put("/board/add", new BoardAddCommand(boardDao, prompt));

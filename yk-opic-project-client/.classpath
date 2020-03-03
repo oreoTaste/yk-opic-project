@@ -28,6 +28,11 @@
 	</classpathentry>
 	<classpathentry kind="output" path="bin/default"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11/"/>
+	<classpathentry sourcepath="C:/Users/zzzji/.gradle/caches/modules-2/files-2.1/org.mariadb.jdbc/mariadb-java-client/2.5.4/ca0f54e7fc19fd604aa9110b357dae710549443f/mariadb-java-client-2.5.4-sources.jar" kind="lib" path="C:/Users/zzzji/.gradle/caches/modules-2/files-2.1/org.mariadb.jdbc/mariadb-java-client/2.5.4/adb3dbc97684a254b9ecf488167bbf177a33d8ba/mariadb-java-client-2.5.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/zzzji/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-jre/26f4fcbf06334df7a5091daa120682f252052957/guava-28.1-jre-sources.jar" kind="lib" path="C:/Users/zzzji/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/28.1-jre/b0e91dcb6a44ffb6221b5027e12a5cb34b841145/guava-28.1-jre.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
