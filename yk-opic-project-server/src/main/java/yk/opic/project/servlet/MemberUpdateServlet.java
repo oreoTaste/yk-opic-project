@@ -1,9 +1,11 @@
 package yk.opic.project.servlet;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.sql.Date;
+import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.project.util.Prompt;
 
 public class MemberUpdateServlet implements Servlet {
   MemberDao memberDao;
@@ -12,20 +14,50 @@ public class MemberUpdateServlet implements Servlet {
     this.memberDao = memberDao;
   }
   @Override
-  public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
+  public void service(Scanner in, PrintStream out) throws Exception {
 
-    Member member = new Member();
-    member = (Member) in.readObject();
+    try {
+      Member oldMember = memberDao.findByNo(Prompt.inputInt(in, out, "번호? "));
 
-    int index = memberDao.update(member);
+      Member newMember = new Member();
 
-    if(index == 0) {
-      out.writeUTF("FAIL");
-      out.writeUTF("해당 번호의 멤버정보가 없습니다.");
-      out.flush();
-    } else {
-      out.writeUTF("OK");
-      out.flush();
+      newMember.setNo(oldMember.getNo());
+
+      newMember.setName(Prompt.inputString(in, out,
+          String.format("이름? (%s) ", oldMember.getName()),
+          oldMember.getName()));
+
+      newMember.setEmail(Prompt.inputString(in, out,
+          String.format("이메일? (%s) ", oldMember.getEmail()),
+          oldMember.getEmail()));
+
+      newMember.setPassword(Prompt.inputString(in, out,
+          String.format("비밀번호? (%s) ", oldMember.getPassword()),
+          oldMember.getPassword()));
+
+      newMember.setPhoto(Prompt.inputString(in, out,
+          String.format("사진? (%s) ", oldMember.getPhoto()),
+          oldMember.getPhoto()));
+
+      newMember.setTel(Prompt.inputString(in, out,
+          String.format("전화? (%s) ", oldMember.getTel()),
+          oldMember.getTel()));
+
+      newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
+
+      if (newMember.equals(oldMember)) {
+        out.println("멤버 변경을 취소했습니다.");
+      } else {
+
+        if(memberDao.update(newMember) > 0)
+          out.println("멤버 변경을 완료하였습니다.");
+        else {
+          out.println("해당 번호의 멤버정보가 없습니다.");
+        }
+      }
+    } catch(Exception e) {
+      out.println("멤버 변경 실패");
+      e.printStackTrace();
     }
   }
 

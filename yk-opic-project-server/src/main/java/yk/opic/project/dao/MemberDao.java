@@ -15,4 +15,8 @@ public interface MemberDao {
 
   int update(Member member) throws Exception;
 
+  default List<Member> findByKeyword(String word) throws Exception{
+    return null;
+  }
+
 }

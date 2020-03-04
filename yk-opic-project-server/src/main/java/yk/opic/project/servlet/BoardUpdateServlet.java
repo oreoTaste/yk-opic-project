@@ -1,9 +1,11 @@
 package yk.opic.project.servlet;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.sql.Date;
+import java.util.Scanner;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
+import yk.opic.project.util.Prompt;
 
 public class BoardUpdateServlet implements Servlet {
   BoardDao boardDao;
@@ -13,20 +15,45 @@ public class BoardUpdateServlet implements Servlet {
   }
 
   @Override
-  public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
-    Board board = new Board();
-    board = (Board) in.readObject();
+  public void service(Scanner in, PrintStream out) throws Exception {
 
-    int index = boardDao.update(board);
+    try {
+      Board oldBoard = boardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
 
-    if(index == 0) {
-      out.writeUTF("FAIL");
-      out.writeUTF("해당 번호의 게시물이 없습니다.");
+      Board newBoard = new Board();
+
+      newBoard.setNo(oldBoard.getNo());
+
+      newBoard.setTitle(
+          Prompt.inputString(in, out,
+              String.format("제목? (%s) ", oldBoard.getTitle()),
+              oldBoard.getTitle()));
+
+      newBoard.setDate(new Date(System.currentTimeMillis()));
+
+      newBoard.setViewCount(0);
+
+      if (newBoard.equals(oldBoard)) {
+        out.println("게시글 변경을 취소했습니다.");
+        out.flush();
+      } else {
+        int index = boardDao.update(newBoard);
+
+        if(index > 0) {
+          out.println("게시글을 변경했습니다.");
+        } else {
+          out.println("게시글 변경을 취소했습니다.");
+        }
+        out.flush();
+      }
+
+    } catch(Exception e) {
+      out.println("게시글 변경 중 오류발생!");
       out.flush();
-    } else {
-      out.writeUTF("OK");
-      out.flush();
+      e.printStackTrace();
     }
+
+
   }
 
 }

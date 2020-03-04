@@ -1,7 +1,6 @@
 package yk.opic.project.mariadb;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -11,13 +10,16 @@ import yk.opic.project.domain.Board;
 
 public class BoardDaoImpl implements BoardDao {
 
+  Connection con;
+
+  public BoardDaoImpl(Connection con) {
+    this.con = con;
+  }
+
   @Override
   public int insert(Board board) throws Exception {
 
-    Class.forName("org.mariadb.jdbc.Driver");
-    try(Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
-        Statement stmt = con.createStatement()) {
+    try(Statement stmt = con.createStatement()) {
 
       con.setAutoCommit(true);
 
@@ -29,10 +31,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public List<Board> findAll() throws Exception {
 
-    Class.forName("org.mariadb.jdbc.Driver");
-    try(Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "111");
-        Statement stmt = con.createStatement()) {
+    try(Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board");
       List<Board> list = new ArrayList<>();
@@ -50,11 +49,8 @@ public class BoardDaoImpl implements BoardDao {
 
   @Override
   public Board findByNo(int no) throws Exception {
-    Class.forName("org.mariadb.jdbc.Driver");
 
-    try(Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
-        Statement stmt = con.createStatement()) {
+    try(Statement stmt = con.createStatement()) {
 
       con.setAutoCommit(true);
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board where board_id = " + no);
@@ -75,17 +71,14 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int update(Board board) throws Exception {
 
-    Class.forName("org.mariadb.jdbc.Driver");
-    try(Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb","study","1111");
-        Statement stmt = con.createStatement()) {
+    try(Statement stmt = con.createStatement()) {
 
       con.setAutoCommit(true);
       return stmt.executeUpdate(
           "UPDATE lms_board SET"
-              + " conts = " + board.getTitle()
-              + " cdt = now()"
-              + " vw_cnt = 0"
+              + " conts = '" + board.getTitle()
+              + "', cdt = now()"
+              + ", vw_cnt = 0"
               + " WHERE board_id = " + board.getNo());
     }
   }
@@ -93,10 +86,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int delete(int no) throws Exception {
 
-    Class.forName("org.mariadb.jdbc.Driver");
-    try(Connection con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
-        Statement stmt = con.createStatement()) {
+    try(Statement stmt = con.createStatement()) {
 
       con.setAutoCommit(true);
       return stmt.executeUpdate(

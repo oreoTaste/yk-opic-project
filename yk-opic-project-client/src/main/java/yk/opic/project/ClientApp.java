@@ -1,38 +1,14 @@
 package yk.opic.project;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
-import yk.opic.project.dao.LessonDao;
-import yk.opic.project.dao.MemberDao;
-import yk.opic.project.dao.proxy.DaoProxyHelper;
-import yk.opic.project.handler.BoardAddCommand;
-import yk.opic.project.handler.BoardDeleteCommand;
-import yk.opic.project.handler.BoardDetailCommand;
-import yk.opic.project.handler.BoardListCommand;
-import yk.opic.project.handler.BoardUpdateCommand;
-import yk.opic.project.handler.Command;
-import yk.opic.project.handler.LessonAddCommand;
-import yk.opic.project.handler.LessonDeleteCommand;
-import yk.opic.project.handler.LessonDetailCommand;
-import yk.opic.project.handler.LessonListCommand;
-import yk.opic.project.handler.LessonUpdateCommand;
-import yk.opic.project.handler.MemberAddCommand;
-import yk.opic.project.handler.MemberDeleteCommand;
-import yk.opic.project.handler.MemberDetailCommand;
-import yk.opic.project.handler.MemberListCommand;
-import yk.opic.project.handler.MemberUpdateCommand;
-import yk.opic.project.mariadb.BoardDaoImpl;
-import yk.opic.project.mariadb.LessonDaoImpl;
-import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.util.Prompt;
 
 public class ClientApp {
@@ -42,18 +18,9 @@ public class ClientApp {
   Queue<String> commandQueue;
   Deque<String> commandStack;
 
-  Connection con;
-
-  String serverAddr = null;
-  int portNumber = 0;
-
   public ClientApp() throws ClassNotFoundException, SQLException {
     commandQueue = new LinkedList<>();
     commandStack = new ArrayDeque<>();
-
-    Class.forName("org.mariadb.jdbc.Driver");
-    con = DriverManager.getConnection(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
   }
 
   public static void main(String[] args) throws Exception {
@@ -66,84 +33,104 @@ public class ClientApp {
   }
 
   public void service() {
+
     try {
-      serverAddr = prompt.inputString("서버주소 : ");
-      portNumber = prompt.inputInt("포트번호 : ");
+      while(true) {
+        String command = prompt.inputString("\n명령> ");
+
+        if (command.length() == 0) {
+          continue;
+        }
+        if (command.equalsIgnoreCase("quit") || command.equalsIgnoreCase("/server/stop")) {
+          System.out.println("...안녕");
+          break;
+        } else if (command.equals("history")) {
+          printCommandHistory(commandQueue.iterator());
+          continue;
+        } else if (command.equals("history2")) {
+          printCommandHistory(commandStack.iterator());
+          continue;
+        }
+
+        commandStack.push(command);
+        commandQueue.offer(command);
+        System.out.println("<<");
+        processCommand(command);
+        System.out.println(">>");
+
+      }
     } catch(Exception e) {
-      System.out.println("서버주소 및 포트번호가 유효하지 않습니다.");
-      scanner.close();
+      e.printStackTrace();
+    }
+    scanner.close();
+  }
+
+  private void processCommand(String command) throws Exception {
+    String host = "localhost";
+    int port = 9999;
+    String servletPath;
+    final String STARTER = "yk://";
+
+    if(!command.startsWith(STARTER)) {
+      System.out.println("명령어 형식이 옳지 않습니다.");
       return;
     }
 
-    while(true) {
-      String command = prompt.inputString("\n명령> ");
-
-      if (command.length() == 0) {
-        continue;
-      }
-      if (command.equalsIgnoreCase("quit") || command.equalsIgnoreCase("/server/stop")) {
-        System.out.println("...안녕");
-        break;
-      } else if (command.equals("history")) {
-        printCommandHistory(commandQueue.iterator());
-        continue;
-      } else if (command.equals("history2")) {
-        printCommandHistory(commandStack.iterator());
-        continue;
-      }
-
-      commandStack.push(command);
-      commandQueue.offer(command);
-      System.out.println("<<");
-      processCommand(command);
-      System.out.println(">>");
-
-    }
     try {
-      scanner.close();
-      con.close();
-    } catch (SQLException e) {
-    }
-  }
+      String url = command.substring(STARTER.length());
 
-  private void processCommand(String command) {
+      host = getHost(url);
+      port = getPort(url);
 
-    try{
-      DaoProxyHelper daoProxyHelper = new DaoProxyHelper(serverAddr, portNumber);
-      BoardDao boardDao = new BoardDaoImpl(con);
-      MemberDao memberDao = new MemberDaoImpl(con);
-      LessonDao lessonDao = new LessonDaoImpl(con);
-
-      HashMap<String, Command> hashmap = new HashMap<>();
-      hashmap.put("/board/add", new BoardAddCommand(boardDao, prompt));
-      hashmap.put("/board/delete", new BoardDeleteCommand(boardDao, prompt));
-      hashmap.put("/board/detail", new BoardDetailCommand(boardDao, prompt));
-      hashmap.put("/board/list", new BoardListCommand(boardDao));
-      hashmap.put("/board/update", new BoardUpdateCommand(boardDao, prompt));
-
-      hashmap.put("/lesson/add", new LessonAddCommand(lessonDao, prompt));
-      hashmap.put("/lesson/delete", new LessonDeleteCommand(lessonDao, prompt));
-      hashmap.put("/lesson/detail", new LessonDetailCommand(lessonDao, prompt));
-      hashmap.put("/lesson/list", new LessonListCommand(lessonDao));
-      hashmap.put("/lesson/update", new LessonUpdateCommand(lessonDao, prompt));
-
-      hashmap.put("/member/add", new MemberAddCommand(memberDao, prompt));
-      hashmap.put("/member/delete", new MemberDeleteCommand(memberDao, prompt));
-      hashmap.put("/member/detail", new MemberDetailCommand(memberDao, prompt));
-      hashmap.put("/member/list", new MemberListCommand(memberDao));
-      hashmap.put("/member/update", new MemberUpdateCommand(memberDao, prompt));
-
-      Command commandHandler = hashmap.get(command);
-      if (commandHandler != null) {
-        commandHandler.execute();
-      } else {
-        System.out.println("실행할 수 없는 명령입니다.");
-      }
+      servletPath = getServletPath(url);
     } catch(Exception e) {
-      System.out.println("명령어 실행중 오류발생 : " + e.getMessage());
-      e.printStackTrace();
+      System.out.println("명령어 형식이 옳지 않습니다.");
+      return;
+    }
+
+    try(Socket socket = new Socket(host, port);
+        PrintStream out = new PrintStream(socket.getOutputStream());
+        Scanner in = new Scanner(socket.getInputStream())){
+
+      out.println(servletPath);
+      out.flush();
+
+      while(true) {
+        if(!in.hasNext())
+          break;
+        String response = in.nextLine();
+        if(response.equalsIgnoreCase("!end!")) {
+          break;
+        } else if(response.equalsIgnoreCase("!{}!")) {
+          String input = prompt.inputString("");
+          out.println(input);
+          out.flush();
+        } else {
+          System.out.println(response);
+        }
+      }
+
     }
   }
+  private String getServletPath(String url) {
+    return url.substring(url.indexOf("/"));
+  }
+
+  private String getHost(String url) {
+
+    String[] str = url.substring(0, url.indexOf("/")).split(":");
+    return str[0];
+  }
+
+  private int getPort(String url) {
+
+    if(url.indexOf(":") == -1)
+      return 9999;
+    else
+      return Integer.parseInt(url.substring(url.indexOf(":") + 1, url.indexOf("/")));
+  }
+
+
   private static void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
     while (iterator.hasNext()) {

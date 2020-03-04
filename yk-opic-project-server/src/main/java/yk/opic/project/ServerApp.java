@@ -1,8 +1,7 @@
 package yk.opic.project;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import yk.opic.project.context.ApplicationContextListener;
@@ -30,6 +30,7 @@ import yk.opic.project.servlet.MemberAddServlet;
 import yk.opic.project.servlet.MemberDeleteServlet;
 import yk.opic.project.servlet.MemberDetailServlet;
 import yk.opic.project.servlet.MemberListServlet;
+import yk.opic.project.servlet.MemberSearchServlet;
 import yk.opic.project.servlet.MemberUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
@@ -37,6 +38,7 @@ public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();
   List<ApplicationContextListener> listeners = new ArrayList<>();
   HashMap<String, Object> context = new LinkedHashMap<>();
+  boolean serverStop = false;
 
   // 스레드풀 생산!
   ExecutorService executorService = Executors.newCachedThreadPool();
@@ -96,6 +98,7 @@ public class ServerApp {
     servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
     servletMap.put("/member/list", new MemberListServlet(memberDao));
     servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
+    servletMap.put("/member/search", new MemberSearchServlet(memberDao));
 
     try(ServerSocket serverSocket = new ServerSocket(9999)){
       System.out.println("서버 연결 완료");
@@ -105,11 +108,14 @@ public class ServerApp {
         System.out.println("...클라이언트 접속!");
 
         executorService.submit(() -> {
-          processRequest(socket);
+          if(processRequest(socket) == 9)
+            return;
           System.out.println("=========================");
         });
 
         new Thread().start();
+        if(serverStop)
+          break;
 
       }
 
@@ -126,13 +132,20 @@ public class ServerApp {
   private int processRequest(Socket clientSocket) {
 
     try(Socket socket = clientSocket;
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+        Scanner in = new Scanner(socket.getInputStream());
+        PrintStream out = new PrintStream(socket.getOutputStream())) {
 
-      String request = in.readUTF();
-
+      String request = in.nextLine();
       if(request.equalsIgnoreCase("/server/stop")) {
+        out.println("서버를 종료하려면 /server/stop을 한번더 입력해주세요");
+        serverStop();
         return 9;
+      }
+
+      if(request.equalsIgnoreCase("/quit")) {
+        out.println("클라이언트 종료하려면 quit을 한번더 입력해주세요");
+        out.println("!end!");
+        return 0;
       }
 
       Servlet servlet = servletMap.get(request);
@@ -143,8 +156,7 @@ public class ServerApp {
         try {
           servlet.service(in, out);
         } catch (Exception e) {
-          out.writeUTF("FAIL");
-          out.writeUTF(e.getMessage());
+          out.println(e.getMessage());
           out.flush();
 
           System.out.println("클라이언트 요청 처리 중 오류 발생:");
@@ -159,9 +171,13 @@ public class ServerApp {
     }
   }
 
-  private void notFound(ObjectOutputStream out) throws Exception {
-    out.writeUTF("FAIL");
-    out.writeUTF("요청한 명령을 처리할 수 없습니다.");
+  private void serverStop() {
+    serverStop = true;
+    return;
+  }
+
+  private void notFound(PrintStream out) throws Exception {
+    out.println("요청한 명령을 처리할 수 없습니다.");
     out.flush();
   }
 

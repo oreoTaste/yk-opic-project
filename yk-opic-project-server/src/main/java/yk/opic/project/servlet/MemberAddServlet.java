@@ -1,9 +1,11 @@
 package yk.opic.project.servlet;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.sql.Date;
+import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.project.util.Prompt;
 
 public class MemberAddServlet implements Servlet {
   MemberDao memberDao;
@@ -13,26 +15,25 @@ public class MemberAddServlet implements Servlet {
   }
 
   @Override
-  public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
+  public void service(Scanner in, PrintStream out) throws Exception {
+
+    Member member = new Member();
+
+    member.setName(Prompt.inputString(in, out, "이름? "));
+    member.setEmail(Prompt.inputString(in, out, "이메일? "));
+    member.setPassword(Prompt.inputString(in, out, "비밀번호? "));
+    member.setPhoto(Prompt.inputString(in, out, "사진? "));
+    member.setTel(Prompt.inputString(in, out, "전화? "));
+    member.setRegisteredDate(new Date(System.currentTimeMillis()));
+
     try {
-      Member member = (Member) in.readObject();
-
       int index = memberDao.insert(member);
-
       if(index > 0) {
-        out.writeUTF("OK");
-        out.flush();
-      } else {
-        out.writeUTF("FAIL");
-        out.writeUTF("같은 번호의 멤버 정보가 있습니다.");
-        out.flush();
-      }
-    } catch(Exception e) {
-      out.writeUTF("FAIL");
-      out.writeUTF(e.getMessage());
-      out.flush();
-      e.printStackTrace();
+        out.println("멤버 정보를 추가하였습니다.");
+      } else
+        out.println("같은 멤버가 존재합니다.");
+    } catch (Exception e) {
+      out.println("멤버 입력중 오류발생");
     }
   }
-
 }

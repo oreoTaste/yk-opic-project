@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.project.util.Prompt;
 
-public class MemberListServlet implements Servlet {
+public class MemberSearchServlet implements Servlet {
   MemberDao memberDao;
 
-  public MemberListServlet(MemberDao memberDao) {
+  public MemberSearchServlet(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 
@@ -17,23 +18,26 @@ public class MemberListServlet implements Servlet {
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      List<Member> member = memberDao.findAll();
+
+      String word = Prompt.inputString(in, out, "검색어? ");
+      List<Member> member = memberDao.findByKeyword(word);
+
       if(member != null) {
-        for (Member m : member) {
-          out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tF %5$tH:%5$tM:%5$tS\n",
+        for(Member m : member) {
+          out.printf("%1$d, %2$s , %3$s       , %4$s,   %5$s      , %6$tF %6$tH:%6$tM:%6$tS\n",
               m.getNo(),
               m.getName(),
               m.getEmail(),
+              m.getPhoto(),
               m.getTel(),
               m.getRegisteredDate());
         }
       } else {
-        out.println("멤버리스트를 찾을 수 없습니다.");
+        out.println("해당 검색어에 해당하는 멤버정보가 없습니다.");
       }
     } catch(Exception e) {
-      out.println("멤버 리스트 중 오류발생!");
+      out.println("멤버 조회 실패");
       e.printStackTrace();
     }
   }
-
 }
