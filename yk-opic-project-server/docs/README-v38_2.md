@@ -73,7 +73,7 @@ a3.gif
 
 - com.eomcs.lms.dao.PhotoFileDao 인터페이스 변경
   - 사진 파일 목록을 리턴하는 메서드를 추가한다.
-  - findAll(int boardNo)
+  - findAll(int boardNo) <-- photoNo로 수정
 - com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 변경
   - PhotoFileDao 인터페이스에 추가된 메서드를 구현한다.
 - com.eomcs.lms.servlet.PhotoBoardDetailServlet 변경
@@ -116,11 +116,10 @@ a3.gif
 셋터 메서드를 통해 인스턴스의 초기 값을 설정하기:
 - com.eomcs.lms.domain.PhotoFile 변경
   - 셋터 메서드가 인스턴스 주소를 리턴하게 변경한다.
-- com.eomcs.lms.servlet.PhotoBoardAddServlet 변경
-  - PhotoFile 객체를 만들 때 셋터 메서드로 값을 설정한다.
 - com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 변경
   - PhotoFile 객체를 만들 때 셋터 메서드로 값을 설정한다.
   
+// 여기부터 할 차례
 
 ### 훈련5: '/photoboard/update' 명령을 처리하라.
 

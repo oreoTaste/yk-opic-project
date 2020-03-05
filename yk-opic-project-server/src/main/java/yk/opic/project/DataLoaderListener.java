@@ -8,6 +8,7 @@ import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.mariadb.BoardDaoImpl;
 import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
+import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 
 public class DataLoaderListener implements ApplicationContextListener {
 
@@ -30,6 +31,7 @@ public class DataLoaderListener implements ApplicationContextListener {
     context.put("boardDao", new BoardDaoImpl(con));
     context.put("lessonDao", new LessonDaoImpl(con));
     context.put("memberDao", new MemberDaoImpl(con));
+    context.put("boardPhotoDao", new PhotoBoardDaoImpl(con));
   }
 
   @Override

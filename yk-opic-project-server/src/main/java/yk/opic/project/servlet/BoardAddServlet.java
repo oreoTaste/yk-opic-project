@@ -22,9 +22,7 @@ public class BoardAddServlet implements Servlet {
       Board board = new Board();
 
       board.setTitle(Prompt.inputString(in, out, "내용? "));
-      System.out.println("내용받음");
       board.setDate(new Date(System.currentTimeMillis()));
-      System.out.println("날짜받음");
       board.setViewCount(0);
 
       int index = boardDao.insert(board);
