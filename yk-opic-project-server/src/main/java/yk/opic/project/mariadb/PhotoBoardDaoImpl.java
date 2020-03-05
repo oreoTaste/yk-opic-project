@@ -22,20 +22,29 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public int insert(PhotoBoard photoBoard) throws Exception {
 
+    System.out.println("insert문");
     try(PreparedStatement stmt = con.prepareStatement(
         "INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)"
             + " values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
       con.setAutoCommit(true);
 
+      System.out.println("title 입력전");
       stmt.setString(1, photoBoard.getTitle());
+      System.out.println("title입력");
       stmt.setDate(2, photoBoard.getCreatedDate());
+      System.out.println("cdt입력");
       stmt.setInt(3, photoBoard.getViewCount());
+      System.out.println("vc입력");
       stmt.setInt(4, photoBoard.getLesson().getNo());
+      System.out.println("lc입력");
       stmt.executeUpdate();
+      System.out.println("수행입력");
 
       ResultSet rs = stmt.getGeneratedKeys();
+      System.out.println("키생성");
       if(rs.next()) {
+        System.out.println("rs 있는지보");
         return rs.getInt("photo_id");
       }
       return 0;
@@ -70,7 +79,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   }
 
   @Override
-  public PhotoBoard findByNo(int photoNo) throws Exception {
+  public List<PhotoBoard> findByNo(int lessonNo) throws Exception {
 
     try(Statement stmt = con.createStatement()) {
 
@@ -78,9 +87,10 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM lms_photo p left outer join lms_lesson l"
               + " on p.lesson_id = l.lesson_id"
-              + " where photo_id = " + photoNo);
+              + " where p.lesson_id = " + lessonNo);
 
-      if(rs.next()) {
+      List<PhotoBoard> list = new ArrayList<>();
+      while(rs.next()) {
         PhotoBoard photoBoard = new PhotoBoard();
         photoBoard.setNo(rs.getInt("p.photo_id"));
         photoBoard.setTitle(rs.getString("p.titl"));
@@ -91,10 +101,9 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
         lesson.setNo(rs.getInt("l.lesson_id"));
         lesson.setTitle(rs.getString("l.titl"));
         photoBoard.setLesson(lesson);
-        return photoBoard;
-      } else {
-        return null;
+        list.add(photoBoard);
       }
+      return list;
     }
   }
 

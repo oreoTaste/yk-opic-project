@@ -103,15 +103,15 @@ a3.gif
 
 생성자를 통해 인스턴스의 초기 값을 설정하기 I:
 - com.eomcs.lms.domain.PhotoFile 변경
-  - PhotoFile(filepath, boardNO) 생성자 추가한다.
+  - PhotoFile(filepath, boardNO) 생성자 추가한다. <---- photoNo로 수정
 - com.eomcs.lms.servlet.PhotoBoardAddServlet 변경
-  - PhotoFile(filepath, boardNo) 생성자를 사용한다.
+  - PhotoFile(filepath, boardNo) 생성자를 사용한다.<---- photoNo로 수정
 
 생성자를 통해 인스턴스의 초기 값을 설정하기 II:
 - com.eomcs.lms.domain.PhotoFile 변경
-  - PhotoFile(int no, filepath, boardNO) 생성자 추가한다.
+  - PhotoFile(int no, filepath, boardNO) 생성자 추가한다. <---- photoNo로 수정
 - com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 변경
-  - PhotoFile(no, filepath, boardNo) 생성자를 사용한다.
+  - PhotoFile(no, filepath, boardNo) 생성자를 사용한다. <---- photoNo로 수정
 
 셋터 메서드를 통해 인스턴스의 초기 값을 설정하기:
 - com.eomcs.lms.domain.PhotoFile 변경
@@ -119,8 +119,6 @@ a3.gif
 - com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 변경
   - PhotoFile 객체를 만들 때 셋터 메서드로 값을 설정한다.
   
-// 여기부터 할 차례
-
 ### 훈련5: '/photoboard/update' 명령을 처리하라.
 
 사진 게시글을 변경할 때 첨부 파일도 변경한다.

@@ -28,12 +28,12 @@ public class LessonAddServlet implements Servlet {
 
       int index = lessonDao.insert(lesson);
       if(index > 0) {
-        System.out.println("수업정보를 등록하였습니다");
+        out.println("수업정보를 등록하였습니다");
       } else {
-        System.out.println("해당 수업정보가 이미 존재합니다.");
+        out.println("해당 수업정보가 이미 존재합니다.");
       }
     } catch (Exception e) {
-      System.out.println("수업정도 등록중 오류발생!");
+      out.println("수업정도 등록중 오류발생!");
       e.printStackTrace();
     }
   }

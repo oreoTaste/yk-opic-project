@@ -1,6 +1,7 @@
 package yk.opic.project.mariadb;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -83,18 +84,26 @@ public class LessonDaoImpl implements LessonDao {
   @Override
   public int update(Lesson lesson) throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(PreparedStatement stmt = con.prepareStatement(
+        "UPDATE lms_lesson SET"
+            + " conts = ?,"
+            + " titl = ?,"
+            + " sdt = ?,"
+            + " edt = ?,"
+            + " tot_hr = ?,"
+            + " day_hr = ?"
+            + " WHERE lesson_id = ?")) {
 
       con.setAutoCommit(true);
-      return stmt.executeUpdate(
-          "UPDATE lms_lesson SET"
-              + " conts = " + lesson.getContext()
-              + ", titl = " + lesson.getTitle()
-              + ", sdt = " + lesson.getStartDate()
-              + ", edt = " + lesson.getEndDate()
-              + ", tot_hr = " + lesson.getTotalHour()
-              + ", day_hr = " + lesson.getDailyHour()
-              + " WHERE board_id = " + lesson.getNo());
+      stmt.setString(1, lesson.getContext());
+      stmt.setString(2, lesson.getTitle());
+      stmt.setDate(3, lesson.getStartDate());
+      stmt.setDate(4, lesson.getEndDate());
+      stmt.setInt(5, lesson.getTotalHour());
+      stmt.setInt(6, lesson.getDailyHour());
+      stmt.setInt(7, lesson.getNo());
+
+      return stmt.executeUpdate();
     }
   }
 

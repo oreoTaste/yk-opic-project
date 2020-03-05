@@ -28,24 +28,30 @@ public class PhotoFile {
   public int getNo() {
     return no;
   }
+
   public PhotoFile setNo(int no) {
     this.no = no;
     return this;
   }
+
   public int getPhotoNo() {
     return photoNo;
   }
+
   public PhotoFile setPhotoNo(int photoNo) {
     this.photoNo = photoNo;
     return this;
   }
+
   public String getFilePath() {
     return filePath;
   }
+
   public PhotoFile setFilePath(String filePath) {
     this.filePath = filePath;
     return this;
   }
+
 
 
 

@@ -16,6 +16,8 @@ import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
+import yk.opic.project.dao.PhotoBoardDao;
+import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.servlet.BoardAddServlet;
 import yk.opic.project.servlet.BoardDeleteServlet;
 import yk.opic.project.servlet.BoardDetailServlet;
@@ -32,6 +34,11 @@ import yk.opic.project.servlet.MemberDetailServlet;
 import yk.opic.project.servlet.MemberListServlet;
 import yk.opic.project.servlet.MemberSearchServlet;
 import yk.opic.project.servlet.MemberUpdateServlet;
+import yk.opic.project.servlet.PhotoBoardAddServlet;
+import yk.opic.project.servlet.PhotoBoardDeleteServlet;
+import yk.opic.project.servlet.PhotoBoardDetailServlet;
+import yk.opic.project.servlet.PhotoBoardListServlet;
+import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 
 public class ServerApp {
@@ -80,6 +87,8 @@ public class ServerApp {
     BoardDao boardDao = (BoardDao) context.get("boardDao");
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
     MemberDao memberDao = (MemberDao) context.get("memberDao");
+    PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
+    PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
 
     servletMap.put("/board/add", new BoardAddServlet(boardDao));
     servletMap.put("/board/delete", new BoardDeleteServlet(boardDao));
@@ -99,6 +108,18 @@ public class ServerApp {
     servletMap.put("/member/list", new MemberListServlet(memberDao));
     servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
     servletMap.put("/member/search", new MemberSearchServlet(memberDao));
+
+    servletMap.put("/photoboard/list", new PhotoBoardListServlet(
+        photoBoardDao, lessonDao));
+    servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(
+        photoBoardDao, photoFileDao));
+    servletMap.put("/photoboard/add", new PhotoBoardAddServlet(
+        photoBoardDao, photoFileDao, lessonDao));
+    servletMap.put("/photoboard/update", new PhotoBoardUpdateServlet(
+        photoBoardDao, photoFileDao));
+    servletMap.put("/photoboard/delete", new PhotoBoardDeleteServlet(
+        photoBoardDao, photoFileDao));
+
 
     try(ServerSocket serverSocket = new ServerSocket(9999)){
       System.out.println("서버 연결 완료");

@@ -22,8 +22,8 @@ public class PhotoBoardDetailServlet implements Servlet {
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      int no = Prompt.inputInt(in, out, "번호? ");
-      PhotoBoard photoBoard = photoBoardDao.findByNo(no);
+      int photoNo = Prompt.inputInt(in, out, "번호? ");
+      PhotoBoard photoBoard = photoBoardDao.findByNo(photoNo);
 
       if(photoBoard != null) {
         out.printf("제목 : %s\n", photoBoard.getTitle());
@@ -32,10 +32,10 @@ public class PhotoBoardDetailServlet implements Servlet {
         out.printf("수업명 : %s\n", photoBoard.getLesson().getTitle());
 
         out.println("사진 파일:");
-        List<PhotoFile> photoFiles = photoFileDao.findAll(no);
+        List<PhotoFile> photoFiles = photoFileDao.findAll(photoNo);
 
         for(PhotoFile f : photoFiles) {
-          System.out.println("> " + f.getFileName());
+          System.out.println("> " + f.getFilePath());
         }
 
       } else {

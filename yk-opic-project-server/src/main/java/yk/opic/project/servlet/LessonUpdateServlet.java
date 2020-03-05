@@ -59,6 +59,7 @@ public class LessonUpdateServlet implements Servlet {
       }
     } catch(Exception e) {
       out.println("수업 변경중 오류발생!");
+      e.printStackTrace();
     }
 
   }

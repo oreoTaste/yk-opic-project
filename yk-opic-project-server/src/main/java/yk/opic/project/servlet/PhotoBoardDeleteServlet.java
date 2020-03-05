@@ -3,13 +3,16 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.dao.PhotoBoardDao;
+import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.util.Prompt;
 
 public class PhotoBoardDeleteServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
+  PhotoFileDao photoFileDao;
 
-  public PhotoBoardDeleteServlet(PhotoBoardDao photoBoardDao) {
+  public PhotoBoardDeleteServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao) {
     this.photoBoardDao = photoBoardDao;
+    this.photoFileDao = photoFileDao;
   }
 
   @Override
@@ -17,6 +20,8 @@ public class PhotoBoardDeleteServlet implements Servlet {
 
     try {
       int no = Prompt.inputInt(in, out, "번호? ");
+
+      photoFileDao.deleteAll(no);
       int index = photoBoardDao.delete(no);
 
       if(index > 0) {
