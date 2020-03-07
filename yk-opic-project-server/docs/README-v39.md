@@ -1,10 +1,11 @@
-# 39 - Connection 분리하기 : 메서드 호출마다 DBMS 연결하기
+# 39 - Connection 개별화하기: 커넥션 객체 생성에 Factory Method 패턴 적용하기
 
 
 ## 학습목표
 
 - 트랜잭션 사용하기 전의 문제점을 이해한다.
-- Factory Method 디자인 패턴 설계기법에 따라 구현하기.
+- Factory Method 디자인 패턴의 원리와 사용 목적을 이해한다.
+- Factory Method 설계 기법에 따라 구현할 수 있다.
 
 ## 실습 소스 및 결과
 
@@ -36,3 +37,11 @@
 - com.eomcs.lms.dao.mariadb.xxxDaoImpl 변경
   - 직접 Connection 객체를 생성하는 대신 ConnectionFactory 객체를 통해 Connection을 얻는다.
   
+  
+### 메서드 마다 커넥션을 구분하는 방식의 문제점
+
+- 메서드 마다 별도의 커넥션을 사용한다.
+- 따라서 PhotoBoardDao의 insert()와 PhotoFileDao의 insert()를 
+  한 단위 작업으로 묶을 수 없다.
+- 즉 사진 게시글 입력과 첨부 파일 입력을 한 단위의 작업으로 다룰 수 없다.
+- 트랜잭션을 구현할 수 없다. 

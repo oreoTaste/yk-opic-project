@@ -7,20 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoFile;
+import yk.opic.project.util.ConnectionFactory;
 
 public class PhotoFileDaoImpl implements PhotoFileDao {
 
-  Connection con;
+  ConnectionFactory conFactory;
 
-  public PhotoFileDaoImpl(Connection con) {
-    this.con = con;
+  public PhotoFileDaoImpl(ConnectionFactory conFactory) {
+    this.conFactory = conFactory;
   }
-
 
   @Override
   public int insert(PhotoFile photoFile) throws Exception {
-    try (PreparedStatement stmt = con.prepareStatement(
-        "insert into lms_photo_file(photo_id,file_path) values(?, ?)")) {
+    try (Connection con = conFactory.getConnection();
+        PreparedStatement stmt = con.prepareStatement(
+            "insert into lms_photo_file(photo_id,file_path) values(?, ?)")) {
 
       stmt.setInt(1, photoFile.getPhotoNo());
       stmt.setString(2, photoFile.getFilePath());
@@ -35,10 +36,11 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   @Override
   public List<PhotoFile> findAll(int photoNo) throws Exception {
 
-    try(PreparedStatement stmt = con.prepareStatement(
-        "SELECT photo_file_id, photo_id, file_path"
-            + " FROM lms_photo_file"
-            + " where photo_id = ?")) {
+    try(Connection con = conFactory.getConnection();
+        PreparedStatement stmt = con.prepareStatement(
+            "SELECT photo_file_id, photo_id, file_path"
+                + " FROM lms_photo_file"
+                + " where photo_id = ?")) {
 
       stmt.setInt(1, photoNo);
       ResultSet rs = stmt.executeQuery();
@@ -60,8 +62,9 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   @Override
   public int deleteAll(int photoNo) throws Exception {
 
-    try(PreparedStatement stmt = con.prepareStatement(
-        "DELETE from lms_photo_file WHERE photo_id = ?")) {
+    try(Connection con = conFactory.getConnection();
+        PreparedStatement stmt = con.prepareStatement(
+            "DELETE from lms_photo_file WHERE photo_id = ?")) {
 
       stmt.setInt(1, photoNo);
 

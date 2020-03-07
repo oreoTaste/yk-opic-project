@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.project.util.ConnectionFactory;
 
 public class MemberDaoImpl implements MemberDao {
+  ConnectionFactory conFactory;
 
-  Connection con;
-
-  public MemberDaoImpl(Connection con) {
-    this.con = con;
+  public MemberDaoImpl(ConnectionFactory conFactory) {
+    this.conFactory = conFactory;
   }
+
 
   @Override
   public int insert(Member member) throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate("INSERT INTO lms_member (name, email, pwd, cdt, tel, photo)"
           + " values('" + member.getName() + "',"
@@ -34,7 +36,8 @@ public class MemberDaoImpl implements MemberDao {
   @Override
   public List<Member> findAll() throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_member");
       List<Member> list = new ArrayList<>();
@@ -56,7 +59,8 @@ public class MemberDaoImpl implements MemberDao {
   @Override
   public Member findByNo(int no) throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_member where member_id = " + no);
 
@@ -79,7 +83,8 @@ public class MemberDaoImpl implements MemberDao {
   @Override
   public int update(Member member) throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(
           "UPDATE lms_member SET"
@@ -96,7 +101,8 @@ public class MemberDaoImpl implements MemberDao {
   @Override
   public int delete(int no) throws Exception {
 
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(
           "DELETE from lms_member WHERE member_id = " + no);
@@ -106,7 +112,8 @@ public class MemberDaoImpl implements MemberDao {
   @Override
   public List<Member> findByKeyword(String word) throws Exception {
     String wordWithPercent = "%" + word + "%";
-    try(Statement stmt = con.createStatement()) {
+    try(Connection con = conFactory.getConnection();
+        Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM lms_member"
