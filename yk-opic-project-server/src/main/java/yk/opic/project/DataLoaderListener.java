@@ -13,7 +13,7 @@ import yk.opic.project.mariadb.PhotoFileDaoImpl;
 
 public class DataLoaderListener implements ApplicationContextListener {
 
-  Connection con;
+  public static Connection con;
 
   public DataLoaderListener() {
     try {

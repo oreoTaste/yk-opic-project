@@ -3,6 +3,7 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.util.Scanner;
+import yk.opic.project.DataLoaderListener;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
@@ -27,6 +28,8 @@ public class PhotoBoardAddServlet implements Servlet {
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
+    DataLoaderListener.con.setAutoCommit(false);
+
     try {
       PhotoBoard photoBoard = new PhotoBoard();
 
@@ -40,13 +43,18 @@ public class PhotoBoardAddServlet implements Servlet {
       int photoNo = photoBoardDao.insert(photoBoard);
 
       if(inputPhotoFile(in, out, photoNo) > 0) {
+        DataLoaderListener.con.commit();
         out.println("사진을 저장했습니다.");
         out.flush();
       } else {
+        DataLoaderListener.con.rollback();
+        DataLoaderListener.con.setAutoCommit(true);
         out.println("수업번호가 유효하지 않습니다.");
         out.flush();
       }
     } catch(Exception e) {
+      DataLoaderListener.con.rollback();
+      DataLoaderListener.con.setAutoCommit(true);
       out.println("사진 저장 중 오류발생!");
       out.flush();
       e.printStackTrace();

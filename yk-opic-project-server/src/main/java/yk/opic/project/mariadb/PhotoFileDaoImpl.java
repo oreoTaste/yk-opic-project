@@ -22,11 +22,12 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
     try (PreparedStatement stmt = con.prepareStatement(
         "insert into lms_photo_file(photo_id,file_path) values(?, ?)")) {
 
-      con.setAutoCommit(true);
       stmt.setInt(1, photoFile.getPhotoNo());
       stmt.setString(2, photoFile.getFilePath());
 
-      return stmt.executeUpdate();
+      int result = stmt.executeUpdate();
+
+      return result;
     }
   }
 
@@ -39,7 +40,6 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
             + " FROM lms_photo_file"
             + " where photo_id = ?")) {
 
-      con.setAutoCommit(true);
       stmt.setInt(1, photoNo);
       ResultSet rs = stmt.executeQuery();
 
@@ -63,7 +63,6 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
     try(PreparedStatement stmt = con.prepareStatement(
         "DELETE from lms_photo_file WHERE photo_id = ?")) {
 
-      con.setAutoCommit(true);
       stmt.setInt(1, photoNo);
 
       return stmt.executeUpdate();

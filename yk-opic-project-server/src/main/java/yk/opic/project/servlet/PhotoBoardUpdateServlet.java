@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import yk.opic.project.DataLoaderListener;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoBoard;
@@ -22,6 +23,8 @@ public class PhotoBoardUpdateServlet implements Servlet {
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
+
+    DataLoaderListener.con.setAutoCommit(false);
 
     try {
       PhotoBoard oldPhoto = photoBoardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
@@ -96,15 +99,20 @@ public class PhotoBoardUpdateServlet implements Servlet {
             photoFileDao.insert(photoFile);
           }
 
-
+          DataLoaderListener.con.commit();
+          DataLoaderListener.con.setAutoCommit(true);
           out.println("사진을 변경했습니다.");
         } else {
+          DataLoaderListener.con.rollback();
+          DataLoaderListener.con.setAutoCommit(true);
           out.println("해당 번호의 사진 게시글이 없습니다.");
         }
         out.flush();
       }
 
     } catch(Exception e) {
+      DataLoaderListener.con.rollback();
+      DataLoaderListener.con.setAutoCommit(true);
       out.println("사진 게시글 변경 중 오류발생!");
       out.flush();
       e.printStackTrace();

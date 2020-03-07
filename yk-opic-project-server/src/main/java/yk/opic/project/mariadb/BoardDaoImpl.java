@@ -21,8 +21,6 @@ public class BoardDaoImpl implements BoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
-
       return stmt.executeUpdate("INSERT INTO lms_board (conts)"
           + " values('"+ board.getTitle() + "')");
     }
@@ -52,7 +50,6 @@ public class BoardDaoImpl implements BoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board where board_id = " + no);
 
       if(rs.next()) {
@@ -73,7 +70,6 @@ public class BoardDaoImpl implements BoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "UPDATE lms_board SET"
               + " conts = '" + board.getTitle()
@@ -88,7 +84,6 @@ public class BoardDaoImpl implements BoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "DELETE from lms_board WHERE board_id = " + no);
     }

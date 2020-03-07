@@ -21,8 +21,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
-
       return stmt.executeUpdate("INSERT INTO lms_member (name, email, pwd, cdt, tel, photo)"
           + " values('" + member.getName() + "',"
           + " '" + member.getEmail() + "',"
@@ -60,7 +58,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_member where member_id = " + no);
 
       if(rs.next()) {
@@ -84,7 +81,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "UPDATE lms_member SET"
               + " name = '" + member.getName()
@@ -102,7 +98,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "DELETE from lms_member WHERE member_id = " + no);
     }

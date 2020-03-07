@@ -21,8 +21,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
-
       return stmt.executeUpdate("INSERT INTO lms_lesson (conts, titl, sdt, edt, tot_hr, day_hr)"
           + " values ("
           + "'"+lesson.getContext()+"', "
@@ -62,7 +60,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_lesson where lesson_id = " + no);
 
       if(rs.next()) {
@@ -94,7 +91,6 @@ public class LessonDaoImpl implements LessonDao {
             + " day_hr = ?"
             + " WHERE lesson_id = ?")) {
 
-      con.setAutoCommit(true);
       stmt.setString(1, lesson.getContext());
       stmt.setString(2, lesson.getTitle());
       stmt.setDate(3, lesson.getStartDate());
@@ -112,7 +108,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "DELETE from lms_lesson WHERE lesson_id = " + no);
     }

@@ -22,29 +22,18 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public int insert(PhotoBoard photoBoard) throws Exception {
 
-    System.out.println("insert문");
     try(PreparedStatement stmt = con.prepareStatement(
         "INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)"
             + " values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
-      con.setAutoCommit(true);
-
-      System.out.println("title 입력전");
       stmt.setString(1, photoBoard.getTitle());
-      System.out.println("title입력");
       stmt.setDate(2, photoBoard.getCreatedDate());
-      System.out.println("cdt입력");
       stmt.setInt(3, photoBoard.getViewCount());
-      System.out.println("vc입력");
       stmt.setInt(4, photoBoard.getLesson().getNo());
-      System.out.println("lc입력");
       stmt.executeUpdate();
-      System.out.println("수행입력");
 
       ResultSet rs = stmt.getGeneratedKeys();
-      System.out.println("키생성");
       if(rs.next()) {
-        System.out.println("rs 있는지보");
         return rs.getInt("photo_id");
       }
       return 0;
@@ -83,7 +72,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM lms_photo p left outer join lms_lesson l"
               + " on p.lesson_id = l.lesson_id"
@@ -111,7 +99,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "UPDATE lms_photo SET"
               + " titl = '" + photoBoard.getTitle()
@@ -127,7 +114,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(Statement stmt = con.createStatement()) {
 
-      con.setAutoCommit(true);
       return stmt.executeUpdate(
           "DELETE from lms_photo WHERE photo_id = " + no);
     }
@@ -140,7 +126,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
             + " on p.lesson_id = l.lesson_id"
             + " WHERE p.lesson_id = ?")) {
 
-      con.setAutoCommit(true);
       stmt.setInt(1, lessonNo);
 
       ResultSet rs = stmt.executeQuery();
