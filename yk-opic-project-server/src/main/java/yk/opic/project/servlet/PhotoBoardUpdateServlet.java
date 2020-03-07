@@ -24,21 +24,21 @@ public class PhotoBoardUpdateServlet implements Servlet {
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      PhotoBoard oldBoard = photoBoardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
+      PhotoBoard oldPhoto = photoBoardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
 
-      if(oldBoard == null) {
+      if(oldPhoto == null) {
         out.println("해당 번호의 사진 게시글이 없습니다.");
         return;
       }
 
-      PhotoBoard newBoard = new PhotoBoard();
+      PhotoBoard newPhoto = new PhotoBoard();
 
-      newBoard.setTitle(
+      newPhoto.setTitle(
           Prompt.inputString(in, out,
-              String.format("제목? (%s)", oldBoard.getTitle()),
-              oldBoard.getTitle()));
-      newBoard.setCreatedDate(new Date(System.currentTimeMillis()));
-      newBoard.setViewCount(0);
+              String.format("제목? (%s)", oldPhoto.getTitle()),
+              oldPhoto.getTitle()));
+      newPhoto.setCreatedDate(new Date(System.currentTimeMillis()));
+      newPhoto.setViewCount(0);
 
       /*
       Lesson lesson = new Lesson();
@@ -46,17 +46,17 @@ public class PhotoBoardUpdateServlet implements Servlet {
       newBoard.setLesson(lesson);
        */
 
-      if (newBoard.equals(oldBoard)) {
+      if (newPhoto.equals(oldPhoto)) {
         out.println("해당 번호의 사진 게시글이 없습니다.");
         out.flush();
       } else {
-        int index = photoBoardDao.update(newBoard);
+        int index = photoBoardDao.update(newPhoto);
 
         if(index > 0) {
 
 
           out.println("사진파일:");
-          List<PhotoFile> oldPhotoFiles = photoFileDao.findAll(oldBoard.getNo());
+          List<PhotoFile> oldPhotoFiles = photoFileDao.findAll(oldPhoto.getNo());
           for(PhotoFile f : oldPhotoFiles) {
             out.printf("> %s\n",f.getFilePath());
           }
@@ -71,7 +71,7 @@ public class PhotoBoardUpdateServlet implements Servlet {
           ArrayList<PhotoFile> photoFiles = null;
           if(response.equalsIgnoreCase("y")) {
 
-            photoFileDao.deleteAll(oldBoard.getNo());
+            photoFileDao.deleteAll(oldPhoto.getNo());
             out.println("최소 한 개의 사진 파일을 등록해야 합니다.");
             out.println("파일명 입력 없이 그냥 엔터를 치면 파일 추가를 마칩니다.");
 
@@ -92,7 +92,7 @@ public class PhotoBoardUpdateServlet implements Servlet {
           }
 
           for(PhotoFile photoFile : photoFiles) {
-            photoFile.setPhotoNo(oldBoard.getNo());
+            photoFile.setPhotoNo(oldPhoto.getNo());
             photoFileDao.insert(photoFile);
           }
 

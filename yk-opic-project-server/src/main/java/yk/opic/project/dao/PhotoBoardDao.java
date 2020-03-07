@@ -9,9 +9,12 @@ public interface PhotoBoardDao {
 
   List<PhotoBoard> findAll() throws Exception;
 
-  List<PhotoBoard> findByNo(int lessonNo) throws Exception;
+  List<PhotoBoard> findAllByLessonNo(int lessonNo) throws Exception;
+
+  PhotoBoard findByNo(int photoNo) throws Exception;
 
   int update(PhotoBoard photoBoard) throws Exception;
 
   int delete(int no) throws Exception;
+
 }

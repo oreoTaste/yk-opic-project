@@ -79,7 +79,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   }
 
   @Override
-  public List<PhotoBoard> findByNo(int lessonNo) throws Exception {
+  public PhotoBoard findByNo(int photoNo) throws Exception {
 
     try(Statement stmt = con.createStatement()) {
 
@@ -87,9 +87,8 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM lms_photo p left outer join lms_lesson l"
               + " on p.lesson_id = l.lesson_id"
-              + " where p.lesson_id = " + lessonNo);
+              + " where p.photo_id = " + photoNo);
 
-      List<PhotoBoard> list = new ArrayList<>();
       while(rs.next()) {
         PhotoBoard photoBoard = new PhotoBoard();
         photoBoard.setNo(rs.getInt("p.photo_id"));
@@ -101,10 +100,10 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
         lesson.setNo(rs.getInt("l.lesson_id"));
         lesson.setTitle(rs.getString("l.titl"));
         photoBoard.setLesson(lesson);
-        list.add(photoBoard);
+        return photoBoard;
       }
-      return list;
     }
+    return null;
   }
 
   @Override
@@ -131,6 +130,36 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
       con.setAutoCommit(true);
       return stmt.executeUpdate(
           "DELETE from lms_photo WHERE photo_id = " + no);
+    }
+  }
+
+  @Override
+  public List<PhotoBoard> findAllByLessonNo(int lessonNo) throws Exception {
+    try(PreparedStatement stmt = con.prepareStatement(
+        "SELECT * from lms_photo p left outer join lms_lesson l"
+            + " on p.lesson_id = l.lesson_id"
+            + " WHERE p.lesson_id = ?")) {
+
+      con.setAutoCommit(true);
+      stmt.setInt(1, lessonNo);
+
+      ResultSet rs = stmt.executeQuery();
+
+      List<PhotoBoard> list = new ArrayList<>();
+      while(rs.next()) {
+        PhotoBoard photoBoard = new PhotoBoard();
+        photoBoard.setNo(rs.getInt("p.photo_id"));
+        photoBoard.setTitle(rs.getString("p.titl"));
+        photoBoard.setCreatedDate(rs.getDate("p.cdt"));
+        photoBoard.setViewCount(rs.getInt("p.vw_cnt"));
+
+        Lesson lesson = new Lesson();
+        lesson.setNo(rs.getInt("l.lesson_id"));
+        lesson.setTitle(rs.getString("l.titl"));
+        photoBoard.setLesson(lesson);
+        list.add(photoBoard);
+      }
+      return list;
     }
   }
 

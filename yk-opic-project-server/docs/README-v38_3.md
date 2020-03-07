@@ -21,7 +21,7 @@
   - 입력 값을 요구하는 코드를 메서드로 정의한다.
   - getXxx() 메서드 정의.
 - com.eomcs.lms.servlet.XxxServlet 변경
-  - 입력 값을 요구하는 코드를 Prompt.getXxx() 호출로 대체한다.
+  - 입력 값을 요구하는 코드를 Prompt.getXxx() 호출로 대체한다. <- inputXXX() 으로 대체
 
 ### 훈련2: 첨부파일 입력 코드를 리팩토링 하라.
 

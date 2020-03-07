@@ -35,7 +35,7 @@ public class PhotoBoardDetailServlet implements Servlet {
         List<PhotoFile> photoFiles = photoFileDao.findAll(photoNo);
 
         for(PhotoFile f : photoFiles) {
-          System.out.println("> " + f.getFilePath());
+          out.println("> " + f.getFilePath());
         }
 
       } else {

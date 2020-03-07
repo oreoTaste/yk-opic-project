@@ -20,10 +20,11 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   @Override
   public int insert(PhotoFile photoFile) throws Exception {
     try (PreparedStatement stmt = con.prepareStatement(
-        "insert into lms_photo_file(photo_id,file_path) values('" +
-            + photoFile.getPhotoNo() + "', '"
-            + photoFile.getFilePath()
-            + "')")) {
+        "insert into lms_photo_file(photo_id,file_path) values(?, ?)")) {
+
+      con.setAutoCommit(true);
+      stmt.setInt(1, photoFile.getPhotoNo());
+      stmt.setString(2, photoFile.getFilePath());
 
       return stmt.executeUpdate();
     }
@@ -34,10 +35,11 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   public List<PhotoFile> findAll(int photoNo) throws Exception {
 
     try(PreparedStatement stmt = con.prepareStatement(
-        "SELECT photo_file_id, photo_id, filePath"
+        "SELECT photo_file_id, photo_id, file_path"
             + " FROM lms_photo_file"
             + " where photo_id = ?")) {
 
+      con.setAutoCommit(true);
       stmt.setInt(1, photoNo);
       ResultSet rs = stmt.executeQuery();
 
@@ -45,9 +47,9 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
       while(rs.next()) {
 
         list.add(new PhotoFile()
-            .setNo(rs.getInt("f.photo_file_id"))
-            .setPhotoNo(rs.getInt("f.photo_id"))
-            .setFilePath(rs.getString("f.file_path")));
+            .setNo(rs.getInt("photo_file_id"))
+            .setPhotoNo(rs.getInt("photo_id"))
+            .setFilePath(rs.getString("file_path")));
       }
       return list;
     }
