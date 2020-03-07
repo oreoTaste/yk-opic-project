@@ -9,7 +9,7 @@ import java.util.List;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
-import yk.opic.project.util.ConnectionFactory;
+import yk.opic.project.sql.ConnectionFactory;
 
 public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
@@ -25,19 +25,17 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
     try(Connection con = conFactory.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)"
-                + " values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                + " values(?, now(), 0, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
       stmt.setString(1, photoBoard.getTitle());
-      stmt.setDate(2, photoBoard.getCreatedDate());
-      stmt.setInt(3, photoBoard.getViewCount());
-      stmt.setInt(4, photoBoard.getLesson().getNo());
-      stmt.executeUpdate();
+      stmt.setInt(2, photoBoard.getLesson().getNo());
+      int result = stmt.executeUpdate();
 
       ResultSet rs = stmt.getGeneratedKeys();
       if(rs.next()) {
-        return rs.getInt("photo_id");
+        photoBoard.setNo(rs.getInt("photo_id"));
       }
-      return 0;
+      return result;
     }
   }
 

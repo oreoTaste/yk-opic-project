@@ -1,6 +1,5 @@
 package yk.opic.project;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.mariadb.BoardDaoImpl;
@@ -8,24 +7,14 @@ import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 import yk.opic.project.mariadb.PhotoFileDaoImpl;
-import yk.opic.project.util.ConnectionFactory;
+import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.PlatformTransactionManager;
 
 public class DataLoaderListener implements ApplicationContextListener {
-
-  String url;
-  String username;
-  String password;
 
   public DataLoaderListener() {
     try {
       Class.forName("org.mariadb.jdbc.Driver");
-
-      url = "jdbc:mariadb://localhost:3306/studydb";
-      username = "study";
-      password = "1111";
-
-      ConnectionFactory conFactory = new ConnectionFactory(url, username, password);
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -35,6 +24,11 @@ public class DataLoaderListener implements ApplicationContextListener {
   public void contextInitialized(HashMap<String, Object> context) {
     System.out.println("로딩시작");
 
+    ConnectionFactory conFactory = new ConnectionFactory(
+        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
+
+    context.put("connectionFactory", conFactory);
+    context.put("platformTransactionManager", new PlatformTransactionManager(conFactory));
     context.put("boardDao", new BoardDaoImpl(conFactory));
     context.put("lessonDao", new LessonDaoImpl(conFactory));
     context.put("memberDao", new MemberDaoImpl(conFactory));
@@ -47,11 +41,6 @@ public class DataLoaderListener implements ApplicationContextListener {
   public void contextDestroyed(HashMap<String, Object> context) {
     System.out.println("...안녕!");
 
-    try {
-      con.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
   }
 
 

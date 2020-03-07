@@ -1,78 +1,84 @@
 package yk.opic.project.servlet;
 
 import java.io.PrintStream;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.DataLoaderListener;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
+import yk.opic.project.sql.PlatformTransactionManager;
 import yk.opic.project.util.Prompt;
 
 public class PhotoBoardAddServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
   LessonDao lessonDao;
-  Prompt prompt;
+  PlatformTransactionManager txManager;
 
-  public PhotoBoardAddServlet(
-      PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao, LessonDao lessonDao) {
+  public PhotoBoardAddServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao,
+      LessonDao lessonDao, PlatformTransactionManager txManager) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.lessonDao = lessonDao;
+    this.txManager = txManager;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
-    DataLoaderListener.con.setAutoCommit(false);
+    PhotoBoard photoBoard = new PhotoBoard();
 
+    photoBoard.setTitle(Prompt.inputString(in, out, "제목? "));
+
+    int lessonNo = Prompt.inputInt(in, out, "수업번호? ");
+    Lesson lesson = lessonDao.findByNo(lessonNo);
+    if(lesson == null) {
+      out.println("수업번호가 유효하지 않습니다.");
+      return;
+    }
+    photoBoard.setLesson(lesson);
+
+    txManager.beginTransaction();
     try {
-      PhotoBoard photoBoard = new PhotoBoard();
-
-      photoBoard.setTitle(Prompt.inputString(in, out, "제목? "));
-      photoBoard.setCreatedDate(new Date(System.currentTimeMillis()));
-      photoBoard.setViewCount(0);
-
-      Lesson lesson = lessonDao.findByNo(Prompt.inputInt(in, out, "수업번호? "));
-      photoBoard.setLesson(lesson);
-
-      int photoNo = photoBoardDao.insert(photoBoard);
-
-      if(inputPhotoFile(in, out, photoNo) > 0) {
-        DataLoaderListener.con.commit();
-        out.println("사진을 저장했습니다.");
-        out.flush();
-      } else {
-        DataLoaderListener.con.rollback();
-        DataLoaderListener.con.setAutoCommit(true);
-        out.println("수업번호가 유효하지 않습니다.");
-        out.flush();
+      if(photoBoardDao.insert(photoBoard) == 0) {
+        throw new Exception("사진 게시글 등록에 실패했습니다.");
       }
+
+      List<PhotoFile> photoFiles = inputPhotoFile(in, out);
+      for(PhotoFile photoFile : photoFiles) {
+        photoFile.setPhotoNo(photoBoard.getNo());//////
+        photoFileDao.insert(photoFile);
+      }
+      txManager.commit();
+      out.println("사진을 저장했습니다.");
+      out.flush();
+
     } catch(Exception e) {
-      DataLoaderListener.con.rollback();
-      DataLoaderListener.con.setAutoCommit(true);
+      txManager.rollback();
       out.println("사진 저장 중 오류발생!");
       out.flush();
       e.printStackTrace();
     }
   }
 
-  private int inputPhotoFile(Scanner in, PrintStream out, int photoNo) throws Exception {
+  private List<PhotoFile> inputPhotoFile(Scanner in, PrintStream out) throws Exception {
     out.println("최소 한 개의 사진 파일을 등록해야 합니다.");
     out.println("파일명 입력 없이 그냥 엔터를 치면 파일 추가를 마칩니다.");
 
+    List<PhotoFile> photoFiles = new ArrayList<>();
+
     int index = 0;
-    for(int i = 0; ; ) {
+    while(true) {
       String filePath = Prompt.inputString(in, out, "사진파일?");
 
       if(filePath.length() > 0) {
-        PhotoFile photoFile = new PhotoFile(filePath, photoNo);
-        index = photoFileDao.insert(photoFile);
-        i++;
+        PhotoFile photoFile = new PhotoFile().setFilePath(filePath);
+        photoFiles.add(photoFile);
+        index++;
         continue;
 
       } else if(filePath.length() == 0) {
@@ -85,7 +91,7 @@ public class PhotoBoardAddServlet implements Servlet {
         }
       }
     }
-    return index;
+    return photoFiles;
   }
 
 }

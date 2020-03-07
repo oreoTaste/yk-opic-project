@@ -2,8 +2,8 @@ package yk.opic.project.domain;
 
 public class PhotoFile {
 
-  int no;
-  int photoNo;
+  int no; // PhotoFile의 no
+  int photoNo; // PhotoBoard의 no
   String filePath;
 
   public PhotoFile() {

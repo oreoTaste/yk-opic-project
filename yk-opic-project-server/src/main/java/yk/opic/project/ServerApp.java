@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,6 +41,9 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
+import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.ConnectionProxy;
+import yk.opic.project.sql.PlatformTransactionManager;
 
 public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();
@@ -84,6 +88,9 @@ public class ServerApp {
 
     notifyApplicationInitialized();
 
+    ConnectionFactory conFactory = (ConnectionFactory) context.get("connectionFactory");
+    PlatformTransactionManager txManager =
+        (PlatformTransactionManager) context.get("platformTransactionManager");
     BoardDao boardDao = (BoardDao) context.get("boardDao");
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
     MemberDao memberDao = (MemberDao) context.get("memberDao");
@@ -114,11 +121,11 @@ public class ServerApp {
     servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(
         photoBoardDao, photoFileDao));
     servletMap.put("/photoboard/add", new PhotoBoardAddServlet(
-        photoBoardDao, photoFileDao, lessonDao));
+        photoBoardDao, photoFileDao, lessonDao, txManager));
     servletMap.put("/photoboard/update", new PhotoBoardUpdateServlet(
-        photoBoardDao, photoFileDao));
+        photoBoardDao, photoFileDao, txManager));
     servletMap.put("/photoboard/delete", new PhotoBoardDeleteServlet(
-        photoBoardDao, photoFileDao));
+        photoBoardDao, photoFileDao, txManager));
 
 
     try(ServerSocket serverSocket = new ServerSocket(9999)){
@@ -129,12 +136,18 @@ public class ServerApp {
         System.out.println("...클라이언트 접속!");
 
         executorService.submit(() -> {
-          if(processRequest(socket) == 9)
-            return;
+          processRequest(socket);
+          ConnectionProxy con = conFactory.removeConnection();
+          if(con != null) {
+            try {
+              con.realClose();
+            } catch (SQLException e) {
+            }
+          }
           System.out.println("=========================");
+          return;
         });
 
-        new Thread().start();
         if(serverStop)
           break;
 

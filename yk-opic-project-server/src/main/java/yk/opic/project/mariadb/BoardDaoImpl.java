@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
-import yk.opic.project.util.ConnectionFactory;
+import yk.opic.project.sql.ConnectionFactory;
 
 public class BoardDaoImpl implements BoardDao {
 
