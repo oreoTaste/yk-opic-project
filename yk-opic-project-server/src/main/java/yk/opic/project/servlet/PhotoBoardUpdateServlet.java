@@ -10,32 +10,31 @@ import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.project.sql.PlatformTransactionManager;
+import yk.opic.project.sql.TransactionTemplate;
 import yk.opic.project.util.Prompt;
 
 public class PhotoBoardUpdateServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
-  PlatformTransactionManager txManager;
+  TransactionTemplate txTemplate;
 
   public PhotoBoardUpdateServlet(PhotoBoardDao photoBoardDao,
-      PhotoFileDao photoFileDao, PlatformTransactionManager txManager) {
+      PhotoFileDao photoFileDao, TransactionTemplate txTemplate) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
-    this.txManager = txManager;
+    this.txTemplate = txTemplate;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
-    txManager.beginTransaction();
 
-    try {
+    txTemplate.execute(() -> {
       PhotoBoard oldPhoto = photoBoardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
 
       if(oldPhoto == null) {
         out.println("해당 번호의 사진 게시글이 없습니다.");
-        return;
+        return null;
       }
 
       PhotoBoard newPhoto = new PhotoBoard();
@@ -98,22 +97,12 @@ public class PhotoBoardUpdateServlet implements Servlet {
           photoFileDao.insert(photoFile);
         }
 
-        txManager.commit();
         out.println("사진을 변경했습니다.");
-      } else {
-        txManager.rollback();
-        out.println("해당 번호의 사진 게시글이 없습니다.");
       }
-      out.flush();
+      return index;
+    });
 
-    } catch(Exception e) {
-      txManager.rollback();
-      out.println("사진 게시글 변경 중 오류발생!");
-      out.flush();
-      e.printStackTrace();
-    }
-
-
+    out.println("사진 게시글 변경 중 오류발생!");
+    out.flush();
   }
-
 }

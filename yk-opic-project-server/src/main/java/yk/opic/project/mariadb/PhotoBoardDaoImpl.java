@@ -9,20 +9,20 @@ import java.util.List;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
-import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.DataSource;
 
 public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
-  ConnectionFactory conFactory;
+  DataSource dataSource;
 
-  public PhotoBoardDaoImpl(ConnectionFactory conFactory) {
-    this.conFactory = conFactory;
+  public PhotoBoardDaoImpl(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
   @Override
   public int insert(PhotoBoard photoBoard) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)"
                 + " values(?, now(), 0, ?)", Statement.RETURN_GENERATED_KEYS)) {
@@ -42,7 +42,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public List<PhotoBoard> findAll() throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery(
@@ -70,7 +70,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public PhotoBoard findByNo(int photoNo) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery(
@@ -98,7 +98,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public int update(PhotoBoard photoBoard) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(
@@ -114,7 +114,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   @Override
   public int delete(int no) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(
@@ -124,7 +124,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
   @Override
   public List<PhotoBoard> findAllByLessonNo(int lessonNo) throws Exception {
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "SELECT * from lms_photo p left outer join lms_lesson l"
                 + " on p.lesson_id = l.lesson_id"

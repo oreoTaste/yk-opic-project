@@ -7,20 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
-import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.DataSource;
 
 public class BoardDaoImpl implements BoardDao {
 
-  ConnectionFactory conFactory;
+  DataSource dataSource;
 
-  public BoardDaoImpl(ConnectionFactory conFactory) {
-    this.conFactory = conFactory;
+  public BoardDaoImpl(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
   @Override
   public int insert(Board board) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate("INSERT INTO lms_board (conts)"
@@ -31,7 +31,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public List<Board> findAll() throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board");
@@ -51,7 +51,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public Board findByNo(int no) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board where board_id = " + no);
@@ -72,7 +72,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int update(Board board) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(
@@ -87,7 +87,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int delete(int no) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(

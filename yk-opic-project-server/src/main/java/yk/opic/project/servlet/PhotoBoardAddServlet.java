@@ -10,21 +10,21 @@ import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.project.sql.PlatformTransactionManager;
+import yk.opic.project.sql.TransactionTemplate;
 import yk.opic.project.util.Prompt;
 
 public class PhotoBoardAddServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
   LessonDao lessonDao;
-  PlatformTransactionManager txManager;
+  TransactionTemplate txTemplate;
 
   public PhotoBoardAddServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao,
-      LessonDao lessonDao, PlatformTransactionManager txManager) {
+      LessonDao lessonDao, TransactionTemplate txTemplate) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.lessonDao = lessonDao;
-    this.txManager = txManager;
+    this.txTemplate = txTemplate;
   }
 
   @Override
@@ -42,8 +42,8 @@ public class PhotoBoardAddServlet implements Servlet {
     }
     photoBoard.setLesson(lesson);
 
-    txManager.beginTransaction();
-    try {
+
+    txTemplate.execute(() -> {
       if(photoBoardDao.insert(photoBoard) == 0) {
         throw new Exception("사진 게시글 등록에 실패했습니다.");
       }
@@ -53,16 +53,10 @@ public class PhotoBoardAddServlet implements Servlet {
         photoFile.setPhotoNo(photoBoard.getNo());//////
         photoFileDao.insert(photoFile);
       }
-      txManager.commit();
       out.println("사진을 저장했습니다.");
       out.flush();
-
-    } catch(Exception e) {
-      txManager.rollback();
-      out.println("사진 저장 중 오류발생!");
-      out.flush();
-      e.printStackTrace();
-    }
+      return null;
+    });
   }
 
   private List<PhotoFile> inputPhotoFile(Scanner in, PrintStream out) throws Exception {

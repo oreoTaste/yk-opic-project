@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
-import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.DataSource;
 
 public class LessonDaoImpl implements LessonDao {
 
-  ConnectionFactory conFactory;
+  DataSource dataSource;
 
-  public LessonDaoImpl(ConnectionFactory conFactory) {
-    this.conFactory = conFactory;
+  public LessonDaoImpl(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
   @Override
   public int insert(Lesson lesson) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate("INSERT INTO lms_lesson (conts, titl, sdt, edt, tot_hr, day_hr)"
@@ -39,7 +39,7 @@ public class LessonDaoImpl implements LessonDao {
   @Override
   public List<Lesson> findAll() throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_lesson");
@@ -62,7 +62,7 @@ public class LessonDaoImpl implements LessonDao {
   @Override
   public Lesson findByNo(int no) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       ResultSet rs = stmt.executeQuery("SELECT * FROM lms_lesson where lesson_id = " + no);
@@ -86,7 +86,7 @@ public class LessonDaoImpl implements LessonDao {
   @Override
   public int update(Lesson lesson) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "UPDATE lms_lesson SET"
                 + " conts = ?,"
@@ -112,7 +112,7 @@ public class LessonDaoImpl implements LessonDao {
   @Override
   public int delete(int no) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         Statement stmt = con.createStatement()) {
 
       return stmt.executeUpdate(

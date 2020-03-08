@@ -7,19 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.project.sql.ConnectionFactory;
+import yk.opic.project.sql.DataSource;
 
 public class PhotoFileDaoImpl implements PhotoFileDao {
 
-  ConnectionFactory conFactory;
+  DataSource dataSource;
 
-  public PhotoFileDaoImpl(ConnectionFactory conFactory) {
-    this.conFactory = conFactory;
+  public PhotoFileDaoImpl(DataSource dataSource) {
+    this.dataSource = dataSource;
   }
 
   @Override
   public int insert(PhotoFile photoFile) throws Exception {
-    try (Connection con = conFactory.getConnection();
+    try (Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "insert into lms_photo_file(photo_id,file_path) values(?, ?)")) {
 
@@ -36,7 +36,7 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   @Override
   public List<PhotoFile> findAll(int photoNo) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "SELECT photo_file_id, photo_id, file_path"
                 + " FROM lms_photo_file"
@@ -62,7 +62,7 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
   @Override
   public int deleteAll(int photoNo) throws Exception {
 
-    try(Connection con = conFactory.getConnection();
+    try(Connection con = dataSource.getConnection();
         PreparedStatement stmt = con.prepareStatement(
             "DELETE from lms_photo_file WHERE photo_id = ?")) {
 

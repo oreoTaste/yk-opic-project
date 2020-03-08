@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -41,9 +40,8 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
-import yk.opic.project.sql.ConnectionFactory;
-import yk.opic.project.sql.ConnectionProxy;
-import yk.opic.project.sql.PlatformTransactionManager;
+import yk.opic.project.sql.DataSource;
+import yk.opic.project.sql.TransactionTemplate;
 
 public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();
@@ -88,9 +86,9 @@ public class ServerApp {
 
     notifyApplicationInitialized();
 
-    ConnectionFactory conFactory = (ConnectionFactory) context.get("connectionFactory");
-    PlatformTransactionManager txManager =
-        (PlatformTransactionManager) context.get("platformTransactionManager");
+    DataSource dataSource = (DataSource) context.get("dataSource");
+    TransactionTemplate txTemplate =
+        (TransactionTemplate) context.get("transactionTemplate");
     BoardDao boardDao = (BoardDao) context.get("boardDao");
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
     MemberDao memberDao = (MemberDao) context.get("memberDao");
@@ -121,11 +119,11 @@ public class ServerApp {
     servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(
         photoBoardDao, photoFileDao));
     servletMap.put("/photoboard/add", new PhotoBoardAddServlet(
-        photoBoardDao, photoFileDao, lessonDao, txManager));
+        photoBoardDao, photoFileDao, lessonDao, txTemplate));
     servletMap.put("/photoboard/update", new PhotoBoardUpdateServlet(
-        photoBoardDao, photoFileDao, txManager));
+        photoBoardDao, photoFileDao, txTemplate));
     servletMap.put("/photoboard/delete", new PhotoBoardDeleteServlet(
-        photoBoardDao, photoFileDao, txManager));
+        photoBoardDao, photoFileDao, txTemplate));
 
 
     try(ServerSocket serverSocket = new ServerSocket(9999)){
@@ -137,13 +135,7 @@ public class ServerApp {
 
         executorService.submit(() -> {
           processRequest(socket);
-          ConnectionProxy con = conFactory.removeConnection();
-          if(con != null) {
-            try {
-              con.realClose();
-            } catch (SQLException e) {
-            }
-          }
+          dataSource.removeConnection();
           System.out.println("=========================");
           return;
         });
