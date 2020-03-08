@@ -99,15 +99,16 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public int update(PhotoBoard photoBoard) throws Exception {
 
     try(Connection con = dataSource.getConnection();
-        Statement stmt = con.createStatement()) {
+        PreparedStatement stmt = con.prepareStatement(
+            "UPDATE lms_photo SET"
+                + " titl = ?, cdt = now(), vw_cnt = 0, lesson_id = ?"
+                + " WHERE photo_id = ?")) {
 
-      return stmt.executeUpdate(
-          "UPDATE lms_photo SET"
-              + " titl = '" + photoBoard.getTitle()
-              + "', cdt = now()"
-              + ", vw_cnt = 0"
-              + ", lesson_id = " + photoBoard.getLesson().getNo()
-              + " WHERE photo_id = " + photoBoard.getNo());
+      stmt.setString(1, photoBoard.getTitle());
+      stmt.setInt(2, photoBoard.getLesson().getNo());
+      stmt.setInt(3, photoBoard.getNo());
+
+      return stmt.executeUpdate();
     }
   }
 
@@ -115,10 +116,11 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public int delete(int no) throws Exception {
 
     try(Connection con = dataSource.getConnection();
-        Statement stmt = con.createStatement()) {
+        PreparedStatement stmt = con.prepareStatement(
+            "DELETE from lms_photo WHERE photo_id = ?")) {
 
-      return stmt.executeUpdate(
-          "DELETE from lms_photo WHERE photo_id = " + no);
+      stmt.setInt(1, no);
+      return stmt.executeUpdate();
     }
   }
 

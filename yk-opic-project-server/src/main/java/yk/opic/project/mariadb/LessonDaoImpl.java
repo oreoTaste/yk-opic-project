@@ -22,17 +22,18 @@ public class LessonDaoImpl implements LessonDao {
   public int insert(Lesson lesson) throws Exception {
 
     try(Connection con = dataSource.getConnection();
-        Statement stmt = con.createStatement()) {
+        PreparedStatement stmt = con.prepareStatement(
+            "INSERT INTO lms_lesson (conts, titl, sdt, edt, tot_hr, day_hr)"
+                + " values(?, ?, ?, ?, ?, ?)")) {
 
-      return stmt.executeUpdate("INSERT INTO lms_lesson (conts, titl, sdt, edt, tot_hr, day_hr)"
-          + " values ("
-          + "'"+lesson.getContext()+"', "
-          + "'"+lesson.getTitle()+"', "
-          + "'"+lesson.getStartDate()+"', "
-          + "'"+lesson.getEndDate()+"', "
-          + "'"+lesson.getTotalHour()+"', "
-          + "'"+lesson.getDailyHour()+"'"
-          + ");");
+      stmt.setString(1, lesson.getContext());
+      stmt.setString(2, lesson.getTitle());
+      stmt.setDate(3, lesson.getStartDate());
+      stmt.setDate(4, lesson.getEndDate());
+      stmt.setInt(5, lesson.getTotalHour());
+      stmt.setInt(6, lesson.getDailyHour());
+
+      return stmt.executeUpdate();
     }
   }
 
@@ -113,10 +114,11 @@ public class LessonDaoImpl implements LessonDao {
   public int delete(int no) throws Exception {
 
     try(Connection con = dataSource.getConnection();
-        Statement stmt = con.createStatement()) {
+        PreparedStatement stmt = con.prepareStatement(
+            "DELETE from lms_lesson WHERE lesson_id = ?")) {
 
-      return stmt.executeUpdate(
-          "DELETE from lms_lesson WHERE lesson_id = " + no);
+      stmt.setInt(1, no);
+      return stmt.executeUpdate();
     }
   }
 
