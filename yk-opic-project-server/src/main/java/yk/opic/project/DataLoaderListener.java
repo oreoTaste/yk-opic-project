@@ -1,6 +1,10 @@
 package yk.opic.project;
 
+import java.io.InputStream;
 import java.util.HashMap;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.mariadb.BoardDaoImpl;
 import yk.opic.project.mariadb.LessonDaoImpl;
@@ -23,20 +27,27 @@ public class DataLoaderListener implements ApplicationContextListener {
 
   @Override
   public void contextInitialized(HashMap<String, Object> context) {
-    System.out.println("로딩시작");
+    try {
+      System.out.println("로딩시작");
 
-    DataSource dataSource = new DataSource(
-        "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
+      DataSource dataSource = new DataSource(
+          "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
 
-    PlatformTransactionManager txManager = new PlatformTransactionManager(dataSource);
-    context.put("dataSource", dataSource);
-    context.put("transactionTemplate", new TransactionTemplate(txManager));
-    context.put("boardDao", new BoardDaoImpl(dataSource));
-    context.put("lessonDao", new LessonDaoImpl(dataSource));
-    context.put("memberDao", new MemberDaoImpl(dataSource));
-    context.put("photoBoardDao", new PhotoBoardDaoImpl(dataSource));
-    context.put("photoFileDao", new PhotoFileDaoImpl(dataSource));
+      InputStream inputStream = Resources.getResourceAsStream(
+          "com/eomcs/lms/conf/mybatis-config.xml");
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
+      PlatformTransactionManager txManager = new PlatformTransactionManager(dataSource);
+      context.put("dataSource", dataSource);
+      context.put("transactionTemplate", new TransactionTemplate(txManager));
+      context.put("boardDao", new BoardDaoImpl(sqlSessionFactory));
+      context.put("lessonDao", new LessonDaoImpl(sqlSessionFactory));
+      context.put("memberDao", new MemberDaoImpl(sqlSessionFactory));
+      context.put("photoBoardDao", new PhotoBoardDaoImpl(sqlSessionFactory));
+      context.put("photoFileDao", new PhotoFileDaoImpl(sqlSessionFactory));
+    } catch(Exception e) {
+
+    }
   }
 
   @Override

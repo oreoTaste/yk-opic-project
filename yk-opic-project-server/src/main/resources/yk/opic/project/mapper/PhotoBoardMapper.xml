@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PhotoBoardMapper">
+	<resultMap type="PhotoBoard" id="PhotoBoardMap">
+		<id column="photo_id" property="no" />
+		<result column="titl" property="title" />
+    <result column="cdt" property="createdDate" />
+    <result column="vw_cnt" property="viewCount" />
+    
+    <collection ofType="Lesson" property="lesson">
+    <id column="lesson_id" property="no" />
+    <result column="sdt" property="startDate" />
+    <result column="edt" property="endDate" />
+    <result column="tot_hr" property="totalHour" />
+    <result column="day_hr" property="dailyHour" />
+    <result column="titl" property="title" />
+    <result column="conts" property="context" />
+    </collection>
+    
+    <collection ofType="PhotoFile" property="files">
+    <id column="photo_fild_id" property="no"/>
+    <result column="photo_id" property="photoNo"/>
+    <result column="file_path" property="filePath"/>
+    </collection>
+    
+	</resultMap>
+
+  
+  <select id="findAll" resultMap="PhotoBoardMap">
+    SELECT 
+      p.photo_id, 
+      l.lesson_id, 
+      l.titl, 
+      p.titl, 
+      p.cdt, 
+      p.vw_cnt,
+      f.photo_file_id,
+      f.file_path
+    FROM lms_photo p join lms_lesson l
+    on p.lesson_id = l.lesson_id
+    left outer join lms_photo_file f
+    on p.photo_id = f.photo_id
+  </select>
+ 
+  <select id="findByNo" resultMap="PhotoBoardMap" parameterType="int">
+    SELECT * 
+    FROM lms_photo p left outer join lms_lesson l
+    on p.lesson_id = l.lesson_id
+    where p.photo_id = #{photoNo}
+  </select>
+
+  <select id="findAllByLessonNo" resultMap="PhotoBoard" parameterType="int">
+	  SELECT *
+	  from lms_photo p left outer join lms_lesson l
+	  on p.lesson_id = l.lesson_id
+	  WHERE p.lesson_id = #{lessonNo}
+  </select>  
+
+  <update id="update" parameterType="PhotoBoard">
+    UPDATE lms_photo
+    <set>
+    cdt = now(),
+    vw_cnt = 0
+    <if test="title!=null and title!=''">,titl=#{title}</if>
+    <if test="lesson.no!=null">,lesson_id=#{lesson.no}</if>
+    </set>
+    WHERE photo_id = #{no}
+  </update>
+
+  <delete id="delete" parameterType="int">
+  DELETE from lms_photo
+  WHERE photo_id = #{no}
+  </delete>
+  
+  <insert id="insert" parameterType="PhotoBoard" useGeneratedKeys="true" keyColumn="no">
+  INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)
+  values(#{title}, now(), 0, #{lesson.no})
+  </insert>
+
+
+</mapper>
+
+
+
+
+
+
+

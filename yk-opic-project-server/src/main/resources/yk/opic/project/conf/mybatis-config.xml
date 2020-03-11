@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <properties resource="yk/opic/project/conf/jdbc.properties"></properties>
+
+  <typeAliases>
+    <typeAlias type="yk.opic.project.domain.Board" alias="Board"/>
+    <typeAlias type="yk.opic.project.domain.Lesson" alias="Lesson"/>
+    <typeAlias type="yk.opic.project.domain.Member" alias="Member"/>
+    <typeAlias type="yk.opic.project.domain.PhotoBoard" alias="PhotoBoard"/>
+    <typeAlias type="yk.opic.project.domain.PhotoFile" alias="PhotoFile"/>
+  </typeAliases>
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  
+  <mappers>
+    <mapper resource="yk/opic/project/mapper/BoardMapper.xml"/>
+    <mapper resource="yk/opic/project/mapper/LessonMapper.xml"/>
+    <mapper resource="yk/opic/project/mapper/MemberMapper.xml"/>
+    <mapper resource="yk/opic/project/mapper/PhotoBoardMapper.xml"/>
+    <mapper resource="yk/opic/project/mapper/PhotoFileMapper.xml"/>
+  </mappers>
+</configuration>
+
+
+
+
+
+
+
