@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.project.sql.DataSource;
+import yk.opic.sql.DataSource;
 
 public class PhotoFileDaoImpl implements PhotoFileDao {
 

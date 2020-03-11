@@ -7,9 +7,9 @@ import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 import yk.opic.project.mariadb.PhotoFileDaoImpl;
-import yk.opic.project.sql.DataSource;
-import yk.opic.project.sql.PlatformTransactionManager;
-import yk.opic.project.sql.TransactionTemplate;
+import yk.opic.sql.DataSource;
+import yk.opic.sql.PlatformTransactionManager;
+import yk.opic.sql.TransactionTemplate;
 
 public class DataLoaderListener implements ApplicationContextListener {
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
-import yk.opic.project.sql.DataSource;
+import yk.opic.sql.DataSource;
 
 public class MemberDaoImpl implements MemberDao {
   DataSource dataSource;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
-import yk.opic.project.sql.DataSource;
+import yk.opic.sql.DataSource;
 
 public class LessonDaoImpl implements LessonDao {
 

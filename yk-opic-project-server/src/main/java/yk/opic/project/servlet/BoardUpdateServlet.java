@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
-import yk.opic.project.util.Prompt;
+import yk.opic.util.Prompt;
 
 public class BoardUpdateServlet implements Servlet {
   BoardDao boardDao;

@@ -10,8 +10,8 @@ import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.project.sql.TransactionTemplate;
-import yk.opic.project.util.Prompt;
+import yk.opic.sql.TransactionTemplate;
+import yk.opic.util.Prompt;
 
 public class PhotoBoardAddServlet implements Servlet {
   PhotoBoardDao photoBoardDao;

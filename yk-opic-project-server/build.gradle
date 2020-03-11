@@ -15,6 +15,7 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    implementation 'org.mybatis:mybatis:3.5.4'
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.4'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.guava:guava:28.1-jre'

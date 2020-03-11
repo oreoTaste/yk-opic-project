@@ -7,7 +7,7 @@ import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
-import yk.opic.project.util.Prompt;
+import yk.opic.util.Prompt;
 
 public class PhotoBoardListServlet implements Servlet {
   PhotoBoardDao photoBoardDao;

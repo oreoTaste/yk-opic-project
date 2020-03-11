@@ -1,4 +1,4 @@
-package yk.opic.project.sql;
+package yk.opic.sql;
 
 import java.sql.Array;
 import java.sql.Blob;

@@ -3,7 +3,7 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.dao.BoardDao;
-import yk.opic.project.util.Prompt;
+import yk.opic.util.Prompt;
 
 public class BoardDeleteServlet implements Servlet {
   BoardDao boardDao;

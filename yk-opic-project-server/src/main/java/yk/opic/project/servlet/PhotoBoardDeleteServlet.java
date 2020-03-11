@@ -4,8 +4,8 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
-import yk.opic.project.sql.TransactionTemplate;
-import yk.opic.project.util.Prompt;
+import yk.opic.sql.TransactionTemplate;
+import yk.opic.util.Prompt;
 
 public class PhotoBoardDeleteServlet implements Servlet {
   PhotoBoardDao photoBoardDao;

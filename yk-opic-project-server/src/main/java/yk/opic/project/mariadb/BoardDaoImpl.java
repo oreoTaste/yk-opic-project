@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
-import yk.opic.project.sql.DataSource;
+import yk.opic.sql.DataSource;
 
 public class BoardDaoImpl implements BoardDao {
 

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
-import yk.opic.project.util.Prompt;
+import yk.opic.util.Prompt;
 
 public class MemberSearchServlet implements Servlet {
   MemberDao memberDao;

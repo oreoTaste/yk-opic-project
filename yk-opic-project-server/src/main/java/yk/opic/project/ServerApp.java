@@ -40,8 +40,8 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
-import yk.opic.project.sql.DataSource;
-import yk.opic.project.sql.TransactionTemplate;
+import yk.opic.sql.DataSource;
+import yk.opic.sql.TransactionTemplate;
 
 public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();

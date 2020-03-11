@@ -9,7 +9,7 @@ import java.util.List;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
-import yk.opic.project.sql.DataSource;
+import yk.opic.sql.DataSource;
 
 public class PhotoBoardDaoImpl implements PhotoBoardDao {
 

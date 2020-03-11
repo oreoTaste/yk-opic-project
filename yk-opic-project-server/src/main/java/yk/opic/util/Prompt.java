@@ -1,4 +1,4 @@
-package yk.opic.project.util;
+package yk.opic.util;
 
 import java.io.PrintStream;
 import java.sql.Date;
