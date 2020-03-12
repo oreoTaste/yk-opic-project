@@ -6,7 +6,7 @@
 <mapper namespace="PhotoFileMapper">
 	<resultMap type="PhotoFile" id="PhotoFileMap">
 		<id column="photo_file_id" property="no" />
-		<result column="photo_id" property="boardNo" />
+		<result column="photo_id" property="photoNo" />
     <result column="file_path" property="filePath" />
 	</resultMap>
 

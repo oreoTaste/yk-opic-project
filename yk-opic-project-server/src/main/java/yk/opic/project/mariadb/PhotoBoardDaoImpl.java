@@ -17,7 +17,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public int insert(PhotoBoard photoBoard) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      int result = sqlSession.insert("PhotoBoardMapper.insert");
+      int result = sqlSession.insert("PhotoBoardMapper.insert", photoBoard);
       sqlSession.commit();
       return result;
     }
@@ -43,7 +43,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public int update(PhotoBoard photoBoard) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      int result = sqlSession.update("PhotoBoardMapper.update");
+      int result = sqlSession.update("PhotoBoardMapper.update", photoBoard);
       sqlSession.commit();
       return result;
     }
@@ -53,7 +53,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public int delete(int no) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      int result = sqlSession.delete("PhotoBoardMapper.delete");
+      int result = sqlSession.delete("PhotoBoardMapper.delete", no);
       sqlSession.commit();
       return result;
     }
@@ -63,7 +63,7 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
   public List<PhotoBoard> findAllByLessonNo(int lessonNo) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      return sqlSession.selectOne("PhotoBoardMapper.findAllByLessonNo", lessonNo);
+      return sqlSession.selectList("PhotoBoardMapper.findAllByLessonNo", lessonNo);
     }
   }
 

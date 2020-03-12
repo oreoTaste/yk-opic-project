@@ -52,7 +52,7 @@
     where p.photo_id = #{photoNo}
   </select>
 
-  <select id="findAllByLessonNo" resultMap="PhotoBoard" parameterType="int">
+  <select id="findAllByLessonNo" resultMap="PhotoBoardMap" parameterType="int">
 	  SELECT *
 	  from lms_photo p left outer join lms_lesson l
 	  on p.lesson_id = l.lesson_id
@@ -75,7 +75,7 @@
   WHERE photo_id = #{no}
   </delete>
   
-  <insert id="insert" parameterType="PhotoBoard" useGeneratedKeys="true" keyColumn="no">
+  <insert id="insert" parameterType="PhotoBoard" useGeneratedKeys="true" keyProperty="no">
   INSERT INTO lms_photo (titl, cdt, vw_cnt, lesson_id)
   values(#{title}, now(), 0, #{lesson.no})
   </insert>

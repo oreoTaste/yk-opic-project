@@ -34,7 +34,7 @@ public class DataLoaderListener implements ApplicationContextListener {
           "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
 
       InputStream inputStream = Resources.getResourceAsStream(
-          "com/eomcs/lms/conf/mybatis-config.xml");
+          "yk/opic/project/conf/mybatis-config.xml");
       SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
       PlatformTransactionManager txManager = new PlatformTransactionManager(dataSource);
@@ -53,7 +53,8 @@ public class DataLoaderListener implements ApplicationContextListener {
   @Override
   public void contextDestroyed(HashMap<String, Object> context) {
     System.out.println("...안녕!");
-
+    DataSource dataSource = (DataSource) context.get("dataSource");
+    dataSource.clean();
   }
 
 

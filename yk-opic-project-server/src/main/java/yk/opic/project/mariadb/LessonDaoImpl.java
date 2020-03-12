@@ -16,7 +16,9 @@ public class LessonDaoImpl implements LessonDao {
   public int insert(Lesson lesson) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      return sqlSession.insert("LessonMapper.insert", lesson);
+      int result = sqlSession.update("LessonMapper.insert", lesson);
+      sqlSession.commit();
+      return result;
     }
   }
 
@@ -32,7 +34,7 @@ public class LessonDaoImpl implements LessonDao {
   public Lesson findByNo(int no) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      return sqlSession.selectOne("LessonMapper.findAll", no);
+      return sqlSession.selectOne("LessonMapper.findByNo", no);
     }
   }
 

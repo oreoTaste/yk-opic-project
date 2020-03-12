@@ -1,7 +1,6 @@
 package yk.opic.project.servlet;
 
 import java.io.PrintStream;
-import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
@@ -24,7 +23,6 @@ public class MemberAddServlet implements Servlet {
     member.setPassword(Prompt.inputString(in, out, "비밀번호? "));
     member.setPhoto(Prompt.inputString(in, out, "사진? "));
     member.setTel(Prompt.inputString(in, out, "전화? "));
-    member.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     try {
       int index = memberDao.insert(member);

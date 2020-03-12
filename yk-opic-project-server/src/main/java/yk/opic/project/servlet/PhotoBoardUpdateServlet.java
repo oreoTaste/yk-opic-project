@@ -102,7 +102,5 @@ public class PhotoBoardUpdateServlet implements Servlet {
       return index;
     });
 
-    out.println("사진 게시글 변경 중 오류발생!");
-    out.flush();
   }
 }

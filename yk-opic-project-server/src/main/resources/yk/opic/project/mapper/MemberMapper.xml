@@ -39,11 +39,12 @@
   <update id="update" parameterType="Member">
   UPDATE lms_member
   <set>
-  <if test="name!=null and name!=''">name=#{name},</if>
-  <if test="password!=null and password!=''">pwd=password(#{password}),</if>
-  <if test="registeredDate!=null">cdt=#{registeredDate},</if>
-  <if test="tel!=null and tel!=''">tel=#{tel},</if>
-  <if test="photo!=null and photo!=''">photo=#{photo},</if>
+  cdt=now()
+  <if test="name!=null and name!=''">,name=#{name}</if>
+  <if test="email!=null and email!=''">,email=#{email}</if>
+  <if test="password!=null and password!=''">,pwd=password(#{password})</if>
+  <if test="tel!=null and tel!=''">,tel=#{tel}</if>
+  <if test="photo!=null and photo!=''">,photo=#{photo}</if>
   </set>
   WHERE member_id = #{no}
   </update>
@@ -77,7 +78,7 @@
   #{name},
   #{email},
   password(#{password}),
-  #{registeredDate},
+  now(),
   #{tel},
   #{photo}
   )

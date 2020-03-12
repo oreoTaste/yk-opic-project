@@ -36,8 +36,6 @@ public class PhotoBoardDeleteServlet implements Servlet {
       out.flush();
       return null;
     });
-    out.println("사진 게시글 삭제 중 오류발생!");
-    out.flush();
   }
 }
 

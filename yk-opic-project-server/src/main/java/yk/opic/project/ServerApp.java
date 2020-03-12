@@ -28,6 +28,7 @@ import yk.opic.project.servlet.LessonDeleteServlet;
 import yk.opic.project.servlet.LessonDetailServlet;
 import yk.opic.project.servlet.LessonListServlet;
 import yk.opic.project.servlet.LessonUpdateServlet;
+import yk.opic.project.servlet.LoginServlet;
 import yk.opic.project.servlet.MemberAddServlet;
 import yk.opic.project.servlet.MemberDeleteServlet;
 import yk.opic.project.servlet.MemberDetailServlet;
@@ -113,6 +114,7 @@ public class ServerApp {
     servletMap.put("/member/list", new MemberListServlet(memberDao));
     servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
     servletMap.put("/member/search", new MemberSearchServlet(memberDao));
+    servletMap.put("/auth/login", new LoginServlet(memberDao));
 
     servletMap.put("/photoboard/list", new PhotoBoardListServlet(
         photoBoardDao, lessonDao));

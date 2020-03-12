@@ -31,20 +31,16 @@ public class LessonUpdateServlet implements Servlet {
           oldLesson.getContext()));
 
       lesson.setStartDate(Prompt.inputDate( in, out,
-          String.format("시작일? (%s) ", oldLesson.getStartDate()),
-          oldLesson.getStartDate()));
+          String.format("시작일? (%s) ", oldLesson.getStartDate())));
 
       lesson.setEndDate(Prompt.inputDate( in, out,
-          String.format("종료일? (%s) ", oldLesson.getEndDate()),
-          oldLesson.getEndDate()));
+          String.format("종료일? (%s) ", oldLesson.getEndDate())));
 
       lesson.setTotalHour(Prompt.inputInt( in, out,
-          String.format("총수업시간? (%d) ", oldLesson.getTotalHour()),
-          oldLesson.getTotalHour()));
+          String.format("총수업시간? (%d) ", oldLesson.getTotalHour())));
 
       lesson.setDailyHour(Prompt.inputInt( in, out,
-          String.format("일수업시간? (%d) ", oldLesson.getDailyHour()),
-          oldLesson.getDailyHour()));
+          String.format("일수업시간? (%d) ", oldLesson.getDailyHour())));
 
       if (lesson.equals(oldLesson)) {
         out.println("수업정보 변경을 취소했습니다.");

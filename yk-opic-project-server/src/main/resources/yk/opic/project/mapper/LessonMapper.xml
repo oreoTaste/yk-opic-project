@@ -38,11 +38,11 @@
   <update id="update" parameterType="Lesson">
     UPDATE lms_lesson
     <set>
-    <if test="context!=null and context!=''">conts=#{context}</if>
-    <if test="title!=null and title!=''">titl=#{title}</if>
-    <if test="startDate!=null">sdt=#{startDate}</if>
-    <if test="endDate!=null">edt=#{endDate}</if>
-    <if test="totalHour>0">tot_hr=#{totalHour}</if>
+    <if test="context!=null and context!=''">conts=#{context},</if>
+    <if test="title!=null and title!=''">titl=#{title},</if>
+    <if test="startDate!=null">sdt=#{startDate},</if>
+    <if test="endDate!=null">edt=#{endDate},</if>
+    <if test="totalHour>0">tot_hr=#{totalHour},</if>
     <if test="dailyHour>0">day_hr=#{dailyHour}</if>
     </set>
     WHERE lesson_id=#{no}

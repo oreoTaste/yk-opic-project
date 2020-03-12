@@ -50,7 +50,8 @@ public class PhotoBoardAddServlet implements Servlet {
 
       List<PhotoFile> photoFiles = inputPhotoFile(in, out);
       for(PhotoFile photoFile : photoFiles) {
-        photoFile.setPhotoNo(photoBoard.getNo());//////
+        System.out.println(photoBoard.getNo());/////
+        photoFile.setPhotoNo(photoBoard.getNo());
         photoFileDao.insert(photoFile);
       }
       out.println("사진을 저장했습니다.");

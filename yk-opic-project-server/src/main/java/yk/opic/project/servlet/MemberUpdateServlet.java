@@ -1,7 +1,6 @@
 package yk.opic.project.servlet;
 
 import java.io.PrintStream;
-import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
@@ -42,8 +41,6 @@ public class MemberUpdateServlet implements Servlet {
       newMember.setTel(Prompt.inputString(in, out,
           String.format("전화? (%s) ", oldMember.getTel()),
           oldMember.getTel()));
-
-      newMember.setRegisteredDate(new Date(System.currentTimeMillis()));
 
       if (newMember.equals(oldMember)) {
         out.println("멤버 변경을 취소했습니다.");

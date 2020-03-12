@@ -19,7 +19,6 @@ public class BoardUpdateServlet implements Servlet {
 
     try {
       Board oldBoard = boardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
-
       Board newBoard = new Board();
 
       newBoard.setNo(oldBoard.getNo());

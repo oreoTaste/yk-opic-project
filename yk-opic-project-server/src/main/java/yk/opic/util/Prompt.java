@@ -7,9 +7,13 @@ import java.util.Scanner;
 public class Prompt {
 
   public static int inputInt(Scanner in, PrintStream out, String title) {
-    out.println(title);
-    out.println("!{}!");
-    return Integer.parseInt(in.nextLine());
+    try {
+      out.println(title);
+      out.println("!{}!");
+      return Integer.parseInt(in.nextLine());
+    } catch(Exception e) {
+      return 0;
+    }
   }
 
   public static String inputString(Scanner in, PrintStream out, String title) {
@@ -19,9 +23,13 @@ public class Prompt {
   }
 
   public static Date inputDate(Scanner in, PrintStream out, String title) {
-    out.println(title);
-    out.println("!{}!");
-    return Date.valueOf(in.nextLine());
+    try {
+      out.println(title);
+      out.println("!{}!");
+      return Date.valueOf(in.nextLine());
+    } catch(Exception e) {
+      return null;
+    }
   }
 
   public static String inputString(Scanner in, PrintStream out, String title, String defaultValue) {

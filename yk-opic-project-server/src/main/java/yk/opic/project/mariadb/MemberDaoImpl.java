@@ -57,7 +57,7 @@ public class MemberDaoImpl implements MemberDao {
   public int update(Member member) throws Exception {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      int result = sqlSession.selectOne("MemberMapper.update", member);
+      int result = sqlSession.update("MemberMapper.update", member);
       sqlSession.commit();
       return result;
     }
