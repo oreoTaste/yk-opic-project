@@ -1,29 +1,26 @@
 package yk.opic.project.servlet;
 
 import java.io.PrintStream;
-import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.PhotoBoardDao;
-import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
+import yk.opic.service.PhotoBoardService;
 import yk.opic.util.Prompt;
 
 public class PhotoBoardDetailServlet implements Servlet {
-  PhotoBoardDao photoBoardDao;
-  PhotoFileDao photoFileDao;
+  PhotoBoardService PhotoBoardService;
 
-  public PhotoBoardDetailServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao) {
-    this.photoBoardDao = photoBoardDao;
-    this.photoFileDao = photoFileDao;
+  public PhotoBoardDetailServlet(PhotoBoardService PhotoBoardService) {
+    this.PhotoBoardService = PhotoBoardService;
   }
+
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
       int photoNo = Prompt.inputInt(in, out, "번호? ");
-      PhotoBoard photoBoard = photoBoardDao.findByNo(photoNo);
+      PhotoBoard photoBoard = PhotoBoardService.get(photoNo);
 
       if(photoBoard != null) {
         out.printf("제목 : %s\n", photoBoard.getTitle());
@@ -32,9 +29,8 @@ public class PhotoBoardDetailServlet implements Servlet {
         out.printf("수업명 : %s\n", photoBoard.getLesson().getTitle());
 
         out.println("사진 파일:");
-        List<PhotoFile> photoFiles = photoFileDao.findAll(photoNo);
 
-        for(PhotoFile f : photoFiles) {
+        for(PhotoFile f : photoBoard.getFiles()) {
           out.println("> " + f.getFilePath());
         }
 

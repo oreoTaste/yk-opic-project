@@ -6,7 +6,7 @@
 <mapper namespace="PhotoBoardMapper">
 	<resultMap type="PhotoBoard" id="PhotoBoardMap">
 		<id column="photo_id" property="no" />
-		<result column="titl" property="title" />
+		<result column="photo_titl" property="title" />
     <result column="cdt" property="createdDate" />
     <result column="vw_cnt" property="viewCount" />
     
@@ -16,7 +16,7 @@
     <result column="edt" property="endDate" />
     <result column="tot_hr" property="totalHour" />
     <result column="day_hr" property="dailyHour" />
-    <result column="titl" property="title" />
+    <result column="lesson_titl" property="title" />
     <result column="conts" property="context" />
     </collection>
     
@@ -33,8 +33,8 @@
     SELECT 
       p.photo_id, 
       l.lesson_id, 
-      l.titl, 
-      p.titl, 
+      l.titl lesson_titl,
+      p.titl photo_titl, 
       p.cdt, 
       p.vw_cnt,
       f.photo_file_id,
@@ -46,16 +46,32 @@
   </select>
  
   <select id="findByNo" resultMap="PhotoBoardMap" parameterType="int">
-    SELECT * 
+    SELECT
+      p.photo_id, 
+      l.lesson_id, 
+      l.titl lesson_titl, 
+      p.titl photo_titl, 
+      p.cdt, 
+      p.vw_cnt,
+      f.photo_file_id,
+      f.file_path
     FROM lms_photo p left outer join lms_lesson l
     on p.lesson_id = l.lesson_id
+    left outer join lms_photo_file f
+    on p.photo_id = f.photo_id
     where p.photo_id = #{photoNo}
   </select>
 
   <select id="findAllByLessonNo" resultMap="PhotoBoardMap" parameterType="int">
-	  SELECT *
+	  SELECT
+	    p.photo_id, 
+      l.lesson_id, 
+      l.titl lesson_titl, 
+      p.titl photo_titl, 
+      p.cdt, 
+      p.vw_cnt
 	  from lms_photo p left outer join lms_lesson l
-	  on p.lesson_id = l.lesson_id
+	  on p.lesson_id = l.lesson_id 
 	  WHERE p.lesson_id = #{lessonNo}
   </select>  
 

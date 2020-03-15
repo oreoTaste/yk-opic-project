@@ -3,19 +3,19 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
-import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
+import yk.opic.service.LessonService;
+import yk.opic.service.PhotoBoardService;
 import yk.opic.util.Prompt;
 
 public class PhotoBoardListServlet implements Servlet {
-  PhotoBoardDao photoBoardDao;
-  LessonDao lessonDao;
+  PhotoBoardService PhotoBoardService;
+  LessonService lessonService;
 
-  public PhotoBoardListServlet(PhotoBoardDao photoBoardDao, LessonDao lessonDao) {
-    this.photoBoardDao = photoBoardDao;
-    this.lessonDao = lessonDao;
+  public PhotoBoardListServlet(PhotoBoardService PhotoBoardService, LessonService lessonService) {
+    this.PhotoBoardService = PhotoBoardService;
+    this.lessonService = lessonService;
   }
 
   @Override
@@ -23,7 +23,7 @@ public class PhotoBoardListServlet implements Servlet {
 
     try {
       int lessonNo = Prompt.inputInt(in, out, "수업번호?");
-      Lesson lesson = lessonDao.findByNo(lessonNo);
+      Lesson lesson = lessonService.get(lessonNo);
 
       if(lesson == null) {
         out.println("해당 수업번호가 유효하지 않습니다.");
@@ -34,7 +34,7 @@ public class PhotoBoardListServlet implements Servlet {
             lesson.getTitle());
         out.println("----------------------------------------------------");
 
-        List<PhotoBoard> photoBoard = photoBoardDao.findAllByLessonNo(lessonNo);
+        List<PhotoBoard> photoBoard = PhotoBoardService.getLesson(lessonNo);
         if(photoBoard != null) {
           for (PhotoBoard p : photoBoard) {
             out.printf("%1$d, %2$s, %3$tF %3$tH:%3$tM:%3$tS, %4$d\n",

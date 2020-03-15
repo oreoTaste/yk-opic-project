@@ -14,9 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.context.ApplicationContextListener;
-import yk.opic.project.dao.LessonDao;
-import yk.opic.project.dao.PhotoBoardDao;
-import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.servlet.BoardAddServlet;
 import yk.opic.project.servlet.BoardDeleteServlet;
 import yk.opic.project.servlet.BoardDetailServlet;
@@ -43,8 +40,8 @@ import yk.opic.project.servlet.Servlet;
 import yk.opic.service.BoardService;
 import yk.opic.service.LessonService;
 import yk.opic.service.MemberService;
+import yk.opic.service.PhotoBoardService;
 import yk.opic.sql.SqlSessionFactoryProxy;
-import yk.opic.sql.TransactionTemplate;
 
 public class ServerApp {
   Map<String, Servlet> servletMap = new HashMap<>();
@@ -90,14 +87,10 @@ public class ServerApp {
     notifyApplicationInitialized();
 
     SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.get("sqlSessionFactory");
-    TransactionTemplate txTemplate =
-        (TransactionTemplate) context.get("transactionTemplate");
     BoardService boardService = (BoardService) context.get("boardService");
     LessonService lessonService = (LessonService) context.get("lessonService");
     MemberService memberService = (MemberService) context.get("memberService");
-    LessonDao lessonDao = (LessonDao) context.get("lessonDao");
-    PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
-    PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
+    PhotoBoardService photoBoardService = (PhotoBoardService) context.get("photoBoardService");
 
     servletMap.put("/board/add", new BoardAddServlet(boardService));
     servletMap.put("/board/delete", new BoardDeleteServlet(boardService));
@@ -120,15 +113,15 @@ public class ServerApp {
     servletMap.put("/auth/login", new LoginServlet(memberService));
 
     servletMap.put("/photoboard/list", new PhotoBoardListServlet(
-        photoBoardDao, lessonDao));
+        photoBoardService, lessonService));
     servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(
-        photoBoardDao, photoFileDao));
+        photoBoardService));
     servletMap.put("/photoboard/add", new PhotoBoardAddServlet(
-        photoBoardDao, photoFileDao, lessonDao, txTemplate));
+        photoBoardService, lessonService));
     servletMap.put("/photoboard/update", new PhotoBoardUpdateServlet(
-        photoBoardDao, photoFileDao, txTemplate));
+        photoBoardService));
     servletMap.put("/photoboard/delete", new PhotoBoardDeleteServlet(
-        photoBoardDao, photoFileDao, txTemplate));
+        photoBoardService));
 
 
     try(ServerSocket serverSocket = new ServerSocket(9999)){

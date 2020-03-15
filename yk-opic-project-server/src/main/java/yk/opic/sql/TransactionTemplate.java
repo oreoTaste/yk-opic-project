@@ -8,7 +8,7 @@ public class TransactionTemplate {
     this.txManager = txManager;
   }
 
-  public void execute(TransactionCallBack txCallBack) throws Exception {
+  public Object execute(TransactionCallBack txCallBack) throws Exception {
 
     try {
       txManager.beginTransaction();
@@ -16,13 +16,17 @@ public class TransactionTemplate {
       txCallBack.doInTransaction();
 
       txManager.commit();
+      return 1;
     } catch(Exception e) {
       try {
         txManager.rollback();
+        return 0;
       } catch (Exception e1) {
+        return 0;
       }
     }
 
   }
+
 
 }

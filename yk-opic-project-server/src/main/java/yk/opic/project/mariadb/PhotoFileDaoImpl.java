@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.dao.PhotoFileDao;
+import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
 
 public class PhotoFileDaoImpl implements PhotoFileDao {
@@ -13,13 +14,6 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
     this.sqlSessionFactory = sqlSessionFactory;
   }
 
-  @Override
-  public int insert(PhotoFile photoFile) throws Exception {
-    try(SqlSession sqlSession = sqlSessionFactory.openSession()){
-      int result = sqlSession.insert("PhotoFileMapper.insert",photoFile);
-      return result;
-    }
-  }
 
 
   @Override
@@ -37,6 +31,14 @@ public class PhotoFileDaoImpl implements PhotoFileDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.delete("PhotoFileMapper.deleteAll",photoNo);
+      return result;
+    }
+  }
+
+  @Override
+  public int insert(PhotoBoard photoBoard) throws Exception {
+    try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+      int result = sqlSession.insert("PhotoFileMapper.insert",photoBoard);
       return result;
     }
   }

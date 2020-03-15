@@ -6,6 +6,11 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import yk.opic.project.context.ApplicationContextListener;
+import yk.opic.project.dao.BoardDao;
+import yk.opic.project.dao.LessonDao;
+import yk.opic.project.dao.MemberDao;
+import yk.opic.project.dao.PhotoBoardDao;
+import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.mariadb.BoardDaoImpl;
 import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
@@ -14,9 +19,9 @@ import yk.opic.project.mariadb.PhotoFileDaoImpl;
 import yk.opic.service.impl.BoardServiceImpl;
 import yk.opic.service.impl.LessonServiceImpl;
 import yk.opic.service.impl.MemberServiceImpl;
+import yk.opic.service.impl.PhotoBoardServiceImpl;
 import yk.opic.sql.PlatformTransactionManager;
 import yk.opic.sql.SqlSessionFactoryProxy;
-import yk.opic.sql.TransactionTemplate;
 
 public class DataLoaderListener implements ApplicationContextListener {
 
@@ -39,14 +44,19 @@ public class DataLoaderListener implements ApplicationContextListener {
           new SqlSessionFactoryBuilder().build(inputStream));
 
       PlatformTransactionManager txManager = new PlatformTransactionManager(sqlSessionFactory);
+
+      BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
+      LessonDao lessonDao = new LessonDaoImpl(sqlSessionFactory);
+      MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
+      PhotoBoardDao photoBoardDao = new PhotoBoardDaoImpl(sqlSessionFactory);
+      PhotoFileDao photoFileDao = new PhotoFileDaoImpl(sqlSessionFactory);
+
       context.put("sqlSessionFactory", sqlSessionFactory);
-      context.put("transactionTemplate", new TransactionTemplate(txManager));
-      context.put("boardService", new BoardServiceImpl(new BoardDaoImpl(sqlSessionFactory)));
-      context.put("lessonService", new LessonServiceImpl(new LessonDaoImpl(sqlSessionFactory)));
-      context.put("lessonDao", new LessonDaoImpl(sqlSessionFactory));
-      context.put("memberService", new MemberServiceImpl(new MemberDaoImpl(sqlSessionFactory)));
-      context.put("photoBoardDao", new PhotoBoardDaoImpl(sqlSessionFactory));
-      context.put("photoFileDao", new PhotoFileDaoImpl(sqlSessionFactory));
+      context.put("boardService", new BoardServiceImpl(boardDao));
+      context.put("lessonService", new LessonServiceImpl(lessonDao));
+      context.put("memberService", new MemberServiceImpl(memberDao));
+      context.put("photoBoardService",
+          new PhotoBoardServiceImpl(photoBoardDao, photoFileDao, txManager));
     } catch(Exception e) {
 
     }
