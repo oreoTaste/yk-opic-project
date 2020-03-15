@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.dao.LessonDao;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.servlet.BoardAddServlet;
@@ -42,6 +41,8 @@ import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
 import yk.opic.service.BoardService;
+import yk.opic.service.LessonService;
+import yk.opic.service.MemberService;
 import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
 
@@ -92,8 +93,9 @@ public class ServerApp {
     TransactionTemplate txTemplate =
         (TransactionTemplate) context.get("transactionTemplate");
     BoardService boardService = (BoardService) context.get("boardService");
+    LessonService lessonService = (LessonService) context.get("lessonService");
+    MemberService memberService = (MemberService) context.get("memberService");
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
-    MemberDao memberDao = (MemberDao) context.get("memberDao");
     PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
     PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
 
@@ -103,19 +105,19 @@ public class ServerApp {
     servletMap.put("/board/list", new BoardListServlet(boardService));
     servletMap.put("/board/update", new BoardUpdateServlet(boardService));
 
-    servletMap.put("/lesson/add", new LessonAddServlet(lessonDao));
-    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));
-    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonDao));
-    servletMap.put("/lesson/list", new LessonListServlet(lessonDao));
-    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
+    servletMap.put("/lesson/add", new LessonAddServlet(lessonService));
+    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonService));
+    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonService));
+    servletMap.put("/lesson/list", new LessonListServlet(lessonService));
+    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonService));
 
-    servletMap.put("/member/add", new MemberAddServlet(memberDao));
-    servletMap.put("/member/delete", new MemberDeleteServlet(memberDao));
-    servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
-    servletMap.put("/member/list", new MemberListServlet(memberDao));
-    servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
-    servletMap.put("/member/search", new MemberSearchServlet(memberDao));
-    servletMap.put("/auth/login", new LoginServlet(memberDao));
+    servletMap.put("/member/add", new MemberAddServlet(memberService));
+    servletMap.put("/member/delete", new MemberDeleteServlet(memberService));
+    servletMap.put("/member/detail", new MemberDetailServlet(memberService));
+    servletMap.put("/member/list", new MemberListServlet(memberService));
+    servletMap.put("/member/update", new MemberUpdateServlet(memberService));
+    servletMap.put("/member/search", new MemberSearchServlet(memberService));
+    servletMap.put("/auth/login", new LoginServlet(memberService));
 
     servletMap.put("/photoboard/list", new PhotoBoardListServlet(
         photoBoardDao, lessonDao));

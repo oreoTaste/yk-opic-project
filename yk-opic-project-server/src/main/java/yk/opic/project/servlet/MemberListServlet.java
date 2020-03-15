@@ -3,21 +3,21 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 
 public class MemberListServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberListServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberListServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      List<Member> member = memberDao.findAll();
+      List<Member> member = memberService.list();
       if(member != null) {
         for (Member m : member) {
           out.printf("%1$d, %2$s , %3$s       , %4$s      , %5$tF %5$tH:%5$tM:%5$tS\n",

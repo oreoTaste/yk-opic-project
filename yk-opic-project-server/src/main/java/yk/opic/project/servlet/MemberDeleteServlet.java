@@ -2,14 +2,14 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberDeleteServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberDeleteServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberDeleteServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
@@ -17,7 +17,7 @@ public class MemberDeleteServlet implements Servlet {
 
     try {
       int no = Prompt.inputInt(in, out, "번호? ");
-      if(memberDao.delete(no) > 0)
+      if(memberService.delete(no) > 0)
         out.println("멤버정보를 삭제했습니다.");
       else {
         out.println("해당 번호의 멤버정보가 없습니다.");

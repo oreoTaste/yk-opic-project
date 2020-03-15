@@ -2,15 +2,15 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
+import yk.opic.service.LessonService;
 import yk.opic.util.Prompt;
 
 public class LessonDetailServlet implements Servlet {
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonDetailServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonDetailServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
@@ -19,7 +19,7 @@ public class LessonDetailServlet implements Servlet {
     try {
 
       int no = Prompt.inputInt(in, out, "번호? ");
-      Lesson lesson = lessonDao.findByNo(no);
+      Lesson lesson = lessonService.get(no);
       if(lesson != null) {
         out.printf("번호? %d\n", lesson.getNo());
         out.printf("수업명: %s\n", lesson.getTitle());

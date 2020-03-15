@@ -2,21 +2,21 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberUpdateServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberUpdateServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberUpdateServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      Member oldMember = memberDao.findByNo(Prompt.inputInt(in, out, "번호? "));
+      Member oldMember = memberService.get(Prompt.inputInt(in, out, "번호? "));
 
       Member newMember = new Member();
 
@@ -46,7 +46,7 @@ public class MemberUpdateServlet implements Servlet {
         out.println("멤버 변경을 취소했습니다.");
       } else {
 
-        if(memberDao.update(newMember) > 0)
+        if(memberService.update(newMember) > 0)
           out.println("멤버 변경을 완료하였습니다.");
         else {
           out.println("해당 번호의 멤버정보가 없습니다.");

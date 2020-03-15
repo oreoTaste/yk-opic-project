@@ -2,15 +2,15 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberAddServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberAddServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberAddServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
@@ -25,7 +25,7 @@ public class MemberAddServlet implements Servlet {
     member.setTel(Prompt.inputString(in, out, "전화? "));
 
     try {
-      int index = memberDao.insert(member);
+      int index = memberService.add(member);
       if(index > 0) {
         out.println("멤버 정보를 추가하였습니다.");
       } else

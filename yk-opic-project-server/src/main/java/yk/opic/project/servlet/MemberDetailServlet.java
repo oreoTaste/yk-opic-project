@@ -2,24 +2,23 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberDetailServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberDetailServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberDetailServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
-
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
 
       int no = Prompt.inputInt(in, out, "번호? ");
-      Member member = memberDao.findByNo(no);
+      Member member = memberService.get(no);
 
       if(member != null) {
         out.printf("번호? %d\n", member.getNo());

@@ -2,14 +2,14 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
+import yk.opic.service.LessonService;
 import yk.opic.util.Prompt;
 
 public class LessonDeleteServlet implements Servlet {
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonDeleteServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonDeleteServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
@@ -17,7 +17,7 @@ public class LessonDeleteServlet implements Servlet {
 
     try {
       int no = Prompt.inputInt(in, out, "번호? ");
-      int index = lessonDao.delete(no);
+      int index = lessonService.delete(no);
 
       if(index > 0) {
         out.println("수업정보를 삭제했습니다.");

@@ -2,22 +2,22 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
+import yk.opic.service.LessonService;
 import yk.opic.util.Prompt;
 
 public class LessonUpdateServlet implements Servlet {
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonUpdateServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonUpdateServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      Lesson oldLesson = lessonDao.findByNo(Prompt.inputInt(in, out, "번호? "));
+      Lesson oldLesson = lessonService.get(Prompt.inputInt(in, out, "번호? "));
       Lesson lesson = new Lesson();
 
       lesson.setNo(oldLesson.getNo());
@@ -45,7 +45,7 @@ public class LessonUpdateServlet implements Servlet {
       if (lesson.equals(oldLesson)) {
         out.println("수업정보 변경을 취소했습니다.");
       } else {
-        int index = lessonDao.update(lesson);
+        int index = lessonService.update(lesson);
 
         if(index > 0) {
           out.println("수업 변경을 완료하였습니다.");

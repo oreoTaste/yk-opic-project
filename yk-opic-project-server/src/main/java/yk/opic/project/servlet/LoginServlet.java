@@ -2,15 +2,15 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class LoginServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public LoginServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public LoginServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
@@ -20,7 +20,8 @@ public class LoginServlet implements Servlet {
 
       String email = Prompt.inputString(in, out, "이메일? ");
       String password = Prompt.inputString(in, out, "암호? ");
-      Member member = memberDao.findByEmailAndPassword(email, password);
+
+      Member member = memberService.get(email, password);
 
       if(member != null) {
         out.printf("'%s'님 반갑습니다.\n", member.getName());

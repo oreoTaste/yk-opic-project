@@ -2,15 +2,15 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
+import yk.opic.service.LessonService;
 import yk.opic.util.Prompt;
 
 public class LessonAddServlet implements Servlet {
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonAddServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonAddServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
@@ -26,7 +26,7 @@ public class LessonAddServlet implements Servlet {
       lesson.setTotalHour(Prompt.inputInt(in, out, "총수업시간? (형식: 1000) "));
       lesson.setDailyHour(Prompt.inputInt(in, out, "일수업시간? (형식: 8) "));
 
-      int index = lessonDao.insert(lesson);
+      int index = lessonService.add(lesson);
       if(index > 0) {
         out.println("수업정보를 등록하였습니다");
       } else {

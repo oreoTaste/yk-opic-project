@@ -3,21 +3,21 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
+import yk.opic.service.LessonService;
 
 public class LessonListServlet implements Servlet {
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonListServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonListServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      List<Lesson> lesson = lessonDao.findAll();
+      List<Lesson> lesson = lessonService.list();
 
       if(lesson != null) {
         for (Lesson ls : lesson) {

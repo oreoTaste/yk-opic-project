@@ -3,24 +3,23 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
+import yk.opic.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberSearchServlet implements Servlet {
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberSearchServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberSearchServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-
       String word = Prompt.inputString(in, out, "검색어? ");
-      List<Member> member = memberDao.findByKeyword(word);
+      List<Member> member = memberService.get(word);
 
       if(member != null) {
         for(Member m : member) {
