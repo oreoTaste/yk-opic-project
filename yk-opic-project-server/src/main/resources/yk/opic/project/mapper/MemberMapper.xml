@@ -39,7 +39,7 @@
   <update id="update" parameterType="Member">
   UPDATE lms_member
   <set>
-  cdt=now()
+  <if test="registeredDate!=null">cdt=now()</if>
   <if test="name!=null and name!=''">,name=#{name}</if>
   <if test="email!=null and email!=''">,email=#{email}</if>
   <if test="password!=null and password!=''">,pwd=password(#{password})</if>

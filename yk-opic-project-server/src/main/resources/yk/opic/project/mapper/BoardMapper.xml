@@ -41,7 +41,7 @@
     <set>
       cdt = now(),
       vw_cnt = 0
-      <if test="title!=null">, conts=#{title}</if>
+      <if test="title!=null and title!=''">, conts=#{title}</if>
     </set>
     WHERE board_id = #{no}
   </update>
