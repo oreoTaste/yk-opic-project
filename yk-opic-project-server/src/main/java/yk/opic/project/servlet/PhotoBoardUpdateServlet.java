@@ -90,12 +90,13 @@ public class PhotoBoardUpdateServlet implements Servlet {
             }
             photoFiles.add(new PhotoFile().setFilePath(filePath));
           }
+
+          for(PhotoFile photoFile : photoFiles) {
+            photoFile.setPhotoNo(oldPhoto.getNo());
+            photoFileDao.insert(photoFile);
+          }
         }
 
-        for(PhotoFile photoFile : photoFiles) {
-          photoFile.setPhotoNo(oldPhoto.getNo());
-          photoFileDao.insert(photoFile);
-        }
 
         out.println("사진을 변경했습니다.");
       }

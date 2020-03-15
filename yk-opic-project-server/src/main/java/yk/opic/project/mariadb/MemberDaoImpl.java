@@ -32,7 +32,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.insert("MemberMapper.insert", member);
-      sqlSession.commit();
       return result;
     }
   }
@@ -58,7 +57,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.update("MemberMapper.update", member);
-      sqlSession.commit();
       return result;
     }
   }
@@ -68,7 +66,6 @@ public class MemberDaoImpl implements MemberDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.delete("MemberMapper.delete", no);
-      sqlSession.commit();
       return result;
     }
   }

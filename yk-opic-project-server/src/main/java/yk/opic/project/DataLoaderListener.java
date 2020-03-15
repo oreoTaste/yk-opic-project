@@ -13,6 +13,7 @@ import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 import yk.opic.project.mariadb.PhotoFileDaoImpl;
 import yk.opic.sql.DataSource;
 import yk.opic.sql.PlatformTransactionManager;
+import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
 
 public class DataLoaderListener implements ApplicationContextListener {
@@ -30,15 +31,13 @@ public class DataLoaderListener implements ApplicationContextListener {
     try {
       System.out.println("로딩시작");
 
-      DataSource dataSource = new DataSource(
-          "jdbc:mariadb://localhost:3306/studydb", "study", "1111");
-
       InputStream inputStream = Resources.getResourceAsStream(
           "yk/opic/project/conf/mybatis-config.xml");
-      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+      SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryProxy(
+          new SqlSessionFactoryBuilder().build(inputStream));
 
-      PlatformTransactionManager txManager = new PlatformTransactionManager(dataSource);
-      context.put("dataSource", dataSource);
+      PlatformTransactionManager txManager = new PlatformTransactionManager(sqlSessionFactory);
+      context.put("sqlSessionFactory", sqlSessionFactory);
       context.put("transactionTemplate", new TransactionTemplate(txManager));
       context.put("boardDao", new BoardDaoImpl(sqlSessionFactory));
       context.put("lessonDao", new LessonDaoImpl(sqlSessionFactory));

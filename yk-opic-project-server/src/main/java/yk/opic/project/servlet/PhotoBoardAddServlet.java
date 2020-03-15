@@ -35,12 +35,16 @@ public class PhotoBoardAddServlet implements Servlet {
     photoBoard.setTitle(Prompt.inputString(in, out, "제목? "));
 
     int lessonNo = Prompt.inputInt(in, out, "수업번호? ");
+    System.out.println("lesson 찾기전");
     Lesson lesson = lessonDao.findByNo(lessonNo);
+    System.out.println("lesson 찾은후");
     if(lesson == null) {
       out.println("수업번호가 유효하지 않습니다.");
       return;
     }
+    System.out.println("lesson setting전");
     photoBoard.setLesson(lesson);
+    System.out.println("lesson setting후");
 
 
     txTemplate.execute(() -> {
@@ -48,7 +52,9 @@ public class PhotoBoardAddServlet implements Servlet {
         throw new Exception("사진 게시글 등록에 실패했습니다.");
       }
 
+      System.out.println("photoFile각각넣기전");
       List<PhotoFile> photoFiles = inputPhotoFile(in, out);
+      System.out.println("photoFile각각넣은후");
       for(PhotoFile photoFile : photoFiles) {
         System.out.println(photoBoard.getNo());/////
         photoFile.setPhotoNo(photoBoard.getNo());

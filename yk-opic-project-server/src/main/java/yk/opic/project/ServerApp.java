@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.context.ApplicationContextListener;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
@@ -41,7 +42,7 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
-import yk.opic.sql.DataSource;
+import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
 
 public class ServerApp {
@@ -87,7 +88,7 @@ public class ServerApp {
 
     notifyApplicationInitialized();
 
-    DataSource dataSource = (DataSource) context.get("dataSource");
+    SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.get("sqlSessionFactory");
     TransactionTemplate txTemplate =
         (TransactionTemplate) context.get("transactionTemplate");
     BoardDao boardDao = (BoardDao) context.get("boardDao");
@@ -137,7 +138,7 @@ public class ServerApp {
 
         executorService.submit(() -> {
           processRequest(socket);
-          dataSource.removeConnection();
+          ((SqlSessionFactoryProxy)sqlSessionFactory).closeSession();
           System.out.println("=========================");
           return;
         });

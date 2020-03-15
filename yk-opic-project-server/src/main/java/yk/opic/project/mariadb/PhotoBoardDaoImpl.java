@@ -18,7 +18,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.insert("PhotoBoardMapper.insert", photoBoard);
-      sqlSession.commit();
       return result;
     }
   }
@@ -44,7 +43,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.update("PhotoBoardMapper.update", photoBoard);
-      sqlSession.commit();
       return result;
     }
   }
@@ -54,7 +52,6 @@ public class PhotoBoardDaoImpl implements PhotoBoardDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.delete("PhotoBoardMapper.delete", no);
-      sqlSession.commit();
       return result;
     }
   }

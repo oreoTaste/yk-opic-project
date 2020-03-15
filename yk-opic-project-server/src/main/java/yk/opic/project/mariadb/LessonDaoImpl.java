@@ -17,7 +17,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.update("LessonMapper.insert", lesson);
-      sqlSession.commit();
       return result;
     }
   }
@@ -43,7 +42,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.update("LessonMapper.update", lesson);
-      sqlSession.commit();
       return result;
     }
   }
@@ -53,7 +51,6 @@ public class LessonDaoImpl implements LessonDao {
 
     try(SqlSession sqlSession = sqlSessionFactory.openSession()){
       int result = sqlSession.delete("LessonMapper.delete", no);
-      sqlSession.commit();
       return result;
     }
   }
