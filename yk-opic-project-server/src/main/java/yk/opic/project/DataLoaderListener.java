@@ -11,7 +11,6 @@ import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 import yk.opic.project.mariadb.PhotoFileDaoImpl;
-import yk.opic.sql.DataSource;
 import yk.opic.sql.PlatformTransactionManager;
 import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
@@ -52,8 +51,6 @@ public class DataLoaderListener implements ApplicationContextListener {
   @Override
   public void contextDestroyed(HashMap<String, Object> context) {
     System.out.println("...안녕!");
-    DataSource dataSource = (DataSource) context.get("dataSource");
-    dataSource.clean();
   }
 
 

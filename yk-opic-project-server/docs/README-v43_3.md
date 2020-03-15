@@ -1,4 +1,4 @@
-# 44 - MyBatis의 Dynamic sql 문법 사용하기
+# 43_3 - MyBatis의 Dynamic sql 문법 사용하기
 
 ## 학습목표
 
