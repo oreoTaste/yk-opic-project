@@ -3,21 +3,21 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
+import yk.opic.service.BoardService;
 
 public class BoardListServlet implements Servlet {
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardListServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardListServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      List<Board> board = boardDao.findAll();
+      List<Board> board = boardService.list();
 
       if(board != null) {
         for (Board b : board) {

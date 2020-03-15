@@ -11,6 +11,7 @@ import yk.opic.project.mariadb.LessonDaoImpl;
 import yk.opic.project.mariadb.MemberDaoImpl;
 import yk.opic.project.mariadb.PhotoBoardDaoImpl;
 import yk.opic.project.mariadb.PhotoFileDaoImpl;
+import yk.opic.service.impl.BoardServiceImpl;
 import yk.opic.sql.PlatformTransactionManager;
 import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
@@ -38,7 +39,7 @@ public class DataLoaderListener implements ApplicationContextListener {
       PlatformTransactionManager txManager = new PlatformTransactionManager(sqlSessionFactory);
       context.put("sqlSessionFactory", sqlSessionFactory);
       context.put("transactionTemplate", new TransactionTemplate(txManager));
-      context.put("boardDao", new BoardDaoImpl(sqlSessionFactory));
+      context.put("boardService", new BoardServiceImpl(new BoardDaoImpl(sqlSessionFactory)));
       context.put("lessonDao", new LessonDaoImpl(sqlSessionFactory));
       context.put("memberDao", new MemberDaoImpl(sqlSessionFactory));
       context.put("photoBoardDao", new PhotoBoardDaoImpl(sqlSessionFactory));

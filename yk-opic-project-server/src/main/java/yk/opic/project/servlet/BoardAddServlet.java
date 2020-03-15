@@ -3,16 +3,15 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
+import yk.opic.service.BoardService;
 import yk.opic.util.Prompt;
 
 public class BoardAddServlet implements Servlet {
-  BoardDao boardDao;
-  Prompt prompt;
+  BoardService boardService;
 
-  public BoardAddServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardAddServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
@@ -25,7 +24,7 @@ public class BoardAddServlet implements Servlet {
       board.setDate(new Date(System.currentTimeMillis()));
       board.setViewCount(0);
 
-      int index = boardDao.insert(board);
+      int index = boardService.add(board);
 
       if(index > 0) {
         out.println("게시글을 등록하였습니다.");

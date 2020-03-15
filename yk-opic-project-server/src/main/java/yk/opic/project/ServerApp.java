@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.context.ApplicationContextListener;
-import yk.opic.project.dao.BoardDao;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.PhotoBoardDao;
@@ -42,6 +41,7 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
+import yk.opic.service.BoardService;
 import yk.opic.sql.SqlSessionFactoryProxy;
 import yk.opic.sql.TransactionTemplate;
 
@@ -91,17 +91,17 @@ public class ServerApp {
     SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.get("sqlSessionFactory");
     TransactionTemplate txTemplate =
         (TransactionTemplate) context.get("transactionTemplate");
-    BoardDao boardDao = (BoardDao) context.get("boardDao");
+    BoardService boardService = (BoardService) context.get("boardService");
     LessonDao lessonDao = (LessonDao) context.get("lessonDao");
     MemberDao memberDao = (MemberDao) context.get("memberDao");
     PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
     PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
 
-    servletMap.put("/board/add", new BoardAddServlet(boardDao));
-    servletMap.put("/board/delete", new BoardDeleteServlet(boardDao));
-    servletMap.put("/board/detail", new BoardDetailServlet(boardDao));
-    servletMap.put("/board/list", new BoardListServlet(boardDao));
-    servletMap.put("/board/update", new BoardUpdateServlet(boardDao));
+    servletMap.put("/board/add", new BoardAddServlet(boardService));
+    servletMap.put("/board/delete", new BoardDeleteServlet(boardService));
+    servletMap.put("/board/detail", new BoardDetailServlet(boardService));
+    servletMap.put("/board/list", new BoardListServlet(boardService));
+    servletMap.put("/board/update", new BoardUpdateServlet(boardService));
 
     servletMap.put("/lesson/add", new LessonAddServlet(lessonDao));
     servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));

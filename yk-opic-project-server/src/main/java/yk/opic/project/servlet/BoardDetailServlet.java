@@ -2,15 +2,15 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
+import yk.opic.service.BoardService;
 import yk.opic.util.Prompt;
 
 public class BoardDetailServlet implements Servlet {
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardDetailServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardDetailServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
@@ -18,7 +18,7 @@ public class BoardDetailServlet implements Servlet {
 
     try {
       int no = Prompt.inputInt(in, out, "번호? ");
-      Board board = boardDao.findByNo(no);
+      Board board = boardService.get(no);
 
       if(board != null) {
         out.printf("번호 : %d\n", board.getNo());

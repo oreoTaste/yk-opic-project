@@ -3,22 +3,22 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
+import yk.opic.service.BoardService;
 import yk.opic.util.Prompt;
 
 public class BoardUpdateServlet implements Servlet {
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardUpdateServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardUpdateServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
 
     try {
-      Board oldBoard = boardDao.findByNo(Prompt.inputInt(in, out, "번호? "));
+      Board oldBoard = boardService.get(Prompt.inputInt(in, out, "번호? "));
       Board newBoard = new Board();
 
       newBoard.setNo(oldBoard.getNo());
@@ -36,7 +36,7 @@ public class BoardUpdateServlet implements Servlet {
         out.println("게시글 변경을 취소했습니다.");
         out.flush();
       } else {
-        int index = boardDao.update(newBoard);
+        int index = boardService.update(newBoard);
 
         if(index > 0) {
           out.println("게시글을 변경했습니다.");

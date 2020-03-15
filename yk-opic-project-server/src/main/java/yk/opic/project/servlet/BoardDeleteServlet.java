@@ -2,14 +2,14 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.project.dao.BoardDao;
+import yk.opic.service.BoardService;
 import yk.opic.util.Prompt;
 
 public class BoardDeleteServlet implements Servlet {
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardDeleteServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardDeleteServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
   @Override
@@ -17,7 +17,7 @@ public class BoardDeleteServlet implements Servlet {
 
     try {
       int no = Prompt.inputInt(in, out, "번호? ");
-      int index = boardDao.delete(no);
+      int index = boardService.delete(no);
 
       if(index > 0) {
         out.println("게시글을 삭제했습니다.");
