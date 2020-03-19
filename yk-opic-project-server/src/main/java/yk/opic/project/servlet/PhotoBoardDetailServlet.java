@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.service.PhotoBoardService;
+import yk.opic.project.service.PhotoBoardService;
 import yk.opic.util.Prompt;
 
 public class PhotoBoardDetailServlet implements Servlet {

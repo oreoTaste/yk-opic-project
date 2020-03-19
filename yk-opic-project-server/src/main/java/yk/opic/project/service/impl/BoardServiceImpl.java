@@ -1,9 +1,9 @@
-package yk.opic.service.impl;
+package yk.opic.project.service.impl;
 
 import java.util.List;
 import yk.opic.project.dao.BoardDao;
 import yk.opic.project.domain.Board;
-import yk.opic.service.BoardService;
+import yk.opic.project.service.BoardService;
 
 public class BoardServiceImpl implements BoardService{
   BoardDao boardDao;

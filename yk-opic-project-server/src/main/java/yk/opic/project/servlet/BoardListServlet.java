@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.domain.Board;
-import yk.opic.service.BoardService;
+import yk.opic.project.service.BoardService;
 
 public class BoardListServlet implements Servlet {
   BoardService boardService;

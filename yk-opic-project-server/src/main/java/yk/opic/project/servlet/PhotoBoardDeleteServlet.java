@@ -2,7 +2,7 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.service.PhotoBoardService;
+import yk.opic.project.service.PhotoBoardService;
 import yk.opic.util.Prompt;
 
 public class PhotoBoardDeleteServlet implements Servlet {

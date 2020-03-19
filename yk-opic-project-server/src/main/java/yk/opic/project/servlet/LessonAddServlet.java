@@ -3,7 +3,7 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.domain.Lesson;
-import yk.opic.service.LessonService;
+import yk.opic.project.service.LessonService;
 import yk.opic.util.Prompt;
 
 public class LessonAddServlet implements Servlet {

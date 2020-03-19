@@ -1,4 +1,4 @@
-package yk.opic.service;
+package yk.opic.project.service;
 
 import java.util.List;
 import yk.opic.project.domain.Board;

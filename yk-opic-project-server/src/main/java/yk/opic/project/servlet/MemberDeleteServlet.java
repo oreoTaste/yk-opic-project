@@ -2,7 +2,7 @@ package yk.opic.project.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import yk.opic.service.MemberService;
+import yk.opic.project.service.MemberService;
 import yk.opic.util.Prompt;
 
 public class MemberDeleteServlet implements Servlet {

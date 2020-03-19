@@ -11,27 +11,15 @@ import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
-import yk.opic.project.mariadb.BoardDaoImpl;
-import yk.opic.project.mariadb.LessonDaoImpl;
-import yk.opic.project.mariadb.MemberDaoImpl;
-import yk.opic.project.mariadb.PhotoBoardDaoImpl;
-import yk.opic.project.mariadb.PhotoFileDaoImpl;
-import yk.opic.service.impl.BoardServiceImpl;
-import yk.opic.service.impl.LessonServiceImpl;
-import yk.opic.service.impl.MemberServiceImpl;
-import yk.opic.service.impl.PhotoBoardServiceImpl;
+import yk.opic.project.service.impl.BoardServiceImpl;
+import yk.opic.project.service.impl.LessonServiceImpl;
+import yk.opic.project.service.impl.MemberServiceImpl;
+import yk.opic.project.service.impl.PhotoBoardServiceImpl;
+import yk.opic.sql.MybatisDaoFactory;
 import yk.opic.sql.PlatformTransactionManager;
 import yk.opic.sql.SqlSessionFactoryProxy;
 
 public class DataLoaderListener implements ApplicationContextListener {
-
-  public DataLoaderListener() {
-    try {
-      Class.forName("org.mariadb.jdbc.Driver");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
   @Override
   public void contextInitialized(HashMap<String, Object> context) {
@@ -44,12 +32,13 @@ public class DataLoaderListener implements ApplicationContextListener {
           new SqlSessionFactoryBuilder().build(inputStream));
 
       PlatformTransactionManager txManager = new PlatformTransactionManager(sqlSessionFactory);
+      MybatisDaoFactory daoFactory = new MybatisDaoFactory(sqlSessionFactory);
 
-      BoardDao boardDao = new BoardDaoImpl(sqlSessionFactory);
-      LessonDao lessonDao = new LessonDaoImpl(sqlSessionFactory);
-      MemberDao memberDao = new MemberDaoImpl(sqlSessionFactory);
-      PhotoBoardDao photoBoardDao = new PhotoBoardDaoImpl(sqlSessionFactory);
-      PhotoFileDao photoFileDao = new PhotoFileDaoImpl(sqlSessionFactory);
+      BoardDao boardDao = daoFactory.createDao(BoardDao.class);
+      LessonDao lessonDao = daoFactory.createDao(LessonDao.class);
+      MemberDao memberDao = daoFactory.createDao(MemberDao.class);
+      PhotoBoardDao photoBoardDao = daoFactory.createDao(PhotoBoardDao.class);
+      PhotoFileDao photoFileDao = daoFactory.createDao(PhotoFileDao.class);
 
       context.put("sqlSessionFactory", sqlSessionFactory);
       context.put("boardService", new BoardServiceImpl(boardDao));
@@ -58,7 +47,6 @@ public class DataLoaderListener implements ApplicationContextListener {
       context.put("photoBoardService",
           new PhotoBoardServiceImpl(photoBoardDao, photoFileDao, txManager));
     } catch(Exception e) {
-
     }
   }
 

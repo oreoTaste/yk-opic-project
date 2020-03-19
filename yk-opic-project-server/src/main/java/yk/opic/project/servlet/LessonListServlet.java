@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.domain.Lesson;
-import yk.opic.service.LessonService;
+import yk.opic.project.service.LessonService;
 
 public class LessonListServlet implements Servlet {
   LessonService lessonService;

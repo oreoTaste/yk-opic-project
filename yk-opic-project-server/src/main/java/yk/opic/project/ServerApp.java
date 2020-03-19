@@ -14,6 +14,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.ibatis.session.SqlSessionFactory;
 import yk.opic.project.context.ApplicationContextListener;
+import yk.opic.project.service.BoardService;
+import yk.opic.project.service.LessonService;
+import yk.opic.project.service.MemberService;
+import yk.opic.project.service.PhotoBoardService;
 import yk.opic.project.servlet.BoardAddServlet;
 import yk.opic.project.servlet.BoardDeleteServlet;
 import yk.opic.project.servlet.BoardDetailServlet;
@@ -37,10 +41,6 @@ import yk.opic.project.servlet.PhotoBoardDetailServlet;
 import yk.opic.project.servlet.PhotoBoardListServlet;
 import yk.opic.project.servlet.PhotoBoardUpdateServlet;
 import yk.opic.project.servlet.Servlet;
-import yk.opic.service.BoardService;
-import yk.opic.service.LessonService;
-import yk.opic.service.MemberService;
-import yk.opic.service.PhotoBoardService;
 import yk.opic.sql.SqlSessionFactoryProxy;
 
 public class ServerApp {

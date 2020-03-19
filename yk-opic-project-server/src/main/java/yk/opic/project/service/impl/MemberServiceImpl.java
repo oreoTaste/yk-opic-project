@@ -1,9 +1,11 @@
-package yk.opic.service.impl;
+package yk.opic.project.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.domain.Member;
-import yk.opic.service.MemberService;
+import yk.opic.project.service.MemberService;
 
 public class MemberServiceImpl implements MemberService{
   MemberDao memberDao;
@@ -34,9 +36,11 @@ public class MemberServiceImpl implements MemberService{
 
   @Override
   public Member get(String email, String password) throws Exception {
-    return memberDao.findByEmailAndPassword(email, password);
+    Map<String, Object> map = new HashMap<>();
+    map.put("email", email);
+    map.put("password", password);
+    return memberDao.findByEmailAndPassword(map);
   }
-
 
   @Override
   public int update(Member member) throws Exception {

@@ -1,6 +1,7 @@
 package yk.opic.project.dao;
 
 import java.util.List;
+import java.util.Map;
 import yk.opic.project.domain.Member;
 
 public interface MemberDao {
@@ -19,7 +20,7 @@ public interface MemberDao {
     return null;
   }
 
-  default Member findByEmailAndPassword(String email, String password) throws Exception{
+  default Member findByEmailAndPassword(Map<String, Object> map) throws Exception{
     return null;
   }
 

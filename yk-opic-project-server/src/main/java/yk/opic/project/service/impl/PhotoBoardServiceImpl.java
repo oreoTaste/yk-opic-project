@@ -1,10 +1,10 @@
-package yk.opic.service.impl;
+package yk.opic.project.service.impl;
 
 import java.util.List;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
 import yk.opic.project.domain.PhotoBoard;
-import yk.opic.service.PhotoBoardService;
+import yk.opic.project.service.PhotoBoardService;
 import yk.opic.sql.PlatformTransactionManager;
 import yk.opic.sql.TransactionCallBack;
 import yk.opic.sql.TransactionTemplate;

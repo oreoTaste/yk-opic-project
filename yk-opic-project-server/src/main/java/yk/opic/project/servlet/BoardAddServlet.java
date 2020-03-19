@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.sql.Date;
 import java.util.Scanner;
 import yk.opic.project.domain.Board;
-import yk.opic.service.BoardService;
+import yk.opic.project.service.BoardService;
 import yk.opic.util.Prompt;
 
 public class BoardAddServlet implements Servlet {

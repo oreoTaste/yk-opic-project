@@ -1,9 +1,9 @@
-package yk.opic.service.impl;
+package yk.opic.project.service.impl;
 
 import java.util.List;
 import yk.opic.project.dao.LessonDao;
 import yk.opic.project.domain.Lesson;
-import yk.opic.service.LessonService;
+import yk.opic.project.service.LessonService;
 
 public class LessonServiceImpl implements LessonService {
   LessonDao lessonDao;

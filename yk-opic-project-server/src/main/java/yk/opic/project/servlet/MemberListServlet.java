@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.domain.Member;
-import yk.opic.service.MemberService;
+import yk.opic.project.service.MemberService;
 
 public class MemberListServlet implements Servlet {
   MemberService memberService;

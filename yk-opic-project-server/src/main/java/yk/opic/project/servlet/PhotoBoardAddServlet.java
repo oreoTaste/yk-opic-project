@@ -7,8 +7,8 @@ import java.util.Scanner;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
-import yk.opic.service.LessonService;
-import yk.opic.service.PhotoBoardService;
+import yk.opic.project.service.LessonService;
+import yk.opic.project.service.PhotoBoardService;
 import yk.opic.util.Prompt;
 
 public class PhotoBoardAddServlet implements Servlet {
