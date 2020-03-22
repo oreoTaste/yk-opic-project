@@ -11,7 +11,7 @@ import yk.opic.project.dao.LessonDao;
 import yk.opic.project.dao.MemberDao;
 import yk.opic.project.dao.PhotoBoardDao;
 import yk.opic.project.dao.PhotoFileDao;
-import yk.opic.project.service.impl.BoardServiceImpl;
+import yk.opic.project.service.impl.BoardServiceImpl2;
 import yk.opic.project.service.impl.LessonServiceImpl;
 import yk.opic.project.service.impl.MemberServiceImpl;
 import yk.opic.project.service.impl.PhotoBoardServiceImpl;
@@ -41,7 +41,8 @@ public class DataLoaderListener implements ApplicationContextListener {
       PhotoFileDao photoFileDao = daoFactory.createDao(PhotoFileDao.class);
 
       context.put("sqlSessionFactory", sqlSessionFactory);
-      context.put("boardService", new BoardServiceImpl(boardDao));
+      //      context.put("boardService", new BoardServiceImpl(boardDao));
+      context.put("boardService", new BoardServiceImpl2(sqlSessionFactory));
       context.put("lessonService", new LessonServiceImpl(lessonDao));
       context.put("memberService", new MemberServiceImpl(memberDao));
       context.put("photoBoardService",
