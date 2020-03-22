@@ -30,6 +30,7 @@
 ### 훈련2: Dao 작업을 실제 수행할 클래스를 정의한다.
 
 - com.eomcs.sql.DaoInvocationHandler 클래스 추가
+  (-> MybatisDaoFactory에 anonymous class로 정의)
 
 ### 훈련3: 복잡한 DAO 생성을 단순화시키는 팩토리 클래스를 정의한다.
 
