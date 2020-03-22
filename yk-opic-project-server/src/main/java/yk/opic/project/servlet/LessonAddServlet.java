@@ -4,8 +4,10 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.service.LessonService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/lesson/add")
 public class LessonAddServlet implements Servlet {
   LessonService lessonService;
 

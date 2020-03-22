@@ -7,8 +7,10 @@ import yk.opic.project.domain.Lesson;
 import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.service.LessonService;
 import yk.opic.project.service.PhotoBoardService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/photoboard/list")
 public class PhotoBoardListServlet implements Servlet {
   PhotoBoardService PhotoBoardService;
   LessonService lessonService;

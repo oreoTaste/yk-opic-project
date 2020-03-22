@@ -3,8 +3,10 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.service.BoardService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/board/delete")
 public class BoardDeleteServlet implements Servlet {
   BoardService boardService;
 

@@ -3,8 +3,10 @@ package yk.opic.project.servlet;
 import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.service.PhotoBoardService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/photoboard/delete")
 public class PhotoBoardDeleteServlet implements Servlet {
   PhotoBoardService photoBoardService;
 

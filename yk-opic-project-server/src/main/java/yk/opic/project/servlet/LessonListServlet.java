@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.domain.Lesson;
 import yk.opic.project.service.LessonService;
+import yk.opic.util.Component;
 
+@Component("/lesson/list")
 public class LessonListServlet implements Servlet {
   LessonService lessonService;
 

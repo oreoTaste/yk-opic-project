@@ -9,8 +9,10 @@ import yk.opic.project.domain.PhotoBoard;
 import yk.opic.project.domain.PhotoFile;
 import yk.opic.project.service.LessonService;
 import yk.opic.project.service.PhotoBoardService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/photoboard/add")
 public class PhotoBoardAddServlet implements Servlet {
   PhotoBoardService PhotoBoardService;
   LessonService lessonService;

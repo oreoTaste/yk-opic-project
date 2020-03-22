@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 import yk.opic.project.domain.Member;
 import yk.opic.project.service.MemberService;
+import yk.opic.util.Component;
 
+@Component("/member/list")
 public class MemberListServlet implements Servlet {
   MemberService memberService;
 

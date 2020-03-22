@@ -4,8 +4,10 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import yk.opic.project.domain.Board;
 import yk.opic.project.service.BoardService;
+import yk.opic.util.Component;
 import yk.opic.util.Prompt;
 
+@Component("/board/detail")
 public class BoardDetailServlet implements Servlet {
   BoardService boardService;
 
